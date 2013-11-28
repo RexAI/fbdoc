@@ -3,7 +3,7 @@
 #
 # Build the FreeBSD Handbook (Simplified Chinese).
 #
-# Original revision: r38039
+# Original revision: r43258
 
 # ------------------------------------------------------------------------
 #
@@ -47,6 +47,7 @@ IMAGES_EN = advanced-networking/isdn-bus.eps
 IMAGES_EN+= advanced-networking/isdn-twisted-pair.eps
 IMAGES_EN+= advanced-networking/natd.eps
 IMAGES_EN+= advanced-networking/net-routing.pic
+IMAGES_EN+= advanced-networking/pxe-nfs.png
 IMAGES_EN+= advanced-networking/static-routes.pic
 IMAGES_EN+= bsdinstall/bsdinstall-adduser1.png
 IMAGES_EN+= bsdinstall/bsdinstall-adduser2.png
@@ -176,13 +177,6 @@ IMAGES_EN+= security/ipsec-network.pic
 IMAGES_EN+= security/ipsec-crypt-pkt.pic
 IMAGES_EN+= security/ipsec-encap-pkt.pic
 IMAGES_EN+= security/ipsec-out-pkt.pic
-IMAGES_EN+= vinum/vinum-concat.pic
-IMAGES_EN+= vinum/vinum-mirrored-vol.pic
-IMAGES_EN+= vinum/vinum-raid10-vol.pic
-IMAGES_EN+= vinum/vinum-raid5-org.pic
-IMAGES_EN+= vinum/vinum-simple-vol.pic
-IMAGES_EN+= vinum/vinum-striped-vol.pic
-IMAGES_EN+= vinum/vinum-striped.pic
 IMAGES_EN+= virtualization/parallels-freebsd1.png
 IMAGES_EN+= virtualization/parallels-freebsd2.png
 IMAGES_EN+= virtualization/parallels-freebsd3.png
@@ -280,8 +274,6 @@ SRCS+= preface/preface.xml
 SRCS+= printing/chapter.xml
 SRCS+= security/chapter.xml
 SRCS+= serialcomms/chapter.xml
-SRCS+= users/chapter.xml
-SRCS+= vinum/chapter.xml
 SRCS+= virtualization/chapter.xml
 SRCS+= x11/chapter.xml
 
@@ -296,10 +288,8 @@ CHAPTERS?= ${SRCS:M*chapter.xml}
 XMLFLAGS+= ${CHAPTERS:S/\/chapter.xml//:S/^/-i chap./}
 XMLFLAGS+= -i chap.freebsd-glossary
 
-pgpkeyring: pgpkeys/chapter.xml
-	@${JADE} -V nochunks ${OTHERFLAGS} ${JADEOPTS} -d ${DSLPGP} -t sgml ${MASTERDOC}
-
-DOC_PREFIX?= ${.CURDIR}/../../..
+pgpkeyring: pgpkeys/chapter.xml ${DOC}.parsed.xml
+	@${XSLTPROC} ${XSLPGP} ${DOC}.parsed.xml
 
 #
 # Handbook-specific variables

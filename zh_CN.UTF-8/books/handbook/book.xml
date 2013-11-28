@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE book PUBLIC "-//FreeBSD//DTD DocBook XML V5.0-Based Extension//EN"
 	"http://www.FreeBSD.org/XML/share/xml/freebsd50.dtd" [
+<!--
+     The FreeBSD Documentation Project
+     The FreeBSD Simplified Chinese Documentation Project
+
+     Original Revision: r43258
+     $FreeBSD$
+-->
+
 <!ENTITY % chapters SYSTEM "chapters.ent">
 %chapters;
 <!ENTITY % txtfiles SYSTEM "txtfiles.ent">
 %txtfiles;
 ]>
-<!--
-     The FreeBSD Documentation Project
-     The FreeBSD Simplified Chinese Documentation Project
-
-     Original Revision: r38410
-     $FreeBSD$
--->
-<book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:lang="zh_cn">
+<book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
   <info><title>FreeBSD 使用手册</title>
     
 
     <author><orgname>The FreeBSD Documentation Project</orgname></author>
 
-    <pubdate>1999 年 2 月</pubdate>
+    <pubdate>$FreeBSD$</pubdate>
 
     <releaseinfo>$FreeBSD$</releaseinfo>
 
@@ -42,6 +43,7 @@
       <year>2010</year>
       <year>2011</year>
       <year>2012</year>
+      <year>2013</year>
       <holder>The FreeBSD Documentation Project</holder>
     </copyright>
 
@@ -59,6 +61,7 @@
       <year>2010</year>
       <year>2011</year>
       <year>2012</year>
+      <year>2013</year>
       <holder>&cnproj.freebsd.org;</holder>
     </copyright>
 
@@ -72,7 +75,6 @@
       &tm-attrib.adaptec;
       &tm-attrib.adobe;
       &tm-attrib.apple;
-      &tm-attrib.corel;
       &tm-attrib.creative;
       &tm-attrib.cvsup;
       &tm-attrib.heidelberger;
@@ -83,18 +85,12 @@
       &tm-attrib.linux;
       &tm-attrib.lsilogic;
       &tm-attrib.m-systems;
-      &tm-attrib.macromedia;
       &tm-attrib.microsoft;
-      &tm-attrib.netscape;
-      &tm-attrib.nexthop;
       &tm-attrib.opengroup;
       &tm-attrib.oracle;
-      &tm-attrib.powerquest;
       &tm-attrib.realnetworks;
       &tm-attrib.redhat;
-      &tm-attrib.sap;
       &tm-attrib.sun;
-      &tm-attrib.symantec;
       &tm-attrib.themathworks;
       &tm-attrib.thomson;
       &tm-attrib.usrobotics;
@@ -107,28 +103,30 @@
     </legalnotice>
 
     <abstract>
-      <para>欢迎使用 FreeBSD！ 本手册适用于安装
+      <para>欢迎使用 FreeBSD！ 本手册涵盖了安装和日常使用
 	<emphasis>FreeBSD &rel2.current;-RELEASE</emphasis> 和
-	<emphasis>FreeBSD &rel.current;-RELEASE</emphasis> 以及它们的日常使用。
-	这个手册目前由很多人 <emphasis>持续地</emphasis> 维护。
-	其中的内容需要不断地更新。 如果您有兴趣参加这个项目，
+	<emphasis>FreeBSD &rel.current;-RELEASE</emphasis> 所需的知识。
+	此使用手册目前由很多人 <emphasis>不断地进行改进</emphasis>，
+	因此其中可能存在一些过时的内容并且需要进行更新。
 	请发邮件到 &a.doc;。 此文档最新的英文原始版本可以从
 	<link xlink:href="http://www.FreeBSD.org/">FreeBSD 网站</link>
 	上获得
 	(本手册的较早期版本可以在 
 	<uri xlink:href="http://docs.FreeBSD.org/doc/">http://docs.FreeBSD.org/doc/</uri> 找到)。
+<!--
 	由 <link xlink:href="&cnproj.url.base;/">&cnproj.freebsd.org;</link>
 	维护的最新译本可以在 <link xlink:href="&cnsnap.url.base;/zh_CN/">&cnproj.freebsd.org;
 	  快照网站</link> 获得， 这一译本会持续地向主站同步。
+-->
 	此外， 您也可以从
 	<link xlink:href="ftp://ftp.FreeBSD.org/pub/FreeBSD/doc/">FreeBSD
 	  FTP 服务器</link> 及其众多
 	<link linkend="mirrors-ftp">镜像站点</link>
-	取得这份文档的各种其它格式， 以及压缩形式的版本。
-	如果您希望得到一份印刷版本的手册， 可以从
+	取得这份文档的各种其它格式及其压缩后的副本。
+	如果需要印刷版本的手册， 您可以从
 	<link xlink:href="http://www.freebsdmall.com/">FreeBSD Mall</link>
-	购买。 除此之外， 您还可以
-	<link xlink:href="&url.base;/search/index.html">在手册中搜索内容</link>。</para>
+	订购。 除此之外， 您还可以
+	<link xlink:href="&url.base;/search/index.html">搜索手册中的内容</link>。</para>
     </abstract>
   </info>
 
@@ -138,7 +136,7 @@
     <title>起步</title>
 
     <partintro>
-      <para>手册的以下章节主要是针对刚开始使用 FreeBSD 的用户及管理员:</para>
+      <para>手册的以下章节主要是针对刚开始使用 FreeBSD 的用户及管理员：</para>
 
       <itemizedlist>
 	<listitem>
@@ -146,11 +144,11 @@
 	</listitem>
 
 	<listitem>
-	  <para>安装过程向导。</para>
+	  <para>指导您完成安装过程。</para>
 	</listitem>
 
 	<listitem>
-	  <para>教您 &unix; 基本知识和基本原理。</para>
+	  <para>教您 &unix; 基本知识和原理。</para>
 	</listitem>
 
 	<listitem>
@@ -163,19 +161,21 @@
 	</listitem>
       </itemizedlist>
 
-      <para>我们尝试用最少的页数来保持前言的索引，以至于可以用最少翻页次数将该手册从头至尾读过。</para>
+      <para>这本手册的内容是循序渐进的， 在手册内文中，
+	我们会尽量减少引用那些将要在后面章节中介绍的内容，
+	从而避免您在从头至尾阅读的过程中来回翻页。</para>
     </partintro>
 
     &chap.introduction;
-    &chap.install;
     &chap.bsdinstall;
+    &chap.install;
     &chap.basics;
     &chap.ports;
     &chap.x11;
   </part>
 
   <part xml:id="common-tasks">
-    <title>常见的任务</title>
+    <title>常用任务</title>
 
     <partintro>
       <para>前面已经介绍了必要的基础知识， 手册的这一部分将讨论
@@ -184,7 +184,7 @@
       <itemizedlist>
 	<listitem>
 	  <para>向您介绍流行和实用的桌面应用程序：
-	    浏览器、产品工具、文档察看程序，等等。</para>
+	    浏览器、 办公套件、 文档查看器， 等等。</para>
 	</listitem>
 
 	<listitem>
@@ -192,7 +192,7 @@
 	</listitem>
 
 	<listitem>
-	  <para>介绍联编定制的 FreeBSD 内核以启用附加功能的方法。</para>
+	  <para>介绍通过联编定制的 FreeBSD 内核来启用附加功能的方法。</para>
 	</listitem>
 
         <listitem>
@@ -205,8 +205,8 @@
 
       </itemizedlist>
 
-      <para>某些章节希望您首先阅读过其他部分，
-	在这些章的开头部分也会给出类似的提示。</para>
+      <para>某些章节可能会希望您已经阅读过手册中较早提到的内容，
+	在这些章的开头部分会给出类似的提示。</para>
     </partintro>
 
     &chap.desktop;
@@ -225,14 +225,13 @@
 	由浅入深对相关内容进行介绍。</para>
 
       <para>这些章节在撰写时， 已经设计成了许多相互独立的部分，
-	如果您需要了解某部分内容， 直接阅读这部分内容即可，
+	如果您需要了解某部分内容， 可以直接阅读这部分内容，
 	而无需按照顺序， 也不必在您开始使用 FreeBSD
 	之前完整地阅读它们。</para>
     </partintro>
 
     &chap.config;
     &chap.boot;
-    &chap.users;
     &chap.security;
     &chap.jails;
     &chap.mac;
@@ -240,7 +239,6 @@
     &chap.disks;
     &chap.geom;
     &chap.filesystems;
-    &chap.vinum;
     &chap.virtualization;
     &chap.l10n;
     &chap.cutting-edge;
