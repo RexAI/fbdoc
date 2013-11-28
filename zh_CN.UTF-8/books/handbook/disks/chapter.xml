@@ -369,8 +369,8 @@ ad3: 29333MB &lt;WDC WD307AA&gt; [59598/16/63] at ata1-slave UDMA33</programlist
  	     <emphasis>不是</emphasis> 设置 master/slave 硬盘的跳线。查阅文档
  	     信息来确定正确的跳线设置。</para></note>
 
- 	  <para>接下来考虑的是，如何创建文件系统。应该好好研究一下 &man.vinum.4; (<xref linkend="vinum-vinum"/>)和 &man.ccd.4; 两种方式，在这里我们选择 &man.ccd.4;
- 	    </para>
+<!-- 	  <para>接下来考虑的是，如何创建文件系统。应该好好研究一下 &man.vinum.4; (<xref linkend="vinum-vinum"/>)和 &man.ccd.4; 两种方式，在这里我们选择 &man.ccd.4;
+ 	    </para> -->
 	</sect4>
 
 	<sect4 xml:id="ccd-setup">
@@ -503,8 +503,8 @@ bsdlabel -e ad3</programlisting>
 	  灵活性、性能和可靠性。 &man.vinum.4; 实现了 RAID-0、RAID-1 和
 	  RAID-5 三种模式，它们既可以独立使用，也可组合使用。</para>
 
-	<para>参考 <xref linkend="vinum-vinum"/> 得到更多 &man.vinum.4;
-	  的信息。</para>
+<!--	<para>参考 <xref linkend="vinum-vinum"/> 得到更多 &man.vinum.4;
+	  的信息。</para> -->
       </sect3>
     </sect2>
 

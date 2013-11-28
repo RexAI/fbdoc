@@ -1952,7 +1952,7 @@ Trying to mount root from cd9660:/dev/iso9660/FREEBSD_INSTALL [ro]...</screen>
 	 <literal>yes</literal>； 输入 <literal>no</literal>
 	 以完成用户添加并继续安装。</para>
 
-      <para>更多有关用户添加及管理的信息， 请参见 <xref linkend="users"/>。</para>
+<!--      <para>更多有关用户添加及管理的信息， 请参见 <xref linkend="users"/>。</para> -->
     </sect2>
 
     <sect2 xml:id="bsdinstall-final-conf">
