@@ -1,7 +1,7 @@
 #
 # Build the Handbook with just the content from this chapter.
 #
-# Original revision: 1.1
+# Original revision: r43258
 # $FreeBSD$
 #
 
