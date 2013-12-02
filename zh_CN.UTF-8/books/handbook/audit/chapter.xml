@@ -3,7 +3,7 @@
      The FreeBSD Documentation Project
      The FreeBSD Simplified Chinese Project
 
-     Original Revision: r36653
+     Original Revision: r43258
      $FreeBSD$
 -->
 <!-- Need more documentation on praudit, auditreduce, etc.  Plus more info
@@ -87,7 +87,6 @@ requirements. -->
 	可能需要为 <filename>/var/audit</filename> 目录单独分配一个文件系统，
 	以防止在审计日志所用的文件系统被填满时影响其它文件系统。</para>
     </warning>
-
   </sect1>
 
   <sect1 xml:id="audit-inline-glossary">
@@ -177,7 +176,7 @@ requirements. -->
 
     <para>此后， 必须重新启动系统， 或通过下面的命令手工启动审计服务来启动审计支持：</para>
 
-    <programlisting>/etc/rc.d/auditd start</programlisting>
+    <programlisting>service auditd start</programlisting>
   </sect1>
 
   <sect1 xml:id="audit-config">
@@ -365,14 +364,12 @@ requirements. -->
 	<listitem>
 	  <para><literal>^-</literal> 不审计本类中的失败事件。</para>
 	</listitem>
-
       </itemizedlist>
 
       <para>下面例子中的筛选字符串表示筛选成功和失败的登录/注销事件，
 	而对执行事件， 则只审计成功的：</para>
 
       <programlisting>lo,+ex</programlisting>
-
     </sect2>
 
     <sect2>
@@ -440,7 +437,6 @@ filesz:0</programlisting>
 
 	<programlisting>root:lo,+ex:no
 www:fc,+ex:no</programlisting>
-
       </sect3>
     </sect2>
   </sect1>
