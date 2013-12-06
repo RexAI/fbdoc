@@ -100,103 +100,60 @@
 
 login:</screen>
 
-      <para>这些信息可能和您的系统稍微有点不同，但不会有很大差别。
-	最后两行是我们感兴趣的，
-        理解这一行:</para>
+    <para>其中， 第一行包含了一些关于本机系统的信息。
+      其中的 <literal>amd64</literal> 表示示例中的系统运行的是 64-位
+      版本的 &os;。 系统的主机名 (hostname) 是
+      <systemitem>pc3.example.org</systemitem>， 而使用的
+      <quote>系统控制台</quote> 则是
+      <filename>ttyv0</filename>。 第二行则是真正的登录提示符。</para>
 
-      <programlisting>FreeBSD/i386 (pc3.example.org) (ttyv0)</programlisting>
+    <para>&os; 是多用户系统， 因此需要设法识别不同的用户。
+      这是通过要求每个用户在使用系统中的程序之前首先完成登录操作来实现的。
+      每个用户都有与之对应， 并在系统范围内唯一的名字：
+      <quote>用户名</quote> (username)， 以及配合使用的个人
+      <quote>密码</quote> (password)。</para>
 
-      <para>这一行是您刚才启动的系统信息其中一块，
-	您所看到的是一个<quote>FreeBSD</quote>控制台，
-	运行在一个Intel或兼容的x86体系架构上面<footnote>
-	  <para>现在理解一下<literal>i386</literal>的含义。
-	    请注意尽管您的 FreeBSD 并非在 Intel 386 CPU
-	    上运行， 但也会显示为 <literal>i386</literal>。
-	    这不是指您的处理器， 而是指处理器的
-	    <quote>体系结构</quote>。</para>
-	</footnote>。 这台计算机的名字 (每台 &unix; 计算机都有自己的名字) 叫
-	<systemitem>pc3.example.org</systemitem>， 就是现在这个系统控制台&mdash;这个 <filename>ttyv0</filename>
-	终端的样子。</para>
+    <para>要登录系统控制台， 首先要输入在
+      <xref linkend="bsdinstall-addusers"/> 中介绍的系统安装阶段时配置的用户名，
+      然后按下
+      <keycap>Enter</keycap>。 接下来， 则要输入与这一用户名对应的密码，
+      然后按 <keycap>Enter</keycap>。 出于安全考虑，
+      输入密码时是 <emphasis>不回显</emphasis> 的。</para>
 
-      <para>在最后，最后一行一直保持这样:</para>
-
-      <programlisting>login:</programlisting>
-
-      <para>这里， 您将可以输入用户名
-	<quote>username</quote> 并登录到 &os; 系统中。
-	接下来的一节， 将介绍如何登录系统。</para>
-    </sect2>
-
-    <sect2 xml:id="consoles-login">
-      <title>进入FreeBSD</title>
-
-      <para>FreeBSD是一个多用户多任务的系统，
-	换句话来说就是一个系统中可以容纳许多不同的用户，
-	而这些用户都可以同时在这台机器中运行大量的程序。</para>
-
-      <para>每一个多用户系统都必须在某方面去区分 <quote>user</quote>，
-	在 FreeBSD 里 (以及 类-&unix; 操作系统)， 完成这方面工作是有必要的，
-	因而， 每位使用者在运行程序之前都必须首先 <quote>登录</quote>，
-	而每位用户都有与之对应的用户名 (<quote>username</quote>) 和密码
-	(<quote>password</quote>)。 FreeBSD
-	会在用户进入之前作出询问这两项信息。</para>
-
-      <indexterm><primary>启动脚本</primary></indexterm>
-      <para>当 FreeBSD 引导并运行完启动脚本之后，
-	<footnote>
-	  <para>启动脚本这些程序在FreeBSD在启动过程中运行。
-	   它们的主要功能为其他每方面的运行作好准备，
-	   和运行您的配置所用到的相关环境。</para>
-	</footnote>， 它会给出一个提示， 并要求输入有效的用户名：
-	</para>
-
-      <screen>login:</screen>
-
-      <para>举个例子更容易理解，我们假设您的用户名叫 <systemitem class="username">john</systemitem>。
-	在提示符下输入 <literal>john</literal> 并按 <keycap>Enter</keycap>，
-	此时您应该看到这个提示 <quote>password</quote>：
-     </para>
-
-      <screen>login: <userinput>john</userinput>
-Password:</screen>
-
-      <para>现在输入 <systemitem class="username">john</systemitem>的密码并按下
-	<keycap>Enter</keycap>。 输入密码时是 <emphasis>不回显的!</emphasis>
-	不必为此担心， 这样做是出于安全考虑。</para>
-
-      <para>假如您输入的密码是正确的， 这时你应该已进入 FreeBSD，
-	并可以开始尝试可用的命令了。</para>
-
-      <para>您应该看见 <acronym>MOTD</acronym> 或者出现一个命令提示符
-	(<literal>#</literal>、<literal>$</literal> 或 <literal>%</literal> 字符).
-	这表明您已成功登录进入FreeBSD。</para>
-    </sect2>
+    <para>在输入了正确的口令之后， 系统会显示今日消息
+      (message of the day, <acronym>MOTD</acronym>)，
+      之后是命令提示符。 随您选择的命令行界面不同， 这个提示符可能会是
+      <literal>#</literal>、 <literal>$</literal>， 或者
+      <literal>%</literal> 字符。 提示符表示用户已经登录到了 &os;
+      系统中， 并且可以开始尝试使用可用的命令了。</para>
 
     <sect2 xml:id="consoles-virtual">
-      <title>多个控制台</title>
+      <title>虚拟控制台</title>
 
-      <para>在一个控制台运行 &unix; 命令虽说很好， 但 FreeBSD 具有一次运行
-	多个程序的能力。 仅使用一个控制台只会浪费 FreeBSD 同时运行多任务的能力。
-	而 <quote>虚拟控制台</quote> 在这方面发挥强大的功能。</para>
+      <para>虽然用户可以在系统控制台上与系统互动，
+	但使用键盘操作 &os; 命令行的用户通常会登录到某个虚拟控制台。
+	这是因为系统控制台在默认配置中还用于显示一些系统级的消息，
+	这些消息可能会覆盖屏幕上您正在使用的命令输出，
+	或是正在编辑的文件， 从而给集中精力进行手边的工作带来一些困扰。</para>
 
-      <para>FreeBSD 能配置出满足您不同需求的虚拟控制台，
-	在键盘上您用一组键就能从各个虚拟控制台之间切换。
-	各个控制台有自己的传输通道，
-	当您在各个控制台切换时 FreeBSD
-	会切换到合适的键盘传输通道和显示器传输通道。</para>
+      <para>&os; 已经预设使用多个虚拟控制台来接受用户输入的命令。
+	每个虚拟控制台有自己的登录提示符和命令行界面，
+	并可以很容易地在这些虚拟控制台之间进行切换。
+	这种设计类似于在图形界面中同时使用多个命令行窗口来进行操作。</para>
 
-      <para>FreeBSD 各个控制台之间可利用特殊组键切换并保留原有控制台
-	<footnote>
-	  <para>关于 FreeBSD
-	    的控制台和键盘设备这些详细资料或使用技巧可在手册里找到:
-	    &man.syscons.4;、&man.atkbd.4;、&man.vidcontrol.1;
-	    和 &man.kbdcontrol.1;。 我们不在这里详细介绍，
-	    但是爱好者总会在手册里找到详细的答案。</para>
-	</footnote>，您可这样做:
-	<keycombo><keycap>Alt</keycap><keycap>F1</keycap></keycombo>，
-	<keycombo><keycap>Alt</keycap><keycap>F2</keycap></keycombo>， 一直到
+      <para>组合键
+	<keycombo><keycap>Alt</keycap><keycap>F1</keycap></keycombo> 一直到
 	<keycombo><keycap>Alt</keycap><keycap>F8</keycap></keycombo>
-	在FreeBSD里切换到其中一个虚拟控制台。</para>
+	由 &os; 系统保留， 用于在虚拟控制台之间切换。 您可以用
+	<keycombo><keycap>Alt</keycap><keycap>F1</keycap></keycombo>
+	切换到系统控制台
+	(<filename>ttyv0</filename>)、
+	<keycombo><keycap>Alt</keycap><keycap>F2</keycap></keycombo>
+	切换到第一个虚拟控制台
+	(<filename>ttyv1</filename>)、
+	<keycombo><keycap>Alt</keycap><keycap>F3</keycap></keycombo>
+	切换到第二个系统控制台
+	(<filename>ttyv2</filename>)， 等等。</para>
 
       <para>同样地, 您正在从其中某个控制台切换到另一个控制台的时候,
 	FreeBSD 会保存正在使用和恢复将要使用屏幕传输通道。
