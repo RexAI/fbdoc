@@ -3,94 +3,100 @@
      The FreeBSD Documentation Project
      The FreeBSD Simplified Chinese Project
 
-     Original Revision: r38448
+     Original Revision: r43258
      $FreeBSD$
 -->
-<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="basics">
-  <info><title>UNIX 基础</title>
-    <authorgroup>
-      <author><personname><firstname>Chris</firstname><surname>Shumway</surname></personname><contrib>Rewritten by </contrib></author>
-    </authorgroup>
-    
-  </info>
+<chapter xmlns="http://docbook.org/ns/docbook"
+  xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+  xml:id="basics">
 
-  
+  <!--
+  <chapterinfo>
+    <authorgroup>
+      <author>
+	<firstname>Chris</firstname>
+	<surname>Shumway</surname>
+	<contrib>Rewritten by in Mar 2000</contrib>
+      </author>
+    </authorgroup>
+  </chapterinfo>
+  -->
+
+  <title>UNIX 基础</title>
 
   <sect1 xml:id="basics-synopsis">
     <title>概述</title>
 
-   <para>下列章节的命令和功能适用于FreeBSD操作系统。
-     同时这里许多内容和一些 类-&unix; 操作系统相关。
-     假如您已经熟悉这些内容可跳过不阅读。
-     假如您是FreeBSD新手， 那您应该认真详细地从头到尾读一遍这些章节。</para>
+    <para>这一章将介绍 &os; 的基本命令和功能。
+      其中的大部分内容也适用于其它类 &unix; 操作系统。
+      如果您是 &os; 新手， 建议您从头至尾地认真阅读这一章。</para>
 
-    <para>读取这些内容，您将了解：</para>
+    <para>读完这章， 您将了解：</para>
 
     <itemizedlist>
       <listitem>
-        <para>怎样在FreeBSD使用 <quote>虚拟控制台</quote>。</para>
+	<para>如何使用和配置虚拟控制台。</para>
       </listitem>
+
       <listitem>
-	<para>在 &unix; 中文件权限如何运作，
-	  以及理解 &os; 中的文件标志。</para>
+	<para>如何在 &os; 中创建和管理用户及用户组。</para>
       </listitem>
+
       <listitem>
-	<para>&os; 默认文件系统的架构。</para>
+	<para>&unix; 文件权限以及 &os; 的文件标志如何工作。</para>
       </listitem>
+
       <listitem>
-	<para>&os;磁盘架构。</para>
+	<para>默认情况下的 &os; 文件系统布局。</para>
       </listitem>
+
       <listitem>
-	<para>怎样挂接或卸下文件系统。</para>
+	<para>&os; 在磁盘上的布局格式。</para>
       </listitem>
+
       <listitem>
-	<para>什么是进程、守护进程、信号。</para>
+	<para>如何挂载及卸下文件系统。</para>
       </listitem>
+
       <listitem>
-	<para>什么是shell，应当怎样去改变登录进入的默认环境。
-	</para>
+	<para>进程、守护进程以及信号是什么。</para>
       </listitem>
+
+      <listitem>
+	<para>什么是命令行界面 (shell)， 以及怎样修改登录进入的默认环境。</para>
+      </listitem>
+
       <listitem>
 	<para>怎样使用基本的文本编辑器。</para>
       </listitem>
+
       <listitem>
-	<para>什么是设备，什么是设备节点。</para>
+	<para>设备和设备节点都是什么。</para>
       </listitem>
+
       <listitem>
-	<para>&os; 下，使用的是什么可执行文件格式。</para>
-      </listitem>
-      <listitem>
-	<para>怎样使用 man 手册并取得更多资讯。</para>
+	<para>如何通过阅读联机手册 (manual pages) 来了解更多资讯。</para>
       </listitem>
     </itemizedlist>
-
   </sect1>
 
   <sect1 xml:id="consoles">
-    <title>虚拟控制台和终端</title>
-    <indexterm><primary>虚拟控制台</primary></indexterm>
-    <indexterm><primary>终端</primary></indexterm>
+    <title>虚拟控制台及终端</title>
 
-    <para>可以用多种不同的方式使用 FreeBSD， 在文本终端输入命令是其中之一。
-      通过使用这种方式， 您可以容易地使用 FreeBSD 来获得 &unix;
-      操作系统的灵活而强大的功能。 这一节将介绍 <quote>终端</quote> 和
-      <quote>控制台</quote>， 以及如何在 FreeBSD 中使用它们。</para>
+    <indexterm>
+      <primary>虚拟控制台</primary>
+    </indexterm>
+    <indexterm>
+      <primary>终端</primary>
+    </indexterm>
+    <indexterm>
+      <primary>控制台</primary>
+    </indexterm>
 
-    <sect2 xml:id="consoles-intro">
-      <title>控制台</title>
-      <indexterm><primary>控制台</primary></indexterm>
+    <para>如果没有 &os; 配置为在启动时自动开启图形界面环境，
+      系统在完成引导之后就会给出类似下面这样的命令行登录提示：</para>
 
-      <para>假如您没有设置 FreeBSD 在启动期间开启图形登录界面，
-	那么系统将在引导和启动脚本正确运行完成后，给您一个登录的提示。
-	您会看到类似这样的界面:</para>
-
-      <screen>Additional ABI support:.
-Local package initialization:.
-Additional TCP options:.
-
-Fri Sep 20 13:01:06 EEST 2002
-
-FreeBSD/i386 (pc3.example.org) (ttyv0)
+    <screen>FreeBSD/amd64 (pc3.example.org) (ttyv0)
 
 login:</screen>
 
