@@ -8,7 +8,7 @@ that might make this chapter too large.
 -->
 <!--
      The FreeBSD Documentation Project
-     Original Revision: 1.8
+     Original Revision: r43258
      $FreeBSD$
 -->
 <!-- XXXTR: Should probably put links and resources here.  I'm
@@ -43,7 +43,7 @@ that might make this chapter too large.
     用户也可以通过使用 &dtrace; D 语言创建他们自己定制的分析工具，
     以满足特定的需求。</para>
 
-    <para>在阅读了这一章节之后，你将了解：</para>
+    <para>在阅读了这一章节之后， 您将了解：</para>
 
     <itemizedlist>
       <listitem>
@@ -162,13 +162,15 @@ options         DDB_CTF</programlisting>
       </note>
 
     <para>所有的源代码都必须重新使用 <acronym>CTF</acronym>
-      选项编译安装。重新编译 &os; 源代码可以通过以下的命令完成：</para>
+      选项编译安装。</para>
 
-    <!-- XXXTR: WITH_CTF has been reported to leave a user with a
-         broken system when used with buildworld.  Until this is
-         fixed, comment out those parts.  When uncommenting, kill
-         the extra screen.
-    -->
+    <note>
+      <para>从 10.0 起， 由于缺省的
+	<filename>GENERIC</filename> 内核配置文件中已经包含了
+	<literal>WITH_CTF</literal>， 因此已经不再需要手工进行下面这些操作了。</para>
+    </note>
+
+    <para>用下面的命令来重新编译 &os; 源代码：</para>
 
     <!-- XXXTR: WITH_CTF has been reported to leave a user with a
          broken system when used with buildworld.  Until this is
@@ -179,6 +181,7 @@ options         DDB_CTF</programlisting>
     <screen>&prompt.root; <userinput>cd /usr/src</userinput>
 <!-- &prompt.root; <userinput>make WITH_CTF=1 buildworld</userinput> -->
 &prompt.root; <userinput>make WITH_CTF=1 kernel</userinput></screen>
+
 <!-- &prompt.root; <userinput>make WITH_CTF=1 installworld</userinput>
 &prompt.root; <userinput>mergemaster -Ui</userinput></screen> -->
 
@@ -195,6 +198,13 @@ options         DDB_CTF</programlisting>
       当前版本可以通过下面的链接找到
       <uri xlink:href="http://www.opensolaris.org/os/community/dtrace/dtracetoolkit/">http://www.opensolaris.org/os/community/dtrace/dtracetoolkit/</uri>。
       这个工具包含有一个安装机制，尽管如此，并不需要安装便可使用它们。</para>
+
+    <para>最后是获取最新的 &dtrace; 工具包。
+      如果您运行的是 FreeBSD 10 或更高版本， 则可在
+      <filename>/usr/share/dtrace</filename> 找到 &dtrace; 工具包。
+      如果不是， 则可以通过
+      <package>sysutils/DTraceToolkit</package>
+      port 来安装 &dtrace; 工具包。</para>
   </sect1>
 
   <sect1 xml:id="dtrace-using">
@@ -248,7 +258,8 @@ options         DDB_CTF</programlisting>
       被设计成验明哪个函数占用了内核时间。
       正常运行的话，它将生成类似以下的输出：</para>
 
-    <screen>&prompt.root; <userinput>./hotkernel</userinput>
+    <screen>&prompt.root; <userinput>cd /usr/share/dtrace/toolkit</userinput>
+&prompt.root; <userinput>./hotkernel</userinput>
 Sampling... Hit Ctrl-C to end.</screen>
 
     <para>系统管理员必须使用
@@ -358,7 +369,7 @@ Elapsed Times for processes csh,
       在 &sun; 的文档中称这类语言为 <quote>D 语言</quote>，
       它与 C++ 非常类似。对此语言更深入的讨论则超出了这篇文章的范围。
       更多相关的讨论可以在
-      <uri xlink:href="http://wikis.sun.com/display/DTrace/Documentation">http://wikis.sun.com/display/DTrace/Documentation</uri>
+      <uri xlink:href="http://wikis.oracle.com/display/DTrace/Documentation">http://wikis.oracle.com/display/DTrace/Documentation</uri>
       找到。</para>
   </sect1>
 </chapter>
