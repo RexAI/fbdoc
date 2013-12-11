@@ -28,13 +28,9 @@
   <sect1 xml:id="x11-synopsis">
     <title>概述</title>
 
-    <para>An installation of &os; using
-      <application>bsdinstall</application> does not automatically
-      install a graphical user interface.  This chapter describes
-      how to install and configure <application>&xorg;</application>,
-      which provides the open source X Window System used to provide
-      a graphical environment.  It then describes how to find and
-      install a desktop environment or window manager.</para>
+    <para>使用 <application>bsdinstall</application> 安装 &os; 不会自动安装上图形用户界面。
+        本章先介绍如何安装和配置  <application>&xorg;</application> ，它是一个 X Window 图形用户界面
+        的开源实现。之后介绍如何查找和安装一个桌面环境或窗口管理器。</para>
 
     <note>
       <para>Users who prefer an installation method that automatically
@@ -44,9 +40,7 @@
 	website.</para>
     </note>
 
-    <para>For more information on the video hardware that
-      <application>&xorg;</application> supports, refer to the
-      <link xlink:href="http://www.x.org/">x.org</link> website.</para>
+    <para>欲了解 <application>&xorg;</application> 所支持的显示卡等硬件， 请访问 <link xlink:href="http://www.x.org/">x.org</link>  网站。</para>
 
     <para>读完这章， 您将了解：</para>
 
@@ -125,36 +119,29 @@
         各个窗口标题栏的长相，以及是否该有关闭按钮等等。
         实际上，X 把这部分交给所谓 <quote>窗口管理器</quote> 的应用程序来管理。
         有很多这样的 <link xlink:href="http://xwinman.org/">窗口管理器</link> 程序可用。
-	    Each window manager
-	    provides a different look and feel: some support virtual
-	    desktops, some allow customized keystrokes to manage the
-	    desktop, some have a <quote>Start</quote> button, and
-	    some are themeable, allowing a complete change of the
-	    desktop's look-and-feel.  Window managers are available
-	    in the <filename>x11-wm</filename> category of the
-	    Ports Collection.</para>
+        每种窗口管理器，都提供不同的界面和外观:有一些支持 “虚拟桌面”、有一些允许自定义按键
+        来管理您的桌面、一些有 <quote>开始</quote> 按钮、一些支持自定义主题，通过安装新的主题，
+        可以完全改变外观。
+        这些以及很多其他的窗口管理器，都可以在 Ports Collection 的 <filename>x11-wm</filename> 分类
+        目录里找到。</para>
 
-	  <para>Each window manager uses a different configuration
-	    mechanism.  Some expect configuration file written by
-	    hand while others provide graphical tools for most
-	    configuration tasks.</para>
+    <para>每种窗口管理器也有不同的配置机制；有些需要手工来写配置文件，
+        而其它大部分都是可以通过 GUI 工具来完成的配置任务。</para>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
-	<term>desktop environment</term>
+	<term>桌面环境</term>
 
 	<listitem>
-	  <para><application>KDE</application> and
-	    <application>GNOME</application> are considered to be
-	    desktop environments as they include an entire suite of
-	    applications for performing common desktop tasks.  These
-	    may include office suites, web browsers, and games.</para>
+	  <para><application>KDE</application> 和
+          <application>GNOME</application> 都被认为是一个完整的桌面环境，因为它们
+          都包含了日常工作所需的整套软件。比如有 Offcie 套件、网页浏览器和游戏。</para>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
-	<term>focus policy</term>
+	<term>焦点策略</term>
 
 	<listitem>
 	  <para>The window manager is responsible for the mouse focus
