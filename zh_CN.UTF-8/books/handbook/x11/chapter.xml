@@ -497,16 +497,11 @@ dbus_enable="YES"</programlisting>
       <screen>&prompt.user; <userinput>xset fp+ /usr/local/lib/X11/fonts/TrueType</userinput>
 &prompt.user; <userinput>xset fp rehash</userinput></screen>
 
-      <para>or add a <literal>FontPath</literal> line to the
-	<filename>xorg.conf</filename> file.</para>
+      <para>或者把 <literal>FontPath</literal> 这行加到 <filename>xorg.conf</filename>  文件中。</para>
 
-      <para>That's it.  Now <application>Gimp</application>,
-	<application>Apache OpenOffice</application>, and all of the
-	other X applications should now recognize the installed
-	&truetype; fonts.  Extremely small fonts (as with text in a
-	high resolution display on a web page) and extremely large
-	fonts (within <application>&staroffice;</application>) will
-	look much better now.</para>
+      <para>就是这样。现在  <application>Gimp</application>、<application>Apache OpenOffice</application> 和
+          所有其他的 X 应用程序应该可以认出安装的 &truetype; 字体。一些很小的字体（如在网页中高分辨率显示的文本）和
+          一些很大的字体（在 <application>&staroffice;</application>下）现在看起来已经很美观了。</para>
     </sect2>
 
     <sect2 xml:id="antialias">
@@ -521,7 +516,7 @@ dbus_enable="YES"</programlisting>
 	</authorgroup>
       </sect2info>
       -->
-      <title>Anti-Aliased Fonts</title>
+      <title>Anti-Aliased 字体</title>
 
       <indexterm>
 	<primary>anti-aliased fonts</primary>
@@ -531,59 +526,38 @@ dbus_enable="YES"</programlisting>
 	<secondary>anti-aliased</secondary>
       </indexterm>
 
-      <para>All fonts in <application>&xorg;</application> that are
-	found in <filename>/usr/local/lib/X11/fonts/</filename> and
-	<filename>~/.fonts/</filename> are automatically made
-	available for anti-aliasing to Xft-aware applications.  Most
-	recent applications are Xft-aware, including
-	<application>KDE</application>,
-	<application>GNOME</application>, and
-	<application>Firefox</application>.</para>
+      <para>对于所有支持 Xft 的应用程序，所有放在<filename>/usr/local/lib/X11/fonts/</filename> 和
+          <filename>~/.fonts/</filename> 目录中的 <application>&xorg;</application> 字体都会自动启用
+          反锯齿支持。绝大多数较新的程序都提供了 Xft 支持，包括 <application>KDE</application> 、
+          <application>GNOME</application> 和<application>Firefox</application> 。GNOME 以及 Firefox。</para>
 
-      <para>In order to control which fonts are anti-aliased, or to
-	configure anti-aliasing properties, create (or edit, if it
-	already exists) the file
-	<filename>/usr/local/etc/fonts/local.conf</filename>.  Several
-	advanced features of the Xft font system can be tuned using
-	this file; this section describes only some simple
-	possibilities.  For more details, please see
-	&man.fonts-conf.5;.</para>
+      <para>要控制哪些字体需要开启反锯齿，或者需要配置反锯齿功能，需要创建
+          （或编辑，如果文件已存）<filename>/usr/local/etc/fonts/local.conf</filename> 这个文件。
+          Xft 字体系统中的几个高级特性都可以使用这个文件来调整；本章只介绍了几种最简单的用法。
+          要了解更多的细节，请查阅 &man.fonts-conf.5; 。</para>
 
       <indexterm><primary>XML</primary></indexterm>
 
-      <para>This file must be in XML format.  Pay careful attention to
-	case, and make sure all tags are properly closed.  The file
-	begins with the usual XML header followed by a DOCTYPE
-	definition, and then the <literal>&lt;fontconfig&gt;</literal>
-	tag:</para>
+      <para>这个文件必须是XML格式的。注意确保所有的标签都完全闭合。这个文件头部是普通的 XML 头，
+          接着是 DOCTYPE 定义， <literal>&lt;fontconfig&gt;</literal> 标签：</para>
 
       <programlisting>
       &lt;?xml version="1.0"?&gt;
       &lt;!DOCTYPE fontconfig SYSTEM "fonts.dtd"&gt;
       &lt;fontconfig&gt;</programlisting>
 
-      <para>As previously stated, all fonts in
-	<filename>/usr/local/lib/X11/fonts/</filename> as well as
-	<filename>~/.fonts/</filename> are already made available to
-	Xft-aware applications.  If you wish to add another directory
-	outside of these two directory trees, add a line similar to
-	the following to
-	<filename>/usr/local/etc/fonts/local.conf</filename>:</para>
+      <para>像前面所做的那样，所有支持 Xft 的应用程序都已经可以使用 <filename>/usr/local/lib/X11/fonts/</filename> 和
+          <filename>~/.fonts/</filename> 目录下的字体。如果您想添加这两个目录以外的其他字体目录，
+          只需要简单的添加下面这行到 <filename>/usr/local/etc/fonts/local.conf</filename> 文件中：</para>
 
       <programlisting>&lt;dir&gt;/path/to/my/fonts&lt;/dir&gt;</programlisting>
 
-      <para>After adding new fonts, and especially new font
-	directories, you should run the following command to rebuild
-	the font caches:</para>
+      <para>添加了新的字体,尤其是添加了新的字体目录后，您应该运行以下命令重建字体缓存：</para>
 
       <screen>&prompt.root; <userinput>fc-cache -f</userinput></screen>
 
-      <para>Anti-aliasing makes borders slightly fuzzy, which makes
-	very small text more readable and removes
-	<quote>staircases</quote> from large text, but can cause
-	eyestrain if applied to normal text.  To exclude font sizes
-	smaller than 14 point from anti-aliasing, include these
-	lines:</para>
+      <para>反锯齿会让字体边缘有些模糊，这样增加了非常小的文本的可读性，并从大文本字体中删除 <quote>锯齿</quote> 。
+          但如果使用在普通的文本，则可能引起视力疲劳。要禁止 14磅 以下字体的反锯齿，需要增加以下配置：</para>
 
       <programlisting>        &lt;match target="font"&gt;
 	    &lt;test name="size" compare="less"&gt;
@@ -607,11 +581,8 @@ dbus_enable="YES"</programlisting>
 	<secondary>spacing</secondary>
       </indexterm>
 
-      <para>Spacing for some monospaced fonts may also be
-	inappropriate with anti-aliasing.  This seems to be an issue
-	with <application>KDE</application>, in particular.  One
-	possible fix for this is to force the spacing for such fonts
-	to be 100. Add the following lines:</para>
+      <para>使用反锯齿来分割一些等宽字体也是不合适的。 似乎 <application>KDE</application> 就有这问题。
+          要修复这个问题需要确保每个字体之间的间距保持在100。 添加一下内容：</para>
 
       <programlisting>       &lt;match target="pattern" name="family"&gt;
 	   &lt;test qual="any" name="family"&gt;
@@ -642,11 +613,9 @@ dbus_enable="YES"</programlisting>
 	     &lt;/edit&gt;
 	 &lt;/match&gt;      </programlisting>
 
-      <para>Certain fonts, such as Helvetica, may have a problem when
-	anti-aliased.  Usually this manifests itself as a font that
-	seems cut in half vertically.  At worst, it may cause
-	applications to crash.  To avoid this, consider adding the
-	following to <filename>local.conf</filename>:</para>
+ <para>某些字体，比如 Helvetica，当开启反锯齿时可能存在些问题。通常的表现为字体本身似乎被垂直的切成两半。
+     糟糕的时候，还可能导致应用程序崩溃。为了避免这样的现象，
+     考虑添加以下几行到 <filename>local.conf</filename> 文件中：</para>
 
       <programlisting>         &lt;match target="pattern" name="family"&gt;
 	     &lt;test qual="any" name="family"&gt;
@@ -657,16 +626,11 @@ dbus_enable="YES"</programlisting>
 	     &lt;/edit&gt;
 	 &lt;/match&gt;        </programlisting>
 
-      <para>Once you have finished editing
-	<filename>local.conf</filename> make sure you end the file
-	with the <literal>&lt;/fontconfig&gt;</literal> tag.  Not
-	doing this will cause your changes to be ignored.</para>
+      <para>一旦您完成对 <filename>local.conf</filename> 文件的编辑，确保您使用了
+          <literal>&lt;/fontconfig&gt;</literal> 标签来闭合文件。不使用它将导致您的更改被忽略。</para>
 
-      <para>Finally, users can add their own settings via their
-	personal <filename>.fonts.conf</filename> files.  To do this,
-	each user should simply create a
-	<filename>~/.fonts.conf</filename>.  This file must also be in
-	XML format.</para>
+      <para>最后，用户可以通过他们自己的 <filename>~/.fonts.conf</filename> 配置文件来添加自己的设置。
+          要做到这一点，用户只需要简单的创建 <filename>~/.fonts.conf</filename>  文件，这个文件必须是 XML 格式的。</para>
 
       <indexterm><primary>LCD screen</primary></indexterm>
       <indexterm><primary>Fonts</primary>
