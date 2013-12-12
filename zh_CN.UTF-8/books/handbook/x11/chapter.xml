@@ -516,7 +516,7 @@ dbus_enable="YES"</programlisting>
 	</authorgroup>
       </sect2info>
       -->
-      <title>Anti-Aliased 字体</title>
+      <title>字体反锯齿</title>
 
       <indexterm>
 	<primary>anti-aliased fonts</primary>
@@ -669,39 +669,26 @@ dbus_enable="YES"</programlisting>
       </authorgroup>
     </sect1info>
     -->
-    <title>The X Display Manager</title>
+    <title>X 显示管理器</title>
 
     <sect2>
-      <title>Overview</title>
+      <title>概要</title>
 
       <indexterm><primary>X Display Manager</primary></indexterm>
-      <para>The X Display Manager (<application>XDM</application>)
-	is an optional part of the X Window System that is used for
-	login session management.  This is useful for several types
-	of situations, including minimal <quote>X Terminals</quote>,
-	desktops, and large network display servers.  Since the X
-	Window System is network and protocol independent, there are
-	a wide variety of possible configurations for running X
-	clients and servers on different machines connected by a
-	network.  <application>XDM</application> provides a graphical
-	interface for choosing which display server to connect to,
-	and entering authorization information such as a login and
-	password combination.</para>
+      <para>X 显示管理器（<application>XDM</application>）是 X Window 系统用于管理登录会话的一个可选组件。
+          可用于 小型<quote>X 终端</quote>、桌面和大型网络显示服务器。既然 X Window 系统不受网络和协议的限制，
+          那对于通过网络连接起来的运行 X 客户端和服务器端的不同机器， 就会有很多的可配置项。
+          <application>XDM</application> 提供了一个图形用户界面，让用户选择要连接到哪个显示服务器，
+          只需输入如登录用户名和密码这样的验证信息。</para>
 
-      <para>Think of <application>XDM</application> as providing the
-	same functionality to the user as the &man.getty.8; utility
-	(see <xref linkend="term-config"/> for details).  That is, it
-	performs system logins to the display being connected to and
-	then runs a session manager on behalf of the user (usually an
-	X window manager).  <application>XDM</application> then waits
-	for this program to exit, signaling that the user is done and
-	should be logged out of the display.  At this point,
-	<application>XDM</application> can display the login and
-	display chooser screens for the next user to login.</para>
+      <para>您也可以把 <application>XDM</application> 想象成与 &man.getty.8; （详见：<xref linkend="term-config"/>）一样的工具。
+          为用户提供了同样功能。它可以完成系统的登录任务， 然后为用户运行一个会话管理器 (通常是一个 X 视窗管理器)。
+          接下来 <application>XDM</application> 就等待这个程序退出，等用户发出登录结束信号，退出到登录界面。
+          这时，<application>XDM</application> 就开始为下一个用户的登录提供图像选择界面了。</para>
     </sect2>
 
     <sect2>
-      <title>Using XDM</title>
+      <title>使用 XDM</title>
 
       <para>To start using <application>XDM</application>, install
 	the <package>x11/xdm</package> port (it is
