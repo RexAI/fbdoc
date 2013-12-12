@@ -444,33 +444,26 @@ dbus_enable="YES"</programlisting>
       <screen>&prompt.root; <userinput>cd /usr/ports/x11-fonts/urwfonts</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
 
-      <para>And likewise with the freefont or other collections.  To
-	have the X server detect these fonts, add an appropriate line
-	to the X server configuration file
-	(<filename>/etc/X11/xorg.conf</filename>), which reads:</para>
+      <para>freefont 或其他的字库和上面所说的大致相同。 为了让 X 服务器能够检测到这些字体，
+          需要在 X 服务器的配置文件 （<filename>/etc/X11/xorg.conf</filename>) 中增加以下配置：</para>
 
       <programlisting>FontPath "/usr/local/lib/X11/fonts/URW/"</programlisting>
 
-      <para>Alternatively, at the command line in the X session
-	run:</para>
+      <para>或者，也可以在 X 会话（X session）中运行以下命令：</para>
 
       <screen>&prompt.user; <userinput>xset fp+ /usr/local/lib/X11/fonts/URW</userinput>
 &prompt.user; <userinput>xset fp rehash</userinput></screen>
 
-      <para>This will work but will be lost when the X session is
-	closed, unless it is added to the startup file
-	(<filename>~/.xinitrc</filename> for a normal
-	<command>startx</command> session, or
-	<filename>~/.xsession</filename> when logging in through a
-	graphical login manager like <application>XDM</application>).
-	A third way is to use the new
-	<filename>/usr/local/etc/fonts/local.conf</filename> file: see
-	the section on
-	<link linkend="antialias">anti-aliasing</link>.</para>
+      <para>这样当前 X 会话中立即生效，但是 X 会话结束后自动失效。
+          除非它被添加到针启动器配置文件中去，（使用<command>startx</command> 会话方式启动的写到
+          <filename>~/.xinitrc</filename> 中，
+          或者当您使用类似 <application>XDM</application> 的图形登录管理器的则写到 <filename>~/.xsession</filename> 中。
+          第三种方法是创建新的 <filename>/usr/local/etc/fonts/local.conf</filename> 文件，
+          详见：<link linkend="antialias">anti-aliasing</link>章节。</para>
     </sect2>
 
     <sect2 xml:id="truetype">
-      <title>&truetype; Fonts</title>
+      <title>&truetype; 字体</title>
 
       <indexterm>
 	<primary>TrueType Fonts</primary>
@@ -480,36 +473,26 @@ dbus_enable="YES"</programlisting>
 	<secondary>TrueType</secondary>
       </indexterm>
 
-      <para><application>&xorg;</application> has built in support for
-	rendering &truetype; fonts.  There are two different modules
-	that can enable this functionality.  The freetype module is
-	used in this example because it is more consistent with the
-	other font rendering back-ends.  To enable the freetype module
-	just add the following line to the <literal>"Module"</literal>
-	section of the <filename>/etc/X11/xorg.conf</filename>
-	file.</para>
+      <para><application>&xorg;</application> 内建了对  &truetype; 字体的支持。
+          有两种不同的模块能够启用这个功能。在这个例子中使用 freetype 这个模块，
+          因为它与其他的字体描绘后端有更好兼容性。
+          要启用 freetype 模块，只需要将下面这行添加到 <filename>/etc/X11/xorg.conf</filename> 文件
+          的 <literal>“Module”</literal> 部分。</para>
 
       <programlisting>Load  "freetype"</programlisting>
 
-      <para>Now make a directory for the &truetype; fonts (for
-	example,
-	<filename>/usr/local/lib/X11/fonts/TrueType</filename>) and
-	copy all of the &truetype; fonts into this directory.  Keep in
-	mind that &truetype; fonts cannot be directly taken from a
-	&macintosh;; they must be in &unix;/&ms-dos;/&windows; format
-	for use by <application>&xorg;</application>.  Once the
-	files have been copied into this directory, use
-	<application>ttmkfdir</application> to create a
-	<filename>fonts.dir</filename> file, so that the X font
-	renderer knows that these new files have been installed.
-	<command>ttmkfdir</command> is available from the FreeBSD
-	Ports Collection as <package>x11-fonts/ttmkfdir</package>.</para>
+      <para>现在，为 &truetype; 字体创建一个目录 (比如，/usr/local/lib/X11/fonts/TrueType) 然后把
+          所有的  &truetype; 字体复制到这个目录。记住您不能直接从 &macintosh; 计算机中提取 &truetype; 字体；
+          能被 X11 使用的必须是 &unix;/&ms-dos;/&windows; 格式的。一旦您已经将这些文件复制到了这个目录，
+          就可以用 <command>ttmkfdir</command> 来创建 <filename>fonts.dir</filename> 文件，
+          以便让X字体引擎知道您已经安装了这些新字体。 <application>ttmkfdir</application> 可以在 FreeBSD Ports Collection
+          中的 <package>x11-fonts/ttmkfdir</package> 中找到。</para>
 
       <screen>&prompt.root; <userinput>cd /usr/local/lib/X11/fonts/TrueType</userinput>
 &prompt.root; <userinput>ttmkfdir -o fonts.dir</userinput></screen>
 
-      <para>Now add the &truetype; directory to the font path.  This
-	is just the same as described above for <link linkend="type1">Type1</link> fonts, that is, use</para>
+      <para>现在可以把 &truetype; 字体目录添加到字体路径中。这和上面 <link linkend="type1">Type1</link> 字体，
+          的步骤是一样的，使用以下命令：</para>
 
       <screen>&prompt.user; <userinput>xset fp+ /usr/local/lib/X11/fonts/TrueType</userinput>
 &prompt.user; <userinput>xset fp rehash</userinput></screen>
@@ -689,12 +672,9 @@ dbus_enable="YES"</programlisting>
       <indexterm><primary>Fonts</primary>
 	<secondary>LCD screen</secondary></indexterm>
 
-      <para>One last point: with an LCD screen, sub-pixel sampling may
-	be desired.  This basically treats the (horizontally
-	separated) red, green and blue components separately to
-	improve the horizontal resolution; the results can be
-	dramatic.  To enable this, add the line somewhere in the
-	<filename>local.conf</filename> file:</para>
+<para>最后，对于LCD屏幕，可能希望使用子像素的取样。简单而言，就是通过
+    分别控制 (水平方向分开的) 红、绿、蓝 像素，来改善水平分辨率；
+    这样做的效果一般会非常明显。要启用它，只需在  <filename>local.conf</filename>  文件的某个地方加入：</para>
 
       <programlisting>
 	  &lt;match target="font"&gt;
@@ -707,11 +687,8 @@ dbus_enable="YES"</programlisting>
 	 &lt;/match&gt;</programlisting>
 
       <note>
-	<para>Depending on the sort of display,
-	  <literal>rgb</literal> may need to be changed to
-	  <literal>bgr</literal>, <literal>vrgb</literal> or
-	  <literal>vbgr</literal>: experiment and see which works
-	  best.</para>
+          <para>根据您显示器的种类不同，可能需要把 <literal>rgb</literal>  改为  <literal>bgr</literal>、
+              <literal>vrgb</literal> 或 <literal>vbgr</literal>。试验一下看看那个更好。</para>
       </note>
     </sect2>
   </sect1>
