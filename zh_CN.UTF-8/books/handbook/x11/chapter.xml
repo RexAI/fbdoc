@@ -792,18 +792,14 @@ dbus_enable="YES"</programlisting>
       <sect3>
 	<title>Xservers</title>
 
-	<para>This is a list of the remote displays the chooser should
-	  provide as choices.</para>
+	<para>这是一个可供选择的远程显示服务器列表。</para>
       </sect3>
 
       <sect3>
 	<title>Xsession</title>
 
-	<para>This is the default session script for
-	  <application>XDM</application> to run after a user has
-	  logged in.  Normally each user will have a customized
-	  session script in <filename>~/.xsession</filename> that
-	  overrides this script.</para>
+	<para>这是一个用户登录后针对 <application>XDM</application> 的默认会话脚本。
+        通常，用户可自定义的会话脚本是 <filename>~/.xsession</filename> 文件。</para>
       </sect3>
 
       <sect3>
@@ -821,9 +817,7 @@ dbus_enable="YES"</programlisting>
       <sect3>
 	<title>xdm-config</title>
 
-	<para>This contains settings in the form of app-defaults
-	  that are applicable to every display that this installation
-	  manages.</para>
+    <para>这个文件是应用程序默认值的形式，提供了安装时所使用的通用配置信息。</para>
       </sect3>
 
       <sect3>
