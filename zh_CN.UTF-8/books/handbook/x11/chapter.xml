@@ -792,7 +792,7 @@ dbus_enable="YES"</programlisting>
       <sect3>
 	<title>Xservers</title>
 
-	<para>这是一个由可供选择的远程显示服务器列表。</para>
+	<para>这是一个可供选择的远程显示服务器列表。</para>
       </sect3>
 
       <sect3>
