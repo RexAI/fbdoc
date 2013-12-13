@@ -792,7 +792,7 @@ dbus_enable="YES"</programlisting>
       <sect3>
 	<title>Xservers</title>
 
-	<para>这是一个可供选择的远程显示服务器列表。</para>
+	<para>这是一个由可供选择的远程显示服务器列表。</para>
       </sect3>
 
       <sect3>
@@ -823,49 +823,36 @@ dbus_enable="YES"</programlisting>
       <sect3>
 	<title>xdm-errors</title>
 
-	<para>This contains the output of the X servers that
-	  <application>XDM</application> is trying to run.  If a
-	  display that <application>XDM</application> is trying to
-	  start hangs for some reason, this is a good place to look
-	  for error messages.  These messages are also written to the
-	  user's <filename>~/.xsession-errors</filename> file on a
-	  per-session basis.</para>
+    <para>这个文件包含了 <application>XDM</application> 运行的 X 服务器的日志输出。
+        如果， <application>XDM</application> 由于某种原因被挂起，那么到这里寻找错误信息是个好主意。
+        这些信息会在每会话的基础上被写到用户的 <filename>~/.xsession-errors</filename> 文件中。</para>
       </sect3>
     </sect2>
 
     <sect2>
-      <title>Running a Network Display Server</title>
+      <title>运行一个网络显示服务器</title>
 
-      <para>In order for other clients to connect to the display
-	server, you must edit the access control rules and enable
-	the connection listener.  By default these are set to
-	conservative values.  To make <application>XDM</application>
-	listen for connections, first comment out a line in the
-	<filename>xdm-config</filename> file:</para>
+      <para>为了让其他客户端能链接到显示服务器，您必须编辑访问控制规则，并启用端口监听。默认情况下，
+          这些设置比较保守值。要让 <application>XDM</application> 能监听到连接请求，首先要
+          注销掉 <filename>xdm-config</filename> 中的一行内容：</para>
 
       <screen>! SECURITY: do not listen for XDMCP or Chooser requests
 ! Comment out this line if you want to manage X terminals with xdm
 DisplayManager.requestPort:     0</screen>
 
-      <para>and then restart <application>XDM</application>.
-	Remember that comments in app-defaults files begin with a
-	<quote>!</quote> character, not the usual <quote>#</quote>.
-	More strict access controls may be desired &mdash; look at the
-	example entries in <filename>Xaccess</filename>, and refer to
-	the &man.xdm.1; manual page for further information.</para>
+      <para>然后重启 <application>XDM</application>。切记默认程序配置注释以 <quote>!</quote> 开头
+          而不是一般情况使用的 <quote>#</quote> 。您需要设置严格的访问控制？
+          ── 看看在 <filename>Xaccess</filename> 里的实例，并参考 &man.xdm.1; 联机手册，以
+          了解更多细节。</para>
     </sect2>
 
     <sect2>
-      <title>Replacements for XDM</title>
+      <title>替换 XDM</title>
 
-      <para>Several replacements for the default
-	<application>XDM</application> program exist.  One of them,
-	<application>KDM</application> (bundled with
-	<application>KDE</application>) is described later in this
-	chapter.  The <application>KDM</application> display manager
-	offers many visual improvements and cosmetic frills, as well
-	as the functionality to allow users to choose their window
-	manager of choice at login time.</para>
+      <para>有几个方案可以替换默认的 <application>XDM</application> 程序。
+          <application>KDM</application> （与 <application>KDE</application> 捆绑在一起的）就是它们中的一个方案，
+          <application>KDM</application> 提供了许多视觉上的改进和局部的修饰，同样能让用户在启动时
+          能选择他们喜欢的窗口管理器。</para>
     </sect2>
   </sect1>
 
@@ -882,135 +869,92 @@ DisplayManager.requestPort:     0</screen>
     </sect1info>
     -->
 
-    <title>Desktop Environments</title>
+    <title>桌面环境</title>
 
-    <para>This section describes the different desktop environments
-      available for X on FreeBSD.  A
-      <quote>desktop environment</quote> can mean anything ranging
-      from a simple window manager to a complete suite of desktop
-      applications, such as <application>KDE</application> or
-      <application>GNOME</application>.</para>
+    <para>这节介绍 FreeBSD 上基于 X 的不同的桌面环境。<quote>桌面环境</quote> 可能仅仅是一个简单的窗口管理器，
+        也可能是个像 <application>KDE</application> 或者 <application>GNOME</application> 这样完整的应用套件。</para>
 
     <sect2 xml:id="x11-wm-gnome">
       <title>GNOME</title>
 
       <sect3 xml:id="x11-wm-gnome-about">
-	<title>About GNOME</title>
+	<title>关于 GNOME</title>
 
 	<indexterm><primary>GNOME</primary></indexterm>
-	<para><application>GNOME</application> is a user-friendly
-	  desktop environment that enables users to easily use and
-	  configure their computers.  <application>GNOME</application>
-	  includes a panel (for starting applications and displaying
-	  status), a desktop (where data and applications can be
-	  placed), a set of standard desktop tools and applications,
-	  anda set of conventions that make it easy for applications
-	  to cooperate and be consistent with each other.  Users of
-	  other operating systems or environments should feel right at
-	  home using the powerful graphics-driven environment that
-	  <application>GNOME</application> provides.  More information
-	  regarding <application>GNOME</application> on FreeBSD can be
-	  found on the
-	  <link xlink:href="http://www.FreeBSD.org/gnome">FreeBSD GNOME
-	    Project</link>'s web site.  The web site also contains
-	  fairly comprehensive FAQs about installing, configuring, and
-	  managing <application>GNOME</application>.</para>
+	<para><application>GNOME</application> 是个用户界面友好的桌面环境，
+        能够使用户很容易地使用和配置他们的计算机。 <application>GNOME</application> 包括一个面板
+        (用来启动应用程序和显示状态)， 一个桌面(存放数据和应用程序的地方)，
+        一套标准的桌面工具和应用程序， 和一套与其他人相互协同工作的协议集。其他操作系统的用户在
+        使用 <application>GNOME</application> 提供的强大的图形环境时也能很好的适应。
+        更多的关于 FreeBSD 上 <application>GNOME</application> 的信息 可以
+        在<link xlink:href="http://www.FreeBSD.org/gnome">FreeBSD GNOME
+            Project</link> 的网站上找到。此外，这个网站也提供了相当详尽的关于安装、配置和
+        管理 <application>GNOME</application> 的常见问题解答 (FAQ)。</para>
       </sect3>
 
       <sect3 xml:id="x11-wm-gnome-install">
-	<title>Installing GNOME</title>
+	<title>安装 GNOME</title>
 
-	<para>The software can be easily installed from a package
-	  or the Ports Collection:</para>
+	<para>这个软件可以很容易地通过预编译包或 Ports Collection 来安装：</para>
 
-	<para>To install the <application>GNOME</application> package
-	  from the network, simply type:</para>
+	<para>通过网络安装 <application>GNOME</application> ，只需要输入：</para>
 
 	<screen>&prompt.root; <userinput>pkg_add -r gnome2</userinput></screen>
 
-	<para>For <application>pkgng</application> users, the
-	  equivalent command is:</para>
+	<para>如果是 <application>pkgng</application> 用户，则使用这个命令：</para>
 
 	<screen>&prompt.root; <userinput>pkg install gnome2</userinput></screen>
 
-	<para>To build <application>GNOME</application> from source,
-	  use the ports tree:</para>
+    <para>从源代码编译 <application>GNOME</application> ，可以从 ports tree 安装：</para>
 
 	<screen>&prompt.root; <userinput>cd /usr/ports/x11/gnome2</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
 
-	<para>For proper operation, <application>GNOME</application>
-	  requires the <filename>/proc</filename> filesystem to be
-	  mounted.  Add</para>
+    <para><application>GNOME</application> 需要挂载 <filename>/proc</filename> 文件系统才能正常工作。添加如下内容：</para>
 
 	<programlisting>proc           /proc       procfs  rw  0   0</programlisting>
 
-	<para>to <filename>/etc/fstab</filename> to mount
-	  &man.procfs.5; automatically during
-	  startup.</para>
+	<para>到 <filename>/etc/fstab</filename> 中，以便系统启动时自动挂载 &man.procfs.5; 。</para>
 
-	<para>Once <application>GNOME</application> is installed,
-	  the X server must be told to start
-	  <application>GNOME</application> instead of a default window
-	  manager.</para>
+	<para>一旦安装好了 <application>GNOME</application> ，就必须告诉 X server 启动
+        <application>GNOME</application> 而不是默认窗口管理器。</para>
 
-	<para>The easiest way to start
-	  <application>GNOME</application> is with
-	  <application>GDM</application>, the GNOME Display Manager.
-	  <application>GDM</application> is installed as part
-	  of the <application>GNOME</application> desktop, although
-	  it is disabled by default.  It can be enabled by adding this
-	  line to <filename>/etc/rc.conf</filename>:</para>
+    <para>最简单的启动 <application>GNOME</application> 的方法是使用 <application>GDM</application>，
+        GNOME 启动管理器。<application>GDM</application> 是 <application>GNOME</application> 桌面的一部分，
+        尽管默认是禁止启动的。 要启用它，可以通过在 <filename>/etc/rc.conf</filename> 中加入以下这行：</para>
 
 	<programlisting>gdm_enable="YES"</programlisting>
 
-	<para>Once you have rebooted, <application>GDM</application>
-	  will start automatically.</para>
+	<para>这样在您重启计算机时，<application>GDM</application> 将自动允许：</para>
 
-	<para>It is often desirable to start all
-	  <application>GNOME</application> services together with
-	  <application>GDM</application>.  To achieve this, add the
-	  following line to <filename>/etc/rc.conf</filename>:</para>
+    <para>通常我们希望在 <application>GDM</application> 启动时，同时启动所有 <application>GNOME</application> 服务，
+        可以将以下这行加入  <filename>/etc/rc.conf</filename> 文件中。</para>
 
 	<programlisting>gnome_enable="YES"</programlisting>
 
-	<para><application>GNOME</application> may also be started
-	  from the command-line by properly configuring a file named
-	  <filename>.xinitrc</filename>.  If a custom
-	  <filename>.xinitrc</filename> is already in place, simply
-	  replace the line that starts the current window manager with
-	  one that starts
-	  <application>/usr/local/bin/gnome-session</application>
-	  instead.  If nothing special has been done to the
-	  configuration file, then it is enough simply to type:</para>
+    <para><application>GNOME</application> 也可以通过名为 <filename>.xinitrc</filename> 文件里添加命令行来启动。
+        如果已经有了自定义的 <filename>.xinitrc</filename> ，将启动当前窗口管理器的那一行改为
+        启动 <application>/usr/local/bin/gnome-session</application> 就可以了。如果还没有，
+        那么只需简单地执行以下命令：</para>
 
 	<screen>&prompt.user; <userinput>echo "/usr/local/bin/gnome-session" &gt; ~/.xinitrc</userinput></screen>
 
-	<para>Next, type <command>startx</command>, and the
-	  <application>GNOME</application> desktop environment will
-	  be started.</para>
+	<para>接下来，输入 <command>startx</command> ，<application>GNOME</application> 桌面环境就启动了。</para>
 
 	<note>
-	  <para>If an older display manager, like
-	    <application>XDM</application>, is being used, this will
-	    not work.  Instead, create an executable
-	    <filename>.xsession</filename> file with the same command
-	    in it.  To do this, edit the file and replace the existing
-	    window manager command with
-	    <application>/usr/local/bin/gnome-session</application>:</para>
+        <para>如果之前使用了一些旧式的显示管理器， 例如 <application>XDM</application>，则这样做无效。
+            此时应建立一个可执行的 <filename>.xsession</filename> 文件，其中包含同样的命令。
+            要完成这项工作，需要用 <application>/usr/local/bin/gnome-session</application> 取代
+         取代现有的窗口管理器：</para>
 	</note>
 
 	<screen>&prompt.user; <userinput>echo "#!/bin/sh" &gt; ~/.xsession</userinput>
 &prompt.user; <userinput>echo "/usr/local/bin/gnome-session" &gt;&gt; ~/.xsession</userinput>
 &prompt.user; <userinput>chmod +x ~/.xsession</userinput></screen>
 
-	<para>Yet another option is to configure the display manager
-	  to allow choosing the window manager at login time; the
-	  section on
-	  <link linkend="x11-wm-kde-details">KDE details</link>
-	  explains how to do this for <application>KDM</application>,
-	  the display manager of
-	  <application>KDE</application>.</para>
+    <para>另外一种选择是配置显示管理器允许在登录时选择的窗口管理器；
+        在 <link linkend="x11-wm-kde-details">KDE 细节</link> 章节中介绍关于如何为 <application>KDM</application>
+        进行这样的配置。</para>
       </sect3>
     </sect2>
 
@@ -1019,7 +963,7 @@ DisplayManager.requestPort:     0</screen>
 
       <indexterm><primary>KDE</primary></indexterm>
       <sect3 xml:id="x11-wm-kde-about">
-	<title>About KDE</title>
+	<title>关于 KDE</title>
 
 	<para><application>KDE</application> is an easy to use
 	  contemporary desktop environment.  Some of the things that
