@@ -140,35 +140,22 @@
 	<term>焦点策略</term>
 
 	<listitem>
-	  <para>The window manager is responsible for the mouse focus
-	    policy.  This policy provides some means for choosing
-	    which window is actively receiving keystrokes and it
-	    should also visibly indicate which window is currently
-	    active.</para>
+        <para>窗口管理器负责鼠标的焦点策略（focus policy）。 它规定了哪个窗口正在积极接受按键输入，并显示哪个窗口处于活动状态。</para>
 
-	  <para>One focus policy is called
-	    <quote>click-to-focus</quote>.  In this model, a window
-	    becomes active upon receiving a mouse click.  In the
-	    <quote>focus-follows-mouse</quote> policy, the window
-	    that is under the mouse pointer has focus and the focus
-	    is changed by pointing at another window.  If the mouse
-	    is over the root window, then this window is focused.
-	    In the <quote>sloppy-focus</quote> model, if the mouse
-	    is moved over the root window, the most recently used
-	    window still has the focus.  With sloppy-focus, focus
-	    is only changed when the cursor enters a new window, and
-	    not when exiting the current window.  In the
-	    <quote>click-to-focus</quote> policy, the active window
-	    is selected by mouse click.  The window may then be
-	    raised and appear in front of all other windows.  All
-	    keystrokes will now be directed to this window, even if
-	    the cursor is moved to another window.</para>
+        <para>您通常比较熟悉的是一个叫做 <quote>点击对焦</quote>（click-to-focus）的焦点策略。
+            也就是您在一个窗口上点击一下鼠标， 这个窗口就处于当前激活状态。
+            常见的焦点策略：
+            
+            <quote>focus-follows-mouse</quote> 策略， 即鼠标光标所在窗口获得焦点，如果移动到其它窗口则其它窗口获得焦点。
+            如果移动到根窗口（root window），那么跟窗口获得焦点。
+            <quote>sloppy-focus</quote> 策略，与 <quote>focus-follows-mouse</quote> 类似， 但它在鼠标移入根窗口的时候最近使用的窗口依旧具有焦点，
+            只有当光标进入新窗口后才改变。
+            <quote>点击对焦</quote> （click-to-focus） 焦点策略， 即当前窗口焦点由鼠标点击来获得。
+            窗口被“突出显示” ， 出现在所有其他窗口的前面。即使指针被移向了另一个窗口，所有的键盘输入 仍会被这个窗口接收。 
+            窗口被“突出显示” ， 出现在所有其他窗口的前面。即使指针被移向了另一个窗口，所有的键盘输入 仍会被这个窗口接收。</para>
 
-	  <para>Different window managers support different focus
-	    models.  All of them support click-to-focus, and the
-	    majority of them also support other policies.  Consult
-	    the documentation for the window manager to determine
-	    which focus models are available.</para>
+        <para>不同的窗口管理器支持不同的焦点策略。 所有窗口管理器都支持点击聚焦， 他们中的绝大多数也支持其他焦点政策。
+            它们具体支持哪些焦点策略，您可以查看它们的文档。咨询窗口管理器的文档，以确定哪些重点型号可供选择。</para>
 	</listitem>
       </varlistentry>
 
