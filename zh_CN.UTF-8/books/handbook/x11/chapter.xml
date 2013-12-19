@@ -160,20 +160,12 @@
       </varlistentry>
 
       <varlistentry>
-	<term>widgets</term>
+	<term>窗口小部件</term>
 
 	<listitem>
-	  <para>Widget is a term for all of the items in the user
-	    interface that can be clicked or manipulated in some way.
-	    This includes buttons, check boxes, radio buttons, icons,
-	    and lists.  A widget toolkit is a set of widgets used to
-	    create graphical applications.  There are several popular
-	    widget toolkits, including Qt, used by
-	    <application>KDE</application>, and GTK+, used by
-	    <application>GNOME</application>.  As a result,
-	    applications will have a different look and feel,
-	    depending upon which widget toolkit was used to create
-	    the application.</para>
+        <para>窗口小部件 （Widget） 只是针对用户接口中所有列举项目的一个术语， 它可以用某种方法来点击或操作； 如按钮、 复选框、 单选按钮、
+            图标，列表框等等。 有几个流行的小部件开发工具包，包括 <application>KDE</application> 使用的Qt ， 和 <application>GNOME</application> 使用的GTK+ 。
+            因此， 应用程序不同的外观， 取决与采用哪些小部件开发包。</para>
 	</listitem>
       </varlistentry>
     </variablelist>
@@ -184,11 +176,9 @@
 
     <para><application>&xorg;</application> 是由 X.Org 基金会发行的 X Window 系统的开源实现。
         在 &os; 中它可以通过预编译包或 Ports Collection 安装。
-        Ports Collection 中有一套完整的 The meta-port for the complete distribution which includes X servers, clients,
-        libraries, and fonts is located in <package>x11/xorg</package>.  
-        最小化的 <application>&xorg;</application> 可以通过 <package>x11/xorg-minimal</package> 来安装A minimal distribution
-      is located in <package>x11/xorg-minimal</package>, with separate
-      ports available for docs, libraries, and apps.
+        Ports Collection 中有一套完整的 X 服务器， 包括服务器端、 客户端、 库 （libraries）和 字体等等， 可以通过 <package>x11/xorg</package> 安装。
+        同时有个最小化的 <application>&xorg;</application> 软件可以通过 <package>x11/xorg-minimal</package> 来安装，有独立的 ports 可用于安装 文档，
+        库 （libraries） 和应用程序。
       本章示例为安装完整 <application>&xorg;</application> 软件套件。</para>
 
     <para>从 Ports Collection 编译安装 <application>&xorg;</application> ：</para>
@@ -275,23 +265,17 @@
 
       <itemizedlist>
 	<listitem>
-	  <para>NVIDIA: several NVIDIA drivers are available in the
-	    x11 category of the FreeBSD Ports Collection.  Install
-	    the driver that matches the model of the NVIDIA
-	    hardware.</para>
+	  <para>NVIDIA： NVIDIA 的显卡驱动都可以在 FreeBSD Ports Collection 中的 X11 类中找到， 可以通过它，安装 NVIDIA 显卡设备对应的显卡驱动。</para>
 	</listitem>
 
 	<listitem>
         <para>Intel：从 FreeBSD 9.1 开始绝大部分 Intel 显卡支持 3D 加速，包括 IronLake、SandyBridge 和 IvyBridge 。
-            由于目前 KMS 还处于测试阶段，开启 KMS 支持将导致图像终端控制台（graphical console）与
-            虚拟终端控制台（virtual console）无法使用 Crtl+Alt+F# 切换。</para>
+            由于目前 KMS 还处于测试阶段，开启 KMS 支持将导致图像终端控制台（graphical console）与虚拟终端控制台（virtual console）无法使用 Crtl+Alt+F# 切换。</para>
 	</listitem>
 
 	<listitem>
-	  <para>ATI/Radeon: 3D acceleration will not work on ATI or
-	    Radeon cards until FreeBSD completes its TTM work.  These
-	    cards will need to be configured with the 2D driver, and
-	    if that does not work, with the Vesa driver.</para>
+	  <para>ATI/Radeon:  ATI 和 Radeon 显卡的 3D 加速功能不能正常工作，直到 FreeBSD 完成 TTM 功能。 目前这些显卡需要使用 2D 驱动程序，
+          如果还是无法正常工作，只能使用 VESA 驱动。</para>
 	</listitem>
 
 	<listitem>
@@ -299,7 +283,7 @@
 	    between the two graphics adapters provided by Optimus.
 	    Optimus implementations vary, so FreeBSD may or may not
 	    be able to successfully load a graphics driver on all
-	    hardware.  If you get a blank screen, check if the BIOS
+	    hardware. If you get a blank screen, check if the BIOS
 	    has an option to disable one of the graphics adapters or
 	    to set <quote>discrete</quote> mode.</para>
 	</listitem>
@@ -378,13 +362,8 @@ dbus_enable="YES"</programlisting>
 	<screen>&prompt.root; <userinput>cp xorg.conf.new /etc/X11/xorg.conf</userinput></screen>
 
       <note>
-	<para>Desktop environments like
-	  <application>GNOME</application>,
-	  <application>KDE</application> or
-	  <application>Xfce</application> provide graphical tools
-	  to set parameters such as video resolution.  If the default
-	  configuration works, skip to <xref linkend="x11-wm"/>
-	  for examples on how to install a desktop environment.</para>
+          <para>桌面环境如 <application>GNOME</application> 、 <application>KDE</application> 或 <application>Xfce</application> 都提供了图形化的工具来修改参数，
+              如视频分辨率。使用图像配置工具，参阅  <xref linkend="x11-wm"/> 如何安装一个桌面环境。</para>
       </note>
     </sect2>
   </sect1>
@@ -774,13 +753,8 @@ dbus_enable="YES"</programlisting>
       <sect3>
 	<title>Xsetup_*</title>
 
-	<para>These will be run automatically before displaying the
-	  chooser or login interfaces.  There is a script for each
-	  display being used, named <filename>Xsetup_</filename>
-	  followed by the local display number (for instance
-	  <filename>Xsetup_0</filename>).  Typically these scripts
-	  will run one or two programs in the background such as
-	  <command>xconsole</command>.</para>
+	<para>在显示选择者或登录接口之前， 这些将被自动运行。 这是一个每个显示都要用到的脚本， 叫做 <filename>Xsetup_</filename> ，
+        后面会跟一个本地显示的数字（ 比如 <filename>Xsetup_0</filename> ）。 典型的，这些脚本将在后台 (如 <command>xconsole</command> )运行一个或两个程序。</para>
       </sect3>
 
       <sect3>
