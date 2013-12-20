@@ -19,35 +19,23 @@
   </chapterinfo>
   -->
 
-  <title>Desktop Applications</title>
+  <title>桌面应用</title>
 
   <sect1 xml:id="desktop-synopsis">
-    <title>Synopsis</title>
+    <title>概述</title>
 
-    <para>While &os; is popular as a server for its performance and
-      stability, it is also suited for day-to-day use as a desktop.
-      With over &os.numports; applications available as &os; packages
-      or ports, it is easy to build a customized desktop that runs
-      a wide variety of desktop applications.  This chapter
-      demonstrates how to install some popular desktop applications
-      using packages or the &os; Ports Collection.</para>
+    <para>尽管 &os; 是一种常见的服务器系统， 以稳定和高性能著称， 但它也能作为普通桌面系统， 适用于日常使用。
+        &os; 有超过 &os.numports; 个预编译包或 Port 可供用户选择，可以很容易建立起一个运行着各种各样桌面应用程序的定制型桌面环境。
+        本章介绍如何使用预编译包或 &os; Ports Collection 来安装一些常见的桌面应用程序。</para>
 
     <note>
-      <para>Users who prefer to install a pre-built desktop version
-	of FreeBSD rather than configuring one from scratch should
-	refer to the <link xlink:href="http://www.pcbsd.org/">pcbsd.org
-	website.</link></para>
+      <para>希望使用预装桌面环境的 FreeBSD ，而不是重头开始配置的用户可以参考 <link xlink:href="http://www.pcbsd.org/">pcbsd.org 网站</link> 。</para>
     </note>
 
-    <para>As &os; features <link linkend="linuxemu">&linux; binary
-	compatibility</link>, many applications developed for &linux;
-      can be installed on a &os; desktop.  Many of the ports using
-      &linux; binary compatibility start with <quote>linux-</quote>.
-      This chapter assumes that &linux; binary compatibility has been
-      enabled before any &linux; applications are installed.</para>
+    <para>由于 &os; 提供的二进制兼容 <link linkend="linuxemu">&linux; </link>的特性， 许多原本为 &linux; 开发的程序都可以直接安装到 &os; 中。
+        许多利用 &linux; 二进制兼容特性的 ports 都以 <quote>linux-</quote> 开头。 本章假设安装 &linux; 应用程序前都 已经开启了 &linux; 二进制兼容功能。</para>
 
-    <para>This chapter demonstrates how to install the following
-      desktop applications:</para>
+    <para>本章介绍如何安装以下的桌面应用：</para>
 
     <informaltable frame="none" pgwide="1">
       <tgroup cols="4">
