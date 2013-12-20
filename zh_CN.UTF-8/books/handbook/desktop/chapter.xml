@@ -41,38 +41,38 @@
       <tgroup cols="4">
 	<thead>
 	  <row>
-	    <entry>Type of Application</entry>
-	    <entry>Application Name</entry>
-	    <entry>Package Name</entry>
-	    <entry>Ports Name</entry>
+	    <entry>软件类型</entry>
+	    <entry>软件名</entry>
+	    <entry>软件包名称</entry>
+	    <entry>Ports 位置</entry>
 	  </row>
 	</thead>
 
 	<tbody>
 
 	  <row>
-	    <entry>Browser</entry>
-	    <entry><application>Firefox</application></entry>
+	    <entry>浏览器</entry>
+	    <entry><application>火狐</application></entry>
 	    <entry><literal>firefox</literal></entry>
 	    <entry><package>www/firefox</package></entry>
 	  </row>
 
 	  <row>
-	    <entry>Browser</entry>
+	    <entry>浏览器</entry>
 	    <entry><application>Opera</application></entry>
 	    <entry><literal>opera</literal></entry>
 	    <entry><package>www/opera</package></entry>
 	  </row>
 
 	  <row>
-	    <entry>Browser</entry>
+	    <entry>浏览器</entry>
 	    <entry><application>Konqueror</application></entry>
 	    <entry><literal>kde4-baseapps</literal></entry>
 	    <entry><package>x11/kde4-baseapps</package></entry>
 	  </row>
 
 	  <row>
-	    <entry>Browser</entry>
+	    <entry>浏览器</entry>
 	    <entry><application>Chromium</application></entry>
 	    <entry><literal>chromium</literal></entry>
 	    <entry><package>www/chromium</package></entry>
@@ -86,21 +86,21 @@
 	  </row>
 
 	  <row>
-	    <entry>Productivity</entry>
+	    <entry>Office 软件</entry>
 	    <entry><application>AbiWord</application></entry>
 	    <entry><literal>abiword</literal></entry>
 	    <entry><package>editors/abiword</package></entry>
 	  </row>
 
 	  <row>
-	    <entry>Productivity</entry>
+	    <entry>图象处理</entry>
 	    <entry><application>The GIMP</application></entry>
 	    <entry><literal>gimp</literal></entry>
 	    <entry><package>graphics/gimp</package></entry>
 	  </row>
 
 	  <row>
-	    <entry>Productivity</entry>
+	    <entry>Office 软件</entry>
 	    <entry><application>Apache
 		OpenOffice</application></entry>
 	    <entry><literal>openoffice</literal></entry>
@@ -108,57 +108,56 @@
 	  </row>
 
 	  <row>
-	    <entry>Productivity</entry>
+	    <entry>Office 软件</entry>
 	    <entry><application>LibreOffice</application></entry>
 	    <entry><literal>libreoffice</literal></entry>
 	    <entry><package>editors/libreoffice</package></entry>
 	  </row>
 
 	  <row>
-	    <entry>Document Viewer</entry>
+	    <entry>文档阅读器</entry>
 	    <entry><application>&acrobat.reader;</application></entry>
-	    <entry><literal>no package due to
-		license restriction</literal></entry>
+	    <entry><literal>no package due to license restriction</literal></entry>
 	    <entry><package>print/acroread9</package></entry>
 	  </row>
 
 	  <row>
-	    <entry>Document Viewer</entry>
+	    <entry>文档阅读器</entry>
 	    <entry><application>gv</application></entry>
 	    <entry><literal>gv</literal></entry>
 	    <entry><package>print/gv</package></entry>
 	  </row>
 
 	  <row>
-	    <entry>Document Viewer</entry>
+	    <entry>文档阅读器</entry>
 	    <entry><application>Xpdf</application></entry>
 	    <entry><literal>xpdf</literal></entry>
 	    <entry><package>graphics/xpdf</package></entry>
 	  </row>
 
 	  <row>
-	    <entry>Document Viewer</entry>
+	    <entry>文档阅读器</entry>
 	    <entry><application>GQview</application></entry>
 	    <entry><literal>gqview</literal></entry>
 	    <entry><package>graphics/gqview</package></entry>
 	  </row>
 
 	  <row>
-	    <entry>Finance</entry>
+	    <entry>财务</entry>
 	    <entry><application>GnuCash</application></entry>
 	    <entry><literal>gnucash</literal></entry>
 	    <entry><package>finance/gnucash</package></entry>
 	  </row>
 
 	  <row>
-	    <entry>Finance</entry>
+	    <entry>财务</entry>
 	    <entry><application>Gnumeric</application></entry>
 	    <entry><literal>gnumeric</literal></entry>
 	    <entry><package>math/gnumeric</package></entry>
 	  </row>
 
 	  <row>
-	    <entry>Finance</entry>
+	    <entry>财务</entry>
 	    <entry><application>KMyMoney</application></entry>
 	    <entry><literal>kmymoney-kde4</literal></entry>
 	    <entry><package>finance/kmymoney-kde4</package></entry>
@@ -167,125 +166,106 @@
       </tgroup>
     </informaltable>
 
-    <para>Before reading this chapter, you should know how to:</para>
+    <para>阅读本章之前， 您应该：</para>
 
     <itemizedlist>
       <listitem>
-	<para>Install additional software using packages or
-	  ports as described in <xref linkend="ports"/>.</para>
+	<para>知道如何安装额外的第三方软件 <xref linkend="ports"/> 。</para>
       </listitem>
 
       <listitem>
-	<para>Install X and a window manager as described in <xref linkend="x11"/>.</para>
+	<para>知道如何安装 X 和 窗口管理器 <xref linkend="x11"/> 。</para>
       </listitem>
 
       <listitem>
-	<para>Enable &linux; binary compatibility as described in
-	  <xref linkend="linuxemu"/>.</para>
+	<para>知道如何启用 &linux; 二进制兼容模式 <xref linkend="linuxemu"/> 。</para>
       </listitem>
     </itemizedlist>
 
-    <para>For information on how to configure a multimedia
-      environment, refer to <xref linkend="multimedia"/>.</para>
+    <para>有关如何配置多媒体环境，请参阅想 <xref linkend="multimedia"/> 。</para>
   </sect1>
 
   <sect1 xml:id="desktop-browsers">
-    <title>Browsers</title>
+    <title>浏览器</title>
 
     <indexterm>
       <primary>browsers</primary>
       <secondary>web</secondary>
     </indexterm>
 
-    <para>&os; does not come with a pre-installed web browser.
-      Instead, the <link xlink:href="http://www.FreeBSD.org/ports/www.html">www</link>
-      category of the Ports Collection contains many browsers which
-      can be installed as a package or compiled from the Ports
-      Collection.</para>
+    <para>&os; 没有预装浏览器， 但 Ports Collection 中的  <link xlink:href="http://www.FreeBSD.org/ports/www.html">www</link> 类目下，
+        有许多浏览器可供选择，您可以通过预编译包或自行从 Ports Collection 中编译安装。</para>
 
-    <para>The <application>KDE</application> and
-      <application>GNOME</application> desktop environments include
-      their own HTML browser.  Refer to <xref linkend="x11-wm"/>
-      for more information on how to set up these complete
-      desktops.</para>
+    <para><application>KDE</application> 和 <application>GNOME</application> 已经提供 HTML 浏览器。
+        请参考 <xref linkend="x11-wm"/> 获得更多完整的有关设定这些桌面环境的信息。</para>
 
-    <para>Some light-weight browsers include <package>www/dillo2</package>, <package>www/links</package>, and <package>www/w3m</package>.</para>
+    <para>如果您要一些轻量型浏览器，可以试试 <package>www/dillo2</package>、 <package>www/links</package> 和 <package>www/w3m</package> 。</para>
 
-    <para>This section demonstrates how to install the following
-      popular web browsers and indicates if the application is
-      resource-heavy, takes time to compile from ports, or has any
-      major dependencies.</para>
+    <para>本节将介绍如何安装以下常见的网页浏览器， 并说明应用程序的资源需求，从 Ports 编译需要的时间，和依赖情况。或有任何重大的依赖性。</para>
 
     <informaltable frame="none" pgwide="1">
       <tgroup cols="4">
 	<thead>
 	  <row>
-	    <entry>Application Name</entry>
-	    <entry>Resources Needed</entry>
-	    <entry>Installation from Ports</entry>
-	    <entry>Notes</entry>
+	    <entry>软件名</entry>
+	    <entry>资源需求</entry>
+	    <entry>从 Ports 安装耗时</entry>
+	    <entry>备注</entry>
 	  </row>
 	</thead>
 
 	<tbody>
 	  <row>
-	    <entry><application>Firefox</application></entry>
-	    <entry>medium</entry>
-	    <entry>heavy</entry>
-	    <entry>&os;, &linux;, and localized versions are
-	      available</entry>
+	    <entry><application>火狐</application></entry>
+	    <entry>中等</entry>
+	    <entry>长</entry>
+	    <entry>提供 &os; ， &linux; ， 本地化版本</entry>
 	  </row>
 
 	  <row>
 	    <entry><application>Opera</application></entry>
-	    <entry>light</entry>
-	    <entry>light</entry>
-	    <entry>&os; and &linux; versions are available</entry>
+	    <entry>少</entry>
+	    <entry>短</entry>
+	    <entry>提供 &os; 和 &linux; 版</entry>
 	  </row>
 
 	  <row>
 	    <entry><application>Konqueror</application></entry>
-	    <entry>medium</entry>
-	    <entry>heavy</entry>
-	    <entry>Requires <application>KDE</application>
-	      libraries</entry>
+	    <entry>中等</entry>
+	    <entry>长</entry>
+	    <entry>依赖 <application>KDE</application> 库</entry>
 	  </row>
 
 	  <row>
 	    <entry><application>Chromium</application></entry>
-	    <entry>medium</entry>
-	    <entry>heavy</entry>
-	    <entry>Requires <application>Gtk+</application></entry>
+	    <entry>中等</entry>
+        <entry>长</entry>
+	    <entry>依赖 <application>Gtk+</application></entry>
 	  </row>
 	</tbody>
       </tgroup>
     </informaltable>
 
     <sect2>
-      <title>Firefox</title>
+      <title>FireFox</title>
 
       <indexterm>
 	<primary><application>Firefox</application></primary>
       </indexterm>
 
-      <para><application>Firefox</application> is an open source
-	browser that is fully ported to &os;.  It features a
-	standards-compliant HTML display engine, tabbed browsing,
-	popup blocking, extensions, improved security, and more.
-	<application>Firefox</application> is based on the
-	<application>Mozilla</application> codebase.</para>
+      <para><application>火狐浏览器</application> 是一个开源的浏览器，并完整的移植到了  &os; 上。
+          它的特性包括有一个非常标准的 HTML 显示引擎， 标签式浏览， 弹出窗口阻止， 扩展插件， 改进的安全性， 等等。
+          <application>Firefox</application> 是基于 <application>Mozilla</application> 的代码的软件。</para>
 
-      <para>To install the package of the latest release version of
-	<application>Firefox</application>, type:</para>
+      <para>通过预编译包安装最新版 <application>Firefox</application> ，输入：</para>
 
       <screen>&prompt.root; <userinput>pkg_add -r firefox</userinput></screen>
 
-      <para>To instead install <application>Firefox</application>
-	Extended Support Release (ESR) version, use:</para>
+      <para>要安装  <application>Firefox</application> 长期支持版本 (ESR) ，则通过：</para>
 
       <screen>&prompt.root; <userinput>pkg_add -r firefox-esr</userinput></screen>
 
-      <para>Localized versions are available in <package>www/firefox-i18n</package> and <package>www/firefox-esr-i18n</package>.</para>
+      <para>本地化语言包可以通过 <package>www/firefox-i18n</package> 和 <package>www/firefox-esr-i18n</package> 安装。</para>
 
       <para>The Ports Collection can instead be used to compile the
 	desired version of <application>Firefox</application> from
