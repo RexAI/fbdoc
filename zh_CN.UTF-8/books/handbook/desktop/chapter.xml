@@ -267,11 +267,9 @@
 
       <para>本地化语言包可以通过 <package>www/firefox-i18n</package> 和 <package>www/firefox-esr-i18n</package> 安装。</para>
 
-      <para>The Ports Collection can instead be used to compile the
-	desired version of <application>Firefox</application> from
-	source code.  This example builds <package>www/firefox</package>, where
-	<literal>firefox</literal> can be replaced with the ESR or
-	localized version to install.</para>
+      <para>您可以使用 Ports Collection 源码安装您需要的 <application>Firefox</application> 版本。
+          这里使用 <package>www/firefox</package> 作为实例，您可以选择使用 长期支持版本 (ESR) 或者本地化版本 （localized version）
+          的 <literal>firefox</literal> 替换安装。</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/www/firefox</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
@@ -279,29 +277,20 @@
     <sect3 xml:id="moz-java-plugin">
       <title>Firefox and &java; Plugin</title>
 
-      <para>The installation of
-	<application>Firefox</application> does not include &java;
-	support.  However, <package>java/icedtea-web</package> provides a free
-	software web browser plugin for running Java applets.  It can
-	be installed as a package.  To alternately compile the
-	port:</para>
+      <para>通常 <application>Firefox</application> 不包括 &java; 支持。
+          不过， 有个免费的可运行 Java 小应用的浏览器插件 <package>java/icedtea-web</package> 。 可以通过玉编译包，
+          或从 Port 编译安装：</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/java/icedtea-web</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
 
-      <para>Keep the default configuration options when compiling the
-	port.</para>
+      <para>使用默认选项编译 Port 。</para>
 
-      <para>Once installed, start <application>firefox</application>,
-	enter <literal>about:plugins</literal> in the location bar and
-	press <keycap>Enter</keycap>.  A page listing the installed
-	plugins will be displayed.  The
-	<application>&java;</application> plugin should be
-	listed.</para>
+      <para>一旦安装完成， 就可以启动 <application>firefox</application> ， 在地址栏里输入， <literal>about:plugins</literal> ，
+          然后按下 <keycap>Enter</keycap> 键。浏览器将会显示所有已安装的插件的列表；
+          <application>&java;</application> 插件应该会出现在其中。</para>
 
-      <para>If the browser is unable to find the plugin, each user
-	will have to run the following command and relaunch the
-	browser:</para>
+      <para>如果浏览器无法找到该插件， 那么当前用户必须运行以下命令， 然后重启浏览器：</para>
 
       <screen>&prompt.user; <userinput>ln -s /usr/local/lib/IcedTeaPlugin.so \
   $HOME/.mozilla/plugins/</userinput></screen>
@@ -309,32 +298,25 @@
 
     <sect3 xml:id="moz-flash-plugin">
 
-      <title>Firefox and &adobe; &flash; Plugin</title>
+      <title>Firefox 和 &adobe; &flash; 插件</title>
 
       <indexterm>
 	<primary>Flash</primary>
       </indexterm>
 
-      <para>A native &adobe; &flash; plugin is not available for &os;.
-	However, a software wrapper for running the &linux; version
-	of the plugin is available.  This wrapper also provides
-	support for other browser plugins such as &realplayer;.</para>
+      <para>&adobe; &flash; 插件并没有提供对 &os; 的原生支持， 不过，   我们有一个软件层 (wrapper) 可以用来运行
+          &linux; 版插件。 这个软件层也提供了其他浏览器插件的支持， 比如： &realplayer; 。</para>
 
-      <para>To install and enable this plugin, perform these
-	steps:</para>
+      <para>要安装并启用该插件， 请使用以下步骤：</para>
 
       <procedure>
 	<step>
-	  <para>Install the <package>www/nspluginwrapper</package> port.
-	    Due to licensing restrictions, a package is not available.
-	    This port requires <package>emulators/linux_base-f10</package> which
-	    is a large port.</para>
+        <para>安装 <package>www/nspluginwrapper</package> port 。 由于授权 （licensing）的限制，一个包不可用。
+            此 Port 依赖一个较大的 <package>emulators/linux_base-f10</package> port。</para>
 	</step>
 
 	<step>
-	  <para>Install the <package>www/linux-f10-flashplugin11</package>
-	    port.  Due to licensing restrictions, a package is not
-	    available.</para>
+	  <para>安装 <package>www/linux-f10-flashplugin11</package> port。 由于授权 （licensing）的限制，一个包不可用。</para>
 	</step>
 
 	<step>
