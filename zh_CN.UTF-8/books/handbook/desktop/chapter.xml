@@ -323,25 +323,20 @@
 	  <screen>&prompt.root; <userinput>ln -s /usr/local/lib/npapi/linux-f10-flashplugin/libflashplayer.so \
   /usr/local/lib/browser_plugins/</userinput></screen>
 
-	  <para>Create the <filename>/usr/local/lib/browser_plugins</filename>
-	    directory if it is not already present.</para>
+      <para>如果 <filename>/usr/local/lib/browser_plugins</filename> 目录不存在，则需要手动创建。</para>
 	</step>
 
 	<step>
-	  <para>Before the plugin is first used, each user must
-	    run:</para>
+	  <para>首次使用这个插件， 需要每个用户都需要运行以下命令：</para>
 
 	  <screen>&prompt.user; <userinput>nspluginwrapper -v -a -i</userinput></screen>
 
-	  <para>When the plugin port has been updated and reinstalled,
-	    each user must run:</para>
+	  <para>每当升级和重新安装这个 port ，都需要执行以下命令：</para>
 
 	  <screen>&prompt.user; <userinput>nspluginwrapper -v -a -u</userinput></screen>
 
-	  <para>Start the browser, enter
-	    <literal>about:plugins</literal> in the location bar and
-	    press <keycap>Enter</keycap>.  A list of all the currently
-	    available plugins will be shown.</para>
+      <para>启动浏览器， 并在地址栏里输入 <literal>about:plugins</literal> 然后按下 <keycap>Enter</keycap> 。
+          就能显示目前可用的插件列表。</para>
 	</step>
 
       </procedure>
@@ -350,23 +345,19 @@
     <sect3 xml:id="moz-swfdec-flash-plugin">
       <title>Firefox and Swfdec &flash; Plugin</title>
 
-      <para><application>Swfdec</application> is a decoder and
-	renderer for &flash; animations.
-	<application>Swfdec-Mozilla</application> is a plugin for
-	<application>Firefox</application> browsers that uses the
-	Swfdec library for playing SWF files.</para>
+      <para><application>Swfdec</application> 是一个用以解码和渲染 &flash; 动画的库。
+          <application>Swfdec-Mozilla</application> 是一个使用了 Swfdec 库使 <application>Firefox</application> 能播放 SWF 文件的浏览器插件。</para>
 
-      <para>To install the package:</para>
+      <para>要安装这个软件的预编译包：</para>
 
       <screen>&prompt.root; <userinput>pkg_add -r swfdec-plugin</userinput></screen>
 
-      <para>If the package is not available, compile and install it
-	from the Ports Collection:</para>
+      <para>如果预编译包不可用，可用从 Ports Collection 编译安装它：</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/www/swfdec-plugin</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
 
-	<para>Restart the browser to activate this plugin.</para>
+	<para>重启浏览器激活这个插件。</para>
       </sect3>
     </sect2>
 
@@ -377,29 +368,21 @@
 	<primary><application>Opera</application></primary>
       </indexterm>
 
-      <para><application>Opera</application> is a full-featured and
-	standards-compliant browser which is still lightweight and
-	fast.  It comes with a built-in mail and news reader, an IRC
-	client, an RSS/Atom feeds reader, and more.  It is available
-	as a native &os; version and as a version that runs under
-	&linux; emulation.</para>
+      <para><application>Opera</application> 是一个轻量级， 快速， 功能齐全， 并符合标准的浏览器。
+          它内置了对邮件和新闻阅读器、 IRC 客户端， RSS/Atom feed 阅读器等等功能的支持。
+          它有 &os; 原生版本和通过 &linux; 兼容层运行的版本可供选择。</para>
 
-      <para>This command installs the package of the &os; version of
-	<application>Opera</application>.  Replace
-	<literal>opera</literal> with <literal>linux-opera</literal>
-	to instead install the &linux; version.</para>
+      <para>这个命令安装的是 &os; 原生版 <application>Opera</application> 。
+          要安装 &linux; 版， 只需要将 <literal>opera</literal> 替换成 <literal>linux-opera</literal> 。</para>
 
       <screen>&prompt.root; <userinput>pkg_add -r opera</userinput></screen>
 
-      <para>Alternately, install either version through the Ports
-	Collection.  This example compiles the native version:</para>
+      <para>另外可用通过 Ports Collection 编译任意一个版本。 示例为编译原生版 <application>Opera</application> ：</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/www/opera</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
 
-      <para>To install the &linux; version, substitute
-	<literal>linux-opera</literal> in place of
-	<literal>opera</literal>.</para>
+      <para>如果需要安装 &linux; 版本， 只需要将路径中的 <literal>opera</literal> 替换为 <literal>linux-opera</literal> 。</para>
 
       <para>To install &adobe; &flash; plugin support, first compile
 	the <package>www/linux-f10-flashplugin11</package> port,
@@ -413,14 +396,10 @@
 &prompt.root; <userinput>cd /usr/ports/www/opera-linuxplugins</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
 
-      <para>Once installed, check the presence of the plugin by
-	starting the browser, entering
-	<literal>opera:plugins</literal> in the location bar and
-	pressing <keycap>Enter</keycap>.  A list should appear with
-	all the currently available plugins.</para>
+      <para>一旦安装完成， 就可用启动浏览器检查插件是否可用， 在地址栏中输入<literal>opera:plugins</literal> ，
+          然后按下 <keycap>Enter</keycap> 。 就会显示目前所有可用的插件列表。</para>
 
-      <para>To add the <application>&java;</application> plugin,
-	follow the instructions in <xref linkend="moz-java-plugin"/>.</para>
+      <para>添加 <application>&java;</application> 插件的方法， 参考 <xref linkend="moz-java-plugin"/> 。</para>
     </sect2>
 
     <sect2>
@@ -430,33 +409,24 @@
 	<primary><application>Konqueror</application></primary>
       </indexterm>
 
-      <para><application>Konqueror</application> is more than a web
-	browser as it is also a file manager and a multimedia
-	viewer.  It is included in the <package>x11/kde4-baseapps</package> package or
-	port.</para>
+      <para><application>Konqueror</application> 不仅仅是一个网页浏览器， 它也是一个文件管理器和多媒体播放器。
+          它可以在 <package>x11/kde4-baseapps</package> 预编译包或 port 中找到。</para>
 
-      <para><application>Konqueror</application> supports WebKit as
-	well as its own KHTML.  WebKit is a rendering engine used by
-	many modern browsers including Chromium.  To use WebKit with
-	<application>Konqueror</application> on &os;, install the
-	<package>www/kwebkitpart</package> package
-	or port.  This example compiles the port:</para>
+      <para><application>Konqueror</application> 支持 WebKit 和它自己的 KHTML 引擎。
+          WebKit 引擎是包括 Chromium 浏览器在内的许多现代化的浏览器所使用的网页渲染引擎。
+          想让 &os; 上的 <application>Konqueror</application> 使用 WebKit 引擎只需要安装 <package>www/kwebkitpart</package> （通过预编译包或 port 安装）
+          例子为通过 port 编译安装：</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/www/kwebkitpart</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
 
-      <para>To enable WebKit within
-	<application>Konqueror</application>, click
-	<quote>Settings</quote>, <quote>Configure Konqueror</quote>.
-	In the <quote>General</quote> settings page, click the
-	drop-down menu next to <quote>Default web browser
-	engine</quote> and change <quote>KHTML</quote> to
-	<quote>WebKit</quote>.</para>
+      <para>修改设置让 <application>Konqueror</application> 使用 WebKit 引擎， 点击 <quote>设置</quote> ，
+          <quote>配置 Konqueror</quote> 。在 <quote>常用</quote> 设置界面， 点击边上的 <quote>默认网页浏览器引擎</quote> ，
+          将 <quote>KHTML</quote> 切换为 <quote>WebKit</quote> 。</para>
 
-      <para><application>Konqueror</application> also supports
-	<application>&flash;</application>.  A <quote>How To</quote>
-	guide for getting <application>&flash;</application> support
-	on <application>Konqueror</application> is available at <uri xlink:href="http://freebsd.kde.org/howtos/konqueror-flash.php">http://freebsd.kde.org/howtos/konqueror-flash.php</uri>.</para>
+      <para><application>Konqueror</application> 也支持 <application>&flash;</application> 插件。
+          关于如何启用 <application>Konqueror</application> 的 <application>&flash;</application> 支持，
+          请参阅 <uri xlink:href="http://freebsd.kde.org/howtos/konqueror-flash.php">http://freebsd.kde.org/howtos/konqueror-flash.php</uri>。</para>
     </sect2>
 
     <sect2>
@@ -466,48 +436,34 @@
 	<primary><application>Chromium</application></primary>
       </indexterm>
 
-      <para><application>Chromium</application> is an open source
-	browser project that aims to build a safer, faster, and more
-	stable web browsing experience.
-	<application>Chromium</application> features tabbed browsing,
-	popup blocking, extensions, and much more.
-	<application>Chromium</application> is the open source project
-	upon which the Google Chrome web browser is based.</para>
+      <para><application>Chromium</application> 是一个开源的浏览器项目，旨在建设一个更安全， 更便捷， 更稳定的网络浏览体验。
+          <application>Chromium</application> 包含 标签浏览， 禁止弹出窗口， 浏览器扩展， 等等功能。
+          Google Chrome 网页浏览器基于 <application>Chromium</application> 开源项目。</para>
 
-      <para><application>Chromium</application> can be installed as a
-	package by typing:</para>
+      <para><application>Chromium</application> 通过以下命令安装预编译版本：</para>
 
       <screen>&prompt.root; <userinput>pkg_add -r chromium</userinput></screen>
 
-      <para>Alternatively, <application>Chromium</application> can be
-	compiled from source using the Ports Collection:</para>
+      <para>另外， <application>Chromium</application> 也可以通过 Ports Collection 源码编译：</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/www/chromium</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
 
       <note>
-	<para>The executable for <application>Chromium</application>
-	  is <filename>/usr/local/bin/chrome</filename>, not
-	  <filename>/usr/local/bin/chromium</filename>.</para>
+	<para><application>Chromium</application> 主程序为 <filename>/usr/local/bin/chrome</filename> ，
+        而不是 <filename>/usr/local/bin/chromium</filename> 。</para>
       </note>
 
     <sect3 xml:id="chromium-java-plugin">
-      <title>Chromium and &java; Plugin</title>
+      <title>Chromium 和 &java; 插件</title>
 
-      <para>The installation of
-	<application>Chromium</application> does not include &java;
-	support.  To install &java; plugin support, follow the
-	instructions in <xref linkend="moz-java-plugin"/>.</para>
+      <para><application>Chromium</application> 默认安装不包含 &java; 支持。
+          需要安装 &java; 插件支持，请参照 <xref linkend="moz-java-plugin"/> 。</para>
 
-      <para>Once &java; support is installed, start
-	<application>Chromium</application> and enter
-	<literal>about:plugins</literal> in the address bar.
-	IcedTea-Web should be listed as one of the installed
-	plugins.</para>
+      <para>一旦 &java; 的支持安装完成，就可以启动 <application>Chromium</application> ，
+          在地址栏里输入 <literal>about:plugins</literal> ， IcedTea-Web 插件应该以及被列为已安装的插件了。</para>
 
-      <para>If <application>Chromium</application> does not display
-	the IcedTea-Web plugin, run the following commands and
-	restart the web browser:</para>
+      <para>如果 <application>Chromium</application> 没显示 IcedTea-Web 插件，那么需要运行以下命令，并重启浏览器：</para>
 
       <screen>&prompt.root; <userinput>mkdir -p /usr/local/share/chromium/plugins
 &prompt.root; ln -s /usr/local/lib/IcedTeaPlugin.so \
@@ -515,85 +471,72 @@
       </sect3>
 
       <sect3 xml:id="chromium-flash-plugin">
-	<title>Chromium and &adobe;&nbsp;&flash; Plugin</title>
+	<title>Chromium 和 &adobe;&nbsp;&flash; 插件</title>
 
-	<para>Configuring <application>Chromium</application> and
-	  &adobe;&nbsp;&flash; is similar to the the instructions in
-	  <xref linkend="moz-java-plugin"/>.  No additional
-	  configuration should be necessary, since
-	  <application>Chromium</application> is able to use some
-	  plugins from other browsers.</para>
+	<para>配置 <application>Chromium</application> 的 &adobe;&nbsp;&flash; 支持，
+        按照 <xref linkend="moz-java-plugin"/> 中的步骤操作就可以了，不需要额外的配置工作，
+        因为 <application>Chromium</application> 能够直接使用其他浏览器的一些插件。</para>
       </sect3>
     </sect2>
   </sect1>
 
   <sect1 xml:id="desktop-productivity">
-    <title>Productivity</title>
+    <title>办公</title>
 
-    <para>When it comes to productivity, new users often look for an
-      office suite or an easy-to-use word processor.  While some
-      <link linkend="x11-wm">desktop environments</link> like
-      <application>KDE</application> provide an office suite, there
-      is no default productivity package.  Several office suites and
-      graphical word processors are available for &os;, regardless
-      of the installed window manager.</para>
+    <para>当需要进行办公时， 新用户通常都会选择一个好用的办公套件或字处理软件。
+        尽管目前有有些 <link linkend="x11-wm">桌面环境</link> ，
+        如 <application>KDE</application> 已经提供了办公套件， 但目前这还没有一定之规。
+        无论您使用哪种窗口管理器， &os; 都能提供您需要的软件。</para>
 
-    <para>This section demonstrates how to install the following
-      popular productivity software and indicates if the application
-      is resource-heavy, takes time to compile from ports, or has any
-      major dependencies.</para>
+    <para>本节演示如何安装以下常见软件，并从应用程序的系统资源需求、 从 ports 编译安装耗时，依赖情况，这些方面做简要分析。</para>
 
     <informaltable frame="none" pgwide="1">
       <tgroup cols="4">
 	<thead>
 	  <row>
-	    <entry>Application Name</entry>
-	    <entry>Resources Needed</entry>
-	    <entry>Installation from Ports</entry>
-	    <entry>Major Dependencies</entry>
+	    <entry>软件名称</entry>
+	    <entry>系统资源需求</entry>
+	    <entry>从 Ports 安装耗时</entry>
+	    <entry>主要依赖情况</entry>
 	  </row>
 	</thead>
 
 	<tbody>
 	  <row>
 	    <entry><application>Calligra</application></entry>
-	    <entry>light</entry>
-	    <entry>heavy</entry>
+	    <entry>低</entry>
+	    <entry>短</entry>
 	    <entry><application>KDE</application></entry>
 	  </row>
 
 	  <row>
 	    <entry><application>AbiWord</application></entry>
-	    <entry>light</entry>
-	    <entry>light</entry>
-	    <entry><application>Gtk+</application> or
-	      <application>GNOME</application></entry>
+	    <entry>低</entry>
+	    <entry>短</entry>
+	    <entry><application>Gtk+</application> 或 <application>GNOME</application></entry>
 	  </row>
 
 	  <row>
 	    <entry><application>The Gimp</application></entry>
-	    <entry>light</entry>
-	    <entry>heavy</entry>
+	    <entry>低</entry>
+	    <entry>长</entry>
 	    <entry><application>Gtk+</application></entry>
 	  </row>
 
 	  <row>
 	    <entry><application>Apache
 		OpenOffice</application></entry>
-	    <entry>heavy</entry>
-	    <entry>huge</entry>
-	    <entry><application>&jdk;</application> and
-	      <application>Mozilla</application></entry>
+	    <entry>高</entry>
+	    <entry>长</entry>
+	    <entry><application>&jdk;</application> 和 <application>Mozilla</application></entry>
 	  </row>
 
 	  <row>
 	    <entry><application>LibreOffice</application></entry>
-	    <entry>somewhat heavy</entry>
-	    <entry>huge</entry>
-	    <entry><application>Gtk+</application>, or
-	      <application>KDE</application>/
-	      <application>GNOME</application>, or
-	      <application>&jdk;</application></entry>
+	    <entry>较高</entry>
+	    <entry>长</entry>
+	    <entry><application>Gtk+</application> 或 <application>KDE</application>/
+	      <application>GNOME</application> 或 <application>&jdk;</application></entry>
 	  </row>
 	</tbody>
       </tgroup>
@@ -610,24 +553,17 @@
 	<secondary><application>Calligra</application></secondary>
       </indexterm>
 
-      <para>The KDE desktop environment includes
-	an office suite which can be installed separately from
-	<application>KDE</application>.
-	<application>Calligra</application> includes standard
-	components that can be found in other office suites.
-	<application>Words</application> is the word processor,
-	<application>Sheets</application> is the spreadsheet program,
-	<application>Stage</application> manages slide presentations,
-	and <application>Karbon</application> is used to draw
-	graphical documents.</para>
+      <para>KDE 桌面环境包含一个办公套件， 它可以从 <application>KDE</application> 单独安装。
+          <application>Calligra</application> 包含其它办公套件中能找到的标准组件。
+          <application>Words</application> 是字处理程序、 <application>Sheets</application> 是电子表格程序、
+          <application>Stage</application> 是演示文档制作管理程序、
+          <application>Karbon</application> 是矢量绘图软件。</para>
 
-      <para>In &os;, <package>editors/calligra</package> can be installed
-	as a package or a port.  To install the package:</para>
+      <para>在 &os; 中， <package>editors/calligra</package> 可以通过预编译包或 port 安装。通过预编译包安装：</para>
 
       <screen>&prompt.root; <userinput>pkg_add -r calligra</userinput></screen>
 
-      <para>If the package is not available, use the Ports Collection
-	instead:</para>
+      <para>如果没有预编译包可用，可用使用 Ports Collection 编译安装：</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/editors/calligra</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
@@ -640,10 +576,8 @@
 	<primary><application>AbiWord</application></primary>
       </indexterm>
 
-      <para><application>AbiWord</application> is a free word
-	processing program similar in look and feel to
-	<application>&microsoft; Word</application>.  It is fast,
-	contains many features, and is user-friendly.</para>
+      <para><application>AbiWord</application> 是一个外观跟 <application>&microsoft; Word</application> 很类似的免费的字处理程序，
+          它非常快且包含许多特性，并且非常容易使用。</para>
 
       <para><application>AbiWord</application> can import or export
 	many file formats, including some proprietary ones like
