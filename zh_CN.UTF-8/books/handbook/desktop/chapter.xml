@@ -481,7 +481,7 @@
   </sect1>
 
   <sect1 xml:id="desktop-productivity">
-    <title>办公</title>
+    <title>生产力套件</title>
 
     <para>当需要进行办公时， 新用户通常都会选择一个好用的办公套件或字处理软件。
         尽管目前有有些 <link linkend="x11-wm">桌面环境</link> ，
@@ -497,7 +497,7 @@
 	    <entry>软件名称</entry>
 	    <entry>系统资源需求</entry>
 	    <entry>从 Ports 安装耗时</entry>
-	    <entry>主要依赖情况</entry>
+	    <entry>主要依赖</entry>
 	  </row>
 	</thead>
 
@@ -579,51 +579,39 @@
       <para><application>AbiWord</application> 是一个外观跟 <application>&microsoft; Word</application> 很类似的免费的字处理程序，
           它非常快且包含许多特性，并且非常容易使用。</para>
 
-      <para><application>AbiWord</application> can import or export
-	many file formats, including some proprietary ones like
-	&microsoft; <filename>.rtf</filename>.</para>
+      <para><application>AbiWord</application> 可以导入或导出多种文件格式， 包括 &microsoft; <filename>.rtf</filename> 格式。</para>
 
-      <para>To install the <application>AbiWord</application>
-	package:</para>
+      <para>使用预编译包安装 <application>AbiWord</application> ：</para>
 
       <screen>&prompt.root; <userinput>pkg_add -r abiword</userinput></screen>
 
-      <para>If the package is not available, it can be compiled from
-	the Ports Collection:</para>
+      <para>如果没有预编译包可用， 可以从 Ports Collection 编译安装：</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/editors/abiword</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
     </sect2>
 
     <sect2>
-      <title>The GIMP</title>
+      <title>GIMP</title>
 
       <indexterm>
 	<primary><application>The GIMP</application></primary>
       </indexterm>
 
-      <para>For image authoring or picture retouching,
-	<application>The GIMP</application> provides a sophisticated
-	image manipulation program.  It can be used as a simple paint
-	program or as a quality photo retouching suite.  It supports a
-	large number of plugins and features a scripting interface.
-	<application>The GIMP</application> can read and write a wide
-	range of file formats and supports interfaces with scanners
-	and tablets.</para>
+      <para>对于图片的编辑和修改来说， <application>GIMP</application> 是个优秀的图形处理软件。
+          它可以作为一个简单的绘图程序或者一个专业的照片处理套件。 它支持大量的插件和具有脚本界面。
+          <application>GIMP</application> 可以读写众多的文件格式， 并支持扫描仪和手写板。</para>
 
-      <para>To install the package:</para>
+      <para>通过预编译包安装：</para>
 
       <screen>&prompt.root; <userinput>pkg_add -r gimp</userinput></screen>
 
-      <para>Alternately, use the Ports Collection:</para>
+      <para>或者， 使用 Ports Collection 安装：</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/graphics/gimp</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
 
-      <para>The graphics category (<link xlink:href="http://www.FreeBSD.org/ports/graphics.html">freebsd.org/ports/graphics.html</link>)
-	of the Ports Collection contains several
-	<application>GIMP</application>-related plugins, help files,
-	and user manuals.</para>
+      <para>Ports Collection 里的 graphics 目录下(<link xlink:href="http://www.FreeBSD.org/ports/graphics.html">freebsd.org/ports/graphics.html</link>) 有几个 <application>GIMP</application> 相关的插件， 帮助文件和用户手册。</para>
 
     </sect2>
 
@@ -642,65 +630,41 @@
 	</secondary>
       </indexterm>
 
-      <para><application>Apache OpenOffice</application> is an open
-	source office suite which is developed under the wing of the
-	Apache Software Foundation's Incubator.  It includes all of
-	the applications found in a complete office productivity
-	suite: a word processor, spreadsheet, presentation manager,
-	and drawing program.  Its user interface is similar to other
-	office suites, and it can import and export in various popular
-	file formats.  It is available in a number of different
-	languages and internationalization has been extended to
-	interfaces, spell checkers, and dictionaries.</para>
+      <para><application>Apache OpenOffice</application> 是一款开源的办公套件， 是 Apache 软件基金会的孵化器项目之一。
+          它是一套完整的办公套件， 包括：字处理程序、 电子表格程序、 演示文档管理程序和绘图程序。
+          它有其他办公套件类似的外观， 还能导入导出几种常见的文件格式。它支持多种语言的用户界面、 拼写检查和字典。</para>
 
-      <para>The word processor of <application>Apache
-	  OpenOffice</application> uses a native XML file format for
-	increased portability and flexibility.  The spreadsheet
-	program features a macro language which can be interfaced
-	with external databases.  <application>Apache
-	  OpenOffice</application> is stable and runs natively on
-	&windows;, &solaris;, &linux;, &os;, and &macos;&nbsp;X.
-	More information about <application>Apache
-	  OpenOffice</application> can be found at <link xlink:href="http://openoffice.org/">openoffice.org</link>.  For
-	&os; specific information refer to <link xlink:href="http://porting.openoffice.org/freebsd/">porting.openoffice.org/freebsd/</link>.</para>
+      <para><application>Apache OpenOffice</application> 字处理使用 XML 文件格式来增加可移植性和灵活性。
+          电子表格程序支持宏语言和使用外部数据源。<application>Apache OpenOffice</application> 可以稳定的运行在 &windows; 、
+          &solaris; 、 &linux; 、 &os; 和 &macos;&nbsp;X 等操作系统下。更多有关  <application>Apache
+              OpenOffice</application> 的信息可以在 <link xlink:href="http://openoffice.org/">openoffice.org</link> 网站找到。
+          与 &os; 相关的信息可以在 <link xlink:href="http://porting.openoffice.org/freebsd/">porting.openoffice.org/freebsd/</link> 网站上找到。</para>
 
-      <para>To install the <application>Apache
-	  OpenOffice</application> package:</para>
+      <para>安装 <application>Apache OpenOffice</application> 预编译包可使用：</para>
 
       <screen>&prompt.root; <userinput>pkg_add -r apache-openoffice</userinput></screen>
 
-      <para>Once the package is installed, type the following command
-	to launch <application>Apache OpenOffice</application>:</para>
+      <para>一旦完成安装，就可以输入以下命令启动 <application>Apache OpenOffice</application> ：</para>
 
       <screen>&prompt.user; <userinput>openoffice-X.Y.Z</userinput></screen>
 
-      <para>where <replaceable>X.Y.Z</replaceable> is the version
-	number of the installed version of <application>Apache
-	  OpenOffice</application>.  The first time
-	<application>Apache OpenOffice</application> launches, some
-	questions will be asked and a <filename>.openoffice.org</filename> folder will
-	be created in the user's home directory.</para>
+      <para>其中 <replaceable>X.Y.Z</replaceable> 是安装的 <application>Apache OpenOffice</application> 的版本号。
+          首次启动时， <application>Apache OpenOffice</application> 会询问一些问题，
+          并会在用户主目录中创建 <filename>.openoffice.org</filename> 文件夹。</para>
 
-      <para>If the desired <application>Apache
-	  OpenOffice</application> package is not available, compiling
-	the port is still an option.  However, this requires a lot of
-	disk space and a fairly long time to compile:</para>
+      <para>如果没有所需的 <application>Apache OpenOffice</application> 预编译包，那么从 port 编译安装也是一种选择。
+          但是这需要大量的空闲磁盘空间和相当长的编译时间：</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/editors/openoffice-4</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
 
       <note>
-	<para>To build a localized version, replace the previous
-	  command with:</para>
+	<para>如果需要编译本地语言版， 只需使用以下命令替换之前的命令：</para>
 
 	<screen>&prompt.root; <userinput>make LOCALIZED_LANG=your_language install clean</userinput></screen>
 
-	<para>Replace
-	  <replaceable>your_language</replaceable> with the correct
-	  language ISO-code.  A list of supported language codes is
-	  available in
-	  <filename>files/Makefile.localized</filename>, located in
-	  the port's directory.</para>
+	<para>您必须把 <replaceable>your_language</replaceable> 替换成您需要的语言，
+        port 所支持的 ISO-code 可以在这个 port 的 <filename>files/Makefile.localized</filename> 文件中找到。</para>
       </note>
     </sect2>
 
@@ -715,116 +679,83 @@
 	<secondary><application>LibreOffice</application></secondary>
       </indexterm>
 
-      <para><application>LibreOffice</application> is a free software
-	office suite developed by <link xlink:href="http://www.documentfoundation.org/">documentfoundation.org</link>.
-	It is compatible with other major office suites and available
-	on a variety of platforms.  It is a rebranded fork of
-	<application>OpenOffice.org</application> and includes
-	applications found in a complete office productivity suite:
-	a word processor, spreadsheet, presentation manager, drawing
-	program, database management program, and a tool for creating
-	and editing mathematical formul&aelig;.  It is available in
-	a number of different languages and internationalization has
-	been extended to interfaces, spell checkers, and
-	dictionaries.</para>
+      <para><application>LibreOffice</application> 是 <link xlink:href="http://www.documentfoundation.org/">documentfoundation.org</link> 开发的一款免费的办公套件。
+          它与主流的办公套件与各种平台兼容，它是 <application>OpenOffice.org</application> 的衍生版本，并包含一套完整办公套件：
+          一个字处理程序、 电子表格程序、 演示文档管理程序、 绘图程序、 数据库管理程序以及用于创建和编辑数学公式的 &aelig; 程序。</para>
 
-      <para>The word processor of
-	<application>LibreOffice</application> uses a native XML file
-	format for increased portability and flexibility.  The
-	spreadsheet program features a macro language which can be
-	interfaced with external databases.
-	<application>LibreOffice</application> is stable and runs
-	natively on &windows;, &linux;, &os;, and &macos;&nbsp;X.
-	More information about
-	<application>LibreOffice </application> can be found at
-	<link xlink:href="http://www.libreoffice.org/">libreoffice.org</link>.</para>
+      <para><application>LibreOffice</application> 字处理使用 XML 文件格式来增加可移植性和灵活性。
+          电子表格程序支持宏语言和使用外部数据源。<application>LibreOffice</application> 可以稳定的运行在 &windows; 、
+          &linux; 、 &os; 和 &macos;&nbsp;X 操作系统之上。有关 <application>LibreOffice </application> 的更多信息请访问 <link xlink:href="http://www.libreoffice.org/">libreoffice.org</link> 网站。</para>
 
-      <para>To install the English version of the
-	<application>LibreOffice</application> package:</para>
+      <para>需要安装英文版 <application>LibreOffice</application> 预编译包，使用：</para>
 
       <screen>&prompt.root; <userinput>pkg_add -r libreoffice</userinput></screen>
 
-      <para>The editors category (<link xlink:href="http://www.FreeBSD.org/ports/editors.html">freebsd.org/ports/editors.html</link>)
-	of the Ports Collection contains several localizations for
-	<application>LibreOffice</application>.  When installing a
-	localized package, replace <literal>libreoffice</literal>
-	with the name of the localized package.</para>
+      <para>Ports Collection 中的 editors 目录下 (<link xlink:href="http://www.FreeBSD.org/ports/editors.html">freebsd.org/ports/editors.html</link>) 有几个本地语言版 <application>LibreOffice</application> ， 如果想安装本地语言版需要将 <literal>libreoffice</literal> 替换为本地语言版的软件包名称。</para>
 
-      <para>Once the package is installed, type the following command
-	to run <application>LibreOffice</application>:</para>
+      <para>一旦安装完成，就可以输入以下命令运行 <application>LibreOffice</application>：</para>
 
       <screen>&prompt.user; <userinput>libreoffice</userinput></screen>
 
-      <para>During the first launch, some questions will be asked
-	and a <filename>.libreoffice</filename>
-	folder will be created in the user's home directory.</para>
+      <para>首次启动时， 会询问一些问题， 并会在用户主目录中创建 <filename>.libreoffice</filename> 目录。</para>
 
-      <para>If the desired <application>LibreOffice</application>
-	package is not available, compiling the port is still an
-	option.  However, this requires a lot of disk space and a
-	fairly long time to compile.  This example compiles the
-	English version:</para>
+      <para>如果没有所需的 <application>LibreOffice</application> 预编译包，那么从 port 编译安装仍然是一种选择。
+          这需要大量的空闲磁盘空间和相当长的编译时间。 以下使用编译英文版本的 <application>LibreOffice</application> 为例子：</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/editors/libreoffice</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
 
       <note>
-	<para>To build a localized version,
-	  <application>cd</application> into the port directory of
-	  the desired language.  Supported languages can be found
-	  in the editors category (<link xlink:href="http://www.FreeBSD.org/ports/editors.html">freebsd.org/ports/editors.html</link>)
-	  of the Ports Collection.</para>
+	<para>如果需要编译本地语言版本，可以 <application>cd</application> 到所需语言版本的 Port 目录， 编译安装。
+        支持何种本地语言可以在 Ports Collection 的 editors 目录下(<link xlink:href="http://www.FreeBSD.org/ports/editors.html">freebsd.org/ports/editors.html</link>) 找到。</para>
       </note>
     </sect2>
   </sect1>
 
   <sect1 xml:id="desktop-viewers">
-    <title>Document Viewers</title>
+    <title>文档查看器</title>
 
-    <para>Some new document formats have gained popularity since
-      the advent of &unix; and the viewers they require may not be
-      available in the base system.  This section demonstrates how to
-      install the following document viewers:</para>
+    <para>从 &unix; 出现至今， 一些新的文档格式开始流行，浏览它们的阅读器基本系统里不一定包含
+        本节中，将介绍如何安装以下文档查看器：</para>
 
     <informaltable frame="none" pgwide="1">
       <tgroup cols="4">
 	<thead>
 	  <row>
-	    <entry>Application Name</entry>
-	    <entry>Resources Needed</entry>
-	    <entry>Installation from Ports</entry>
-	    <entry>Major Dependencies</entry>
+	    <entry>软件名称</entry>
+	    <entry>系统资源需求</entry>
+	    <entry>从 Ports 安装耗时</entry>
+	    <entry>主要依赖</entry>
 	  </row>
 	</thead>
 
 	<tbody>
 	  <row>
 	    <entry><application>&acrobat.reader;</application></entry>
-	    <entry>light</entry>
-	    <entry>light</entry>
-	    <entry>&linux; binary compatibility</entry>
+	    <entry>低</entry>
+	    <entry>短</entry>
+	    <entry>&linux; 兼容层</entry>
 	  </row>
 
 	  <row>
 	    <entry><application>gv</application></entry>
-	    <entry>light</entry>
-	    <entry>light</entry>
+	    <entry>低</entry>
+	    <entry>短</entry>
 	    <entry><application>Xaw3d</application></entry>
 	  </row>
 
 	  <row>
 	    <entry><application>Xpdf</application></entry>
-	    <entry>light</entry>
-	    <entry>light</entry>
+	    <entry>低</entry>
+	    <entry>短</entry>
 	    <entry><application>FreeType</application></entry>
 	  </row>
 
 	  <row>
 	    <entry><application>GQview</application></entry>
-	    <entry>light</entry>
-	    <entry>light</entry>
-	    <entry><application>Gtk+</application> or
-	      <application>GNOME</application></entry>
+	    <entry>低</entry>
+	    <entry>短</entry>
+	    <entry><application>Gtk+</application> 或 <application>GNOME</application></entry>
 	  </row>
 	</tbody>
       </tgroup>
@@ -841,21 +772,14 @@
 	<secondary>viewing</secondary>
       </indexterm>
 
-      <para>Many documents are now distributed as Portable Document
-	Format (PDF) files.  One popular PDF viewer is
-	<application>&acrobat.reader;</application>, released by
-	&adobe; for &linux;.  As &os; can run &linux; binaries, it
-	is also available for &os;.  Due to licensing restrictions,
-	a package is not available, meaning that this application
-	must be compiled from ports.  Several localizations are
-	available from the print category (<link xlink:href="http://www.FreeBSD.org/ports/print.html">freebsd.org/ports/print.html</link>)
-	of the Ports Collection.</para>
+      <para>现在许多文档发布时都采用便携式文件格式便攜式文件格式 (PDF) 。
+          有个主流的 PDF 查看器叫 <application>&acrobat.reader;</application> ，
+          它是 &adobe; 针对 &linux; 操作系统发布的。使用 &linux; 兼容层，  &os; 也能使用它。
+          由于授权许可证限制， 它没有预编译包可用， 这意味着这个软件必须从 ports 编译安装， 
+          有几个本地语言版可用在 Ports Collection 里的 print 目录 (<link xlink:href="http://www.FreeBSD.org/ports/print.html">freebsd.org/ports/print.html</link>) 下找到。</para>
 
-      <para>This command installs the English version of
-	<application>&acrobat.reader; 9</application> from the Ports
-	Collection.  To instead install a localized version,
-	<application>cd</application> into the desired port's
-	directory.</para>
+      <para>以下命令为从 Ports Collection 安装 <application>&acrobat.reader; 9</application> 英文版本，
+          如要改为本地语言版本， 则需要 <application>cd</application> 到所需语言版本的 Port 目录， 编译安装。</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/print/acroread9</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
@@ -877,22 +801,16 @@
 	<secondary>viewing</secondary>
       </indexterm>
 
-      <para><application>gv</application> is a &postscript; and PDF
-	viewer.  It is based on <application>ghostview</application>,
-	but has a nicer look as it is based on the
-	<application>Xaw3d</application> widget toolkit.
-	<application>gv</application> has many configurable features,
-	such as orientation, paper size, scale, and anti-aliasing.
-	Almost any operation can be performed with either the
-	keyboard or the mouse.</para>
+      <para><application>gv</application> 是 &postscript; 和 PDF 格式的文档查看器。
+          它源自 <application>ghostview</application> 因为采用 Xaw3d 引擎， 外观看起来更美观。
+          <application>gv</application> 有很多功能， 比如：方向性、 纸张大小、 缩放和抗锯齿等。
+          而且几乎所有功能都可以只用键盘或鼠标完成。</para>
 
-      <para>To install <application>gv</application> as a
-	package:</para>
+      <para>通过预编译包安装 <application>gv</application> 输入：</para>
 
       <screen>&prompt.root; <userinput>pkg_add -r gv</userinput></screen>
 
-      <para>If a package is unavailable, use the Ports
-	Collection:</para>
+      <para>如果预编译包不可用，则可用使用 Ports Collection 编译安装：</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/print/gv</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
@@ -909,26 +827,19 @@
 	<secondary>viewing</secondary>
       </indexterm>
 
-      <para>For users that prefer a small &os; PDF viewer,
-	<application>Xpdf</application> provides a light-weight and
-	efficient viewer which requires few resources.  It uses the
-	standard X fonts and does not require any additional
-	toolkits.</para>
+      <para>对于那些喜欢小型 PDF 查看器的用户， &os; 提供了轻量级， 高效率， 资源需求小的 <application>Xpdf</application> 文档查看器。
+          它使用标准的 X 字体， 不需要任何额外的工具包。</para>
 
-      <para>To install the <application>Xpdf</application>
-	package:</para>
+      <para>安装 <application>Xpdf</application> 预编译包，使用：</para>
 
       <screen>&prompt.root; <userinput>pkg_add -r xpdf</userinput></screen>
 
-      <para>If the package is not available, use the Ports
-	Collection:</para>
+      <para>如果预编译包不可用，则可用使用 Ports Collection 编译安装：</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/graphics/xpdf</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
 
-      <para>Once the installation is complete, launch
-	<command>xpdf</command> and use the right mouse button to
-	activate the menu.</para>
+      <para>一旦完成安装，就可用运行 <command>xpdf</command> ，使用鼠标中键激活选择菜单。</para>
     </sect2>
 
     <sect2>
@@ -938,21 +849,15 @@
 	<primary><application>GQview</application></primary>
       </indexterm>
 
-      <para><application>GQview</application> is an image manager
-	which supports viewing a file with a single click, launching
-	an external editor, and thumbnail previews.  It also features
-	a slideshow mode and some basic file operations, making it
-	easy to manage image collections and to find duplicate files.
-	<application>GQview</application> supports full screen viewing
-	and internationalization.</para>
+      <para><application>GQview</application> 是一个图片管理器。 您可以单击鼠标来查看一个文件、打开外部编辑器和
+          预览功能。 它也有幻灯片播放模式和一些基本的文件操作。 您可以管理采集的图片并且很容易找到重复的。
+          <application>GQview</application> 可以全屏幕观看并且支持国际化。</para>
 
-      <para>To install the <application>GQview</application>
-	package:</para>
+      <para>通过预编译包安装 <application>GQview</application> ，输入：</para>
 
       <screen>&prompt.root; <userinput>pkg_add -r gqview</userinput></screen>
 
-      <para>If the package is not available, use the Ports
-	Collection:</para>
+      <para>如果预编译包不可用，则可用使用 Ports Collection 编译安装：</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/graphics/gqview</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
@@ -960,46 +865,43 @@
   </sect1>
 
   <sect1 xml:id="desktop-finance">
-    <title>Finance</title>
+    <title>财务</title>
 
-    <para>For managing personal finances on a &os; desktop, some
-      powerful and easy-to-use applications can be installed.  Some
-      are compatible with widespread file formats, such as the formats
-      used by <application>Quicken</application> and
-      <application>Excel</application>.</para>
+    <para>对于想在 &os; 桌面上管理个人财务信息， 有些强大和易于使用的应用程序可以安装。
+        它们中的兼容一些常见的文件格式，比如： <application>Quicken</application> 和 <application>Excel</application> 格式。</para>
 
-    <para>This section covers these programs:</para>
+    <para>本节介绍以下软件：</para>
 
     <informaltable frame="none" pgwide="1">
       <tgroup cols="4">
 	<thead>
 	  <row>
-	    <entry>Application Name</entry>
-	    <entry>Resources Needed</entry>
-	    <entry>Installation from Ports</entry>
-	    <entry>Major Dependencies</entry>
+	    <entry>软件名称</entry>
+	    <entry>系统资源需求</entry>
+	    <entry>从 Ports 安装耗时</entry>
+	    <entry>主要依赖</entry>
 	  </row>
 	</thead>
 
 	<tbody>
 	  <row>
 	    <entry><application>GnuCash</application></entry>
-	    <entry>light</entry>
-	    <entry>heavy</entry>
+	    <entry>低</entry>
+	    <entry>长</entry>
 	    <entry><application>GNOME</application></entry>
 	  </row>
 
 	  <row>
 	    <entry><application>Gnumeric</application></entry>
-	    <entry>light</entry>
-	    <entry>heavy</entry>
+	    <entry>低</entry>
+	    <entry>长</entry>
 	    <entry><application>GNOME</application></entry>
 	  </row>
 
 	  <row>
 	    <entry><application>KMyMoney</application></entry>
-	    <entry>light</entry>
-	    <entry>heavy</entry>
+	    <entry>低</entry>
+	    <entry>长</entry>
 	    <entry><application>KDE</application></entry>
 	  </row>
 	</tbody>
@@ -1013,29 +915,20 @@
 	<primary><application>GnuCash</application></primary>
       </indexterm>
 
-      <para><application>GnuCash</application> is part of the
-	<application>GNOME</application> effort to provide
-	user-friendly, yet powerful, applications to end-users.
-	<application>GnuCash</application> can be used to keep track
-	of income and expenses, bank accounts, and stocks.  It
-	features an intuitive interface while remaining
-	professional.</para>
+      <para><application>GnuCash</application> 是 <application>GNOME</application> 致力于为最终用户提供用户友好且功能强大的软件的一部分。
+          使用 <application>GnuCash</application> ， 您可以关注您的收入和开支、您的银行帐户， 或者您的股票。
+          它的外观看起来非常的专业。</para>
 
-      <para><application>GnuCash</application> provides a smart
-	register, a hierarchical system of accounts, and many keyboard
-	accelerators and auto-completion methods.  It can split a
-	single transaction into several more detailed pieces.
-	<application>GnuCash</application> can import and merge
-	<application>Quicken</application> QIF files.  It also handles
-	most international date and currency formats.</para>
+      <para><application>GnuCash</application> 提供一个智能化的注册、帐户分级系统、 很多键盘快捷方式和自动完成方式。
+          它能分开一个单个的处理到几个详细的部分。
+          <application>GnuCash</application> 能导入和合并 <application>Quicken</application> QIF 格式文件。
+          它也支持大部分的国际日期和流行的格式。</para>
 
-      <para>To install the <application>GnuCash</application>
-	package:</para>
+      <para>通过预编译包安装 <application>GnuCash</application> ，输入：</para>
 
       <screen>&prompt.root; <userinput>pkg_add -r gnucash</userinput></screen>
 
-      <para>If the package is not available, use the Ports
-	Collection:</para>
+      <para>如果预编译包不可用，则可用使用 Ports Collection 编译安装：</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/finance/gnucash</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
@@ -1052,24 +945,16 @@
 	<secondary><application>Gnumeric</application></secondary>
       </indexterm>
 
-      <para><application>Gnumeric</application> is a spreadsheet
-	program developed by the <application>GNOME</application>
-	community.  It features convenient automatic guessing of user
-	input according to the cell format with an autofill system
-	for many sequences.  It can import files in a number of
-	popular formats, including <application>Excel</application>,
-	<application>Lotus 1-2-3</application>, and
-	<application>Quattro Pro</application>.  It has a large number
-	of built-in functions and allows all of the usual cell formats
-	such as number, currency, date, time, and much more.</para>
+      <para><application>Gnumeric</application> 是 <application>GNOME</application> 社区开发的电子表格程序。
+          它以通过元素格式和许多片断的自动填充系统来方便的自动“猜测”用户输入而著称。
+          它能导入一些流行的文件格式，比如像 <application>Excel</application> 、 <application>Lotus 1-2-3</application> 或 <application>Quattro Pro</application> 。
+          它有大量的内置函数和常见的单元格格式， 如数字、 货币、 日期、 时间等等。</para>
 
-      <para>To install <application>Gnumeric</application> as a
-	package:</para>
+      <para>通过预编译包安装 <application>Gnumeric</application> ，输入：</para>
 
       <screen>&prompt.root; <userinput>pkg_add -r gnumeric</userinput></screen>
 
-      <para>If the package is not available, use the Ports
-	Collection:</para>
+      <para>如果预编译包不可用，则可用使用 Ports Collection 编译安装：</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/math/gnumeric</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
@@ -1085,24 +970,15 @@
 	<secondary><application>KMyMoney</application></secondary>
       </indexterm>
 
-      <para><application>KMyMoney</application> is a personal finance
-	application created by the <application>KDE</application>
-	community.  <application>KMyMoney</application> aims to
-	provide the important features found in commercial personal
-	finance manager applications.  It also highlights ease-of-use
-	and proper double-entry accounting among its features.
-	<application>KMyMoney</application> imports from standard
-	<application>Quicken</application> QIF files, tracks
-	investments, handles multiple currencies, and provides a
-	wealth of reports.</para>
+      <para><application>KMyMoney</application> 是 <application>KDE</application> 创建的个人理财软件。
+          <application>KMyMoney</application> 旨在提供并融合各种商业财务管理软件所有的重要特性。
+           它也同样注重易用性和特有的复式记帐功能。<application>KMyMoney</application> 能从标准的 <application>Quicken</application> QIF 文件中导入数据， 追踪投资，处理多种货币并能提供一个财务报告。</para>
 
-      <para>To install <application>KMyMoney</application> as a
-	package:</para>
+      <para>通过预编译包安装 <application>KMyMoney</application> ，输入：</para>
 
       <screen>&prompt.root; <userinput>pkg_add -r kmymoney-kde4</userinput></screen>
 
-      <para>If the package is not available, use the Ports
-	Collection:</para>
+      <para>如果预编译包不可用，则可用使用 Ports Collection 编译安装：</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/finance/kmymoney-kde4</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
