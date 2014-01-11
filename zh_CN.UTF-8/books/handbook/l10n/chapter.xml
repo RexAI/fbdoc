@@ -24,8 +24,8 @@
 
     <para>&os; 是一个由分布在全球的用户和贡献者所支持的项目。
         本章将讨论 &os; 的国际化和本地化， 以便让母语非英语系的用户也能顺利的完成各项工作。
-        在操作系统和应用程序两个层面上， 主要是通过 <acronym>i18n</acronym> 标准来实现的，
-        所以， 这里我们将会大致介绍下如何实施。</para>
+        在系统和应用两个层面上， 主要是通过执行 <acronym>i18n</acronym> 标准来实现的，
+        这里我们将会大致介绍下如何实施。</para>
 
     <para>读完这章，您将了解：</para>
 
@@ -39,7 +39,7 @@
       </listitem>
 
       <listitem>
-	<para>如何为非英语语系配置虚拟控制台（console）。</para>
+	<para>如何为非英语语系配置控制台（console）。</para>
       </listitem>
 
       <listitem>
@@ -94,11 +94,11 @@
   </sect1>
 
   <sect1 xml:id="using-localization">
-    <title>使用本地化</title>
+    <title>使用本地化语言</title>
 
     <indexterm><primary>locale</primary></indexterm>
 
-    <para>区域设置由三个部分构成：语言代码 (Language Code)、 国家代码 (Country Code) 和编码(Encoding) 。
+    <para>区域设置由三个部分构成：语言代码 (Language Code)、 国家代码 (Country Code) 和编码 (Encoding) 。
         所以， 本地化语言名称由这三部分组成：</para>
 
     <programlisting><replaceable>语言代码</replaceable>_<replaceable>国家代码</replaceable>.<replaceable>编码</replaceable></programlisting>
@@ -151,14 +151,14 @@
       <indexterm><primary>encodings</primary></indexterm>
       <indexterm><primary>ASCII</primary></indexterm>
 
-      <para>有些语言不使用 ASCII 编码， 他们使用 8位， 宽或多字节字符编码，
+      <para>有些语言不使用 ASCII 编码， 它们使用 8 位， 宽或多字节字符编码，
           有关这些编码的更多信息， 请参阅 &man.multibyte.3; 。 比较古老的应用程序可能会无法识别它们，
-          并会认为它们是控制字符。 较新的应用程序通常能识别 8 位字符。由于个程序实现方式不同，
+          并会认为它们是控制字符。 较新的应用程序通常能识别 8 位字符。 由于个程序实现方式不同，
           用户可能不得不重新编译程序添加宽或多字节编码支持， 或进行额外配置。
           为了输入和处理宽或多字节字符， <link xlink:href="&url.base;/ports/index.html">&os; Ports
               Collection</link> 已经有各种语言的程序提供。 详情参阅 &os; port 中的 <acronym>i18n</acronym> 相关文档。</para>
 
-      <para>具体的来说， 用户可能需要查看应用程序的文档来决定如何正确地配置或确定使用哪个编译选项来编译 port 。</para>
+      <para>具体的来说， 用户可能需要查看应用程序的文档来决定如何正确地配置或确定使用哪些编译选项来编译 port 。</para>
 
       <para>有些事情需要注意的：</para>
 
@@ -230,7 +230,7 @@
 	  <sect5 xml:id="usr-setup">
 	    <title>用户级设置</title>
 
-	    <para>这里有个用户家目录下的 <filename>.login_conf</filename> 文件的小例子，它包含两个 Latin-1 编码：</para>
+	    <para>这里有个在用户家目录下的 <filename>.login_conf</filename> 文件的小例子， 它包含两个 Latin-1 编码：</para>
 
 	    <programlisting>me:\
 	:charset=ISO-8859-1:\
@@ -261,7 +261,7 @@ me:\
 	  <sect5 xml:id="adm-setup">
 	    <title>管理员级设置</title>
 
-	    <para>检查用户的登入类在 <filename>/etc/login.conf</filename> 里面是否设置了正确的语言。
+	    <para>检查用户的登录类在 <filename>/etc/login.conf</filename> 里面是否设置了正确的语言。
             主要要确定下面的几个设置：</para>
 
 	    <programlisting><replaceable>language_name</replaceable>|<replaceable>Account Type Description</replaceable>:\
