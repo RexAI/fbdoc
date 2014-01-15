@@ -155,28 +155,19 @@ login:</screen>
 	切换到第二个系统控制台
 	(<filename>ttyv2</filename>)， 等等。</para>
 
-      <para>同样地, 您正在从其中某个控制台切换到另一个控制台的时候,
-	FreeBSD 会保存正在使用和恢复将要使用屏幕传输通道。
-	这种结果形成一种 <quote>错觉</quote>，
-	您拥有许多<quote>虚拟</quote>屏幕和键盘可以输入很多的命令。
-	这些程序需要在一个虚拟控制台不能停止运行而又不需要观察它，
-	它继续运行而您可以切换到其他的虚拟控制台。</para>
-    </sect2>
+      <para>当从某个控制台切换到另外的控制台时， &os;
+	会根据需要保存正在使用的屏幕内容， 并恢复将要使用的屏幕内容。
+	用户会因此产生拥有多个可以输入和运行 &os; 命令的虚拟屏幕和键盘的感觉。
+	在用户切换到其它控制台时， 在先前的虚拟控制台上运行的程序仍会继续运行。</para>
 
-    <sect2 xml:id="consoles-ttys">
-      <title><filename>/etc/ttys</filename>文件</title>
+      <para>请参阅联机手册 &man.syscons.4;、 &man.atkbd.4;、
+	&man.vidcontrol.1; 以及 &man.kbdcontrol.1;， 以了解更多关于 &os;
+	控制台及键盘驱动的技术说明。</para>
 
-      <para>FreeBSD 虚拟控制台的默认配置为8个，但并不是硬性设置，
-        您可以很容易设置虚拟控制台的个数增多或减少。
-        虚拟控制台的的编号和设置在 <filename>/etc/ttys</filename> 文件里。</para>
+      <para>在 &os; 中， 虚拟控制台的数量是在
+	<filename>/etc/ttys</filename> 中配置的：</para>
 
-      <para>您可以使用 <filename>/etc/ttys</filename> 文件在 FreeBSD 下配置虚拟控制台。
-        文件里每一未加注释的行都能设置一个终端或虚拟控制台
-        (当行里含有 <literal>#</literal> 这个字符时不能使用) 。
-        FreeBSD 默认配置是配置出9个虚拟控制台而只能启动8个，
-	以下这些行是 <literal>ttyv</literal> 一起启动:</para>
-
-      <programlisting># name  getty                           type    status          comments
+      <programlisting># name    getty                         type  status comments
 #
 ttyv0   "/usr/libexec/getty Pc"         cons25  on  secure
 # Virtual terminals
@@ -189,9 +180,22 @@ ttyv6   "/usr/libexec/getty Pc"         cons25  on  secure
 ttyv7   "/usr/libexec/getty Pc"         cons25  on  secure
 ttyv8   "/usr/X11R6/bin/xdm -nodaemon"  xterm   off secure</programlisting>
 
-      <para>如果要了解这个文件中每一列的详细介绍，
-	以及虚拟控制台上所能使用的配置，
-	请参考联机手册 &man.ttys.5;。</para>
+
+      <para>您可以通过在行首添加注释符
+	(<literal>#</literal>) 来禁用虚拟控制台。 举例来说，
+	假如希望将可用的虚拟控制台从 8 个减少到 4 个， 您需要做的便是在代表
+	<filename>ttyv5</filename>
+	到 <filename>ttyv8</filename> 的这最后四行前面加上
+	<literal>#</literal>。 需要注意的是，
+	<emphasis>不要</emphasis> 把系统控制台 <filename>ttyv0</filename>
+	注释掉。 另外， 最后一个虚拟控制台 (<filename>ttyv8</filename>)
+	是在系统中安装了 <application>&xorg;</application>
+	并需要访问图形控制台时使用的， 其配置可参阅
+	<xref linkend="x11"/>。</para>
+
+      <para>关于这个文件中每一列的详细介绍， 以及配合虚拟控制台使用的参数选项，
+	请参阅
+	&man.ttys.5;。</para>
     </sect2>
 
     <sect2 xml:id="consoles-singleuser">
