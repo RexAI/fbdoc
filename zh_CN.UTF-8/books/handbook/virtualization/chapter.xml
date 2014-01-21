@@ -80,7 +80,7 @@
       <title>&macos; X 上的 <application>Parallels</application> 虚拟机</title>
 
       <para><application>Parallels Desktop</application> &mac; 版是一种在采用 &intel; 架构，
-          及运行着 &macos; 10.4.6 或更高版本 的 &apple; &mac; 上的商业虚拟机软件。
+          及运行着 &macos; 10.4.6 或更高版本的 &apple; &mac; 上的商业虚拟机软件。
           它完美的支持使用 &os; 作为它的客户操作系统。
           在 &macos; X 上安装好 <application>Parallels</application> 之后， 用户需要配置虚拟机并安装所需的客户操作系统。</para>
 
@@ -538,14 +538,14 @@ xenbr1          8000.feffffffffff   no                  vif0.1
     <sect2 xml:id="virtualization-guest-virtualpc">
       <title>&windows; 上的 <application>Virtual PC</application> 虚拟机</title>
 
-      <para>&windows; 上的 <application>Virtual PC</application> 是&microsoft; 旗下软件， 可免费使用。
+      <para>&windows; 上的 <application>Virtual PC</application> 是 &microsoft; 旗下软件， 可下载免费使用。
           相关信息请参阅 <link xlink:href="http://www.microsoft.com/windows/downloads/virtualpc/sysreq.mspx">系统要求</link>。
           一旦完成在 &microsoft.windows; 上安装 <application> Virtual PC</application> 后， 您需要配置一个虚拟机并安装所需的客户操作系统。</para>
 
       <sect3 xml:id="virtualization-guest-virtualpc-install">
 	<title>在 <application>Virtual PC</application> 里安装 &os;</title>
 
-    <para>在 <application>Virtual PC </application> 里安装 &os; 的第一步是新建一个虚拟机。
+    <para>在 <application>Virtual PC</application> 里安装 &os; 的第一步是新建一个虚拟机。
         选择 <guimenuitem>创建一个虚拟机 (Create a virtual machine)</guimenuitem> ：</para>
 
 	<mediaobject>
@@ -654,7 +654,7 @@ xenbr1          8000.feffffffffff   no                  vif0.1
       <sect3 xml:id="virtualization-guest-virtualpc-configure">
           <title>配置 <application>Virtual PC</application> 里的 &os; 虚拟机</title>
 
-	<para>在您将 &os; 安装到 &microsoft.windows; 上的 <application>Virtual PC</application>里后， 还需要一些设置， 以便优化虚拟机。</para>
+	<para>在您将 &os; 安装到 &microsoft.windows; 上的 <application>Virtual PC</application> 里后， 还需要一些设置， 以便优化虚拟机。</para>
 
 	<procedure>
 	  <step>
@@ -821,7 +821,7 @@ xenbr1          8000.feffffffffff   no                  vif0.1
 	    <programlisting>kern.hz=100</programlisting>
 
 	    <para>如果不配置， <application>VMware Fusion</application> 虚拟机里的 &os; 客户机在空闲状态下将会单核
-            计算机上占用 15% 的处理器资源，配置后将会降低至 5% 。</para>
+            计算机上占用 15% 的处理器资源， 配置后将会降低至 5% 。</para>
 	  </step>
 
 	  <step>
@@ -874,7 +874,7 @@ xenbr1          8000.feffffffffff   no                  vif0.1
 	<para>&os; 客户机执行以下命令。</para>
       </note>
 
-      <para>首先， &os; 客户机通过预编译包或 port 安装上 <package>emulators/virtualbox-ose-additions</package> 包。
+      <para>首先， &os; 客户机通过预编译包或 port 安装上 <package>emulators/virtualbox-ose-additions</package> 软件包。
           通过 port 安装使用以下命令：</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/emulators/virtualbox-ose-additions &amp;&amp; make install clean</userinput></screen>
@@ -904,16 +904,15 @@ vboxservice_enable="YES"</programlisting>
 	BusID "PCI:0:2:0"
 EndSection</programlisting>
 
-      <para>使用 <literal>vboxmouse</literal> 鼠标设备， 调整 <filename>/etc/X11/xorg.conf</filename> 文件，
-          添加：</para>
+      <para>使用 <literal>vboxmouse</literal> 鼠标设备， 调整 <filename>/etc/X11/xorg.conf</filename> 文件添加：</para>
 
       <programlisting>Section "InputDevice"
 	Identifier "Mouse0"
 	Driver "vboxmouse"
 EndSection</programlisting>
 
-      <para><acronym>HAL</acronym> 用户还应该创建或将 <filename>/usr/local/share/hal/fdi/policy/10osvendor/90-vboxguest.fdi 拷贝到
-              <filename>/usr/local/etc/hal/fdi/policy/90-vboxguest.fdi</filename> 。</para>
+      <para><acronym>HAL</acronym> 用户还应该创建或将 <filename>/usr/local/share/hal/fdi/policy/10osvendor/90-vboxguest.fdi</filename> 拷贝到
+              <filename>/usr/local/etc/hal/fdi/policy/90-vboxguest.fdi</filename>：</para>
 
       <programlisting>&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;!--
@@ -953,26 +952,28 @@ EndSection</programlisting>
   <sect1 xml:id="virtualization-host">
     <title>&os; 作为宿主机操作系统</title>
 
-    <para><application>&virtualbox;</application> 是一个开发非常活跃， 完整的虚拟化方案， 适用于大多数操作系统，
-        包括， 并且可在大部份的操作系统上使用， 包括 &windows;, &macos;, &linux; 和 &os; 。
-        也支持使用 &windows; 或 &unix;-like 作为它的客户机。它被作为一个开源软件发布， 但也单独提供也个闭源的扩展包组件。
-        这个组件提供适用于 USB 2.0 设备的支持。 更多有关信息可以在 <application>&virtualbox;</application> wiki <link xlink:href="http://www.virtualbox.org/wiki/Downloads"><quote>下载</quote> 页面找到。 目前这个闭源扩展包还不支持 &os; 。</para>
+    <para><application>&virtualbox;</application> 是一个开发非常活跃的， 完整的虚拟化方案， 适用于大多数操作系统，
+        包括 &windows; 、 &macos; 、 &linux; 和 &os; 。
+        也支持使用 &windows; 或 &unix;-like 作为它的客户机。 它被作为一个开源的虚拟化方案发布， 同时也单独的提供一个闭源的扩展包组件。
+        这个组件提供了对 USB 2.0 设备的支持。 更多有关信息可以在
+        <link xlink:href="http://www.virtualbox.org/wiki/Downloads"><application>&virtualbox;</application> wiki</link><quote>下载</quote> 页面找到。
+        目前这个扩展包还不支持 &os; 操作系统。</para>
 
     <sect2 xml:id="virtualization-virtualbox-install">
       <title>安装 &virtualbox;</title>
 
-      <para><application>&virtualbox;</application> 可以通过 &os; 预编译包或 port <package>emulators/virtualbox-ose</package> 安装。
-          这个 port 可以通过以下命令安装：</para>
+      <para><application>&virtualbox;</application> 可以通过 &os; 预编译包或 port 安装 <package>emulators/virtualbox-ose</package> 这个软件包。
+          通过 port 安装使用以下命令：</para>
 
       <screen>&prompt.root; <userinput>cd /usr/ports/emulators/virtualbox-ose</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
 
-      <para>这个 port 有个<literal>增强功能包(GuestAdditions)</literal>的选项， 它为客户机操作系统提供很多有用的功能，
-          比如鼠标指针集成（允许宿主机与客户机之间共享， 而不需要事前按下某些特定的快捷键切换）和更好的视频渲染效果，
-          尤其是当客户机是 &windows; 的时候。 在客户操作系统安装完成后， 可以在 <guimenu>设备(Devices)</guimenu> 菜单下找到.</para>
+      <para>这个 port 有个 <literal>增强功能包(GuestAdditions)</literal> 的选项， 它为客户机操作系统提供很多有用的功能，
+          比如鼠标指针集成（允许宿主机与客户机之间共享鼠标指针， 而不需要提前按下切换热键来切换）和更好的视频渲染效果，
+          尤其是当客户机是 &windows; 的时候。 这个增强功能包在客户操作系统安装完成后， 可以在 <guimenu>设备(Devices)</guimenu> 菜单下找到。</para>
 
       <para>在第一次运行 <application>&virtualbox;</application> 之前还需要做一些配置。
-          port 会安装一个内核模块到 <filename>/boot/modules</filename> 目录， 这个模块需要事先加载：</para>
+          在通过 port 安装的时候会安装一个内核模块到 <filename>/boot/modules</filename> 目录， 这个模块需要运行前加载：</para>
 
       <screen>&prompt.root; <userinput>kldload vboxdrv</userinput></screen>
 
@@ -980,7 +981,7 @@ EndSection</programlisting>
 
       <programlisting>vboxdrv_load="YES"</programlisting>
 
-      <para>如果需要桥接或仅主机网络， 则需要增加以下内容到 <filename>/etc/rc.conf</filename> 中，并重启计算机：</para>
+      <para>如果需要使用桥接或仅主机网络， 则需要增加以下内容到 <filename>/etc/rc.conf</filename> 中，并重启计算机：</para>
 
       <programlisting>vboxnet_enable="YES"</programlisting>
 
@@ -1007,13 +1008,13 @@ perm    vboxnetctl 0660</programlisting>
 
       <para>有关配置和使用 <application>&virtualbox;</application> 的更多信息， 请参考官方网站。
           与 &os; 相关和的特定信息和故障排除说明，
-          请参阅 <link xlink:href="http://wiki.FreeBSD.org/VirtualBox">&os; wiki</link>页面。</para>
+          请参阅 <link xlink:href="http://wiki.FreeBSD.org/VirtualBox">&os; 维基</link> 页。</para>
     </sect2>
 
     <sect2 xml:id="virtualization-virtualbox-usb-support">
       <title>&virtualbox; 的 USB 支持</title>
 
-      <para>为了能够读取和写入到 USB 设备， 需要将用户添加到 <systemitem class="groupname">operator</systemitem> 用户组：</para>
+      <para>为了能够读写 USB 设备， 需要将用户添加到 <systemitem class="groupname">operator</systemitem> 用户组：</para>
 
       <screen>&prompt.root; <userinput>pw groupmod operator -m jerry</userinput></screen>
 
@@ -1026,7 +1027,7 @@ add path 'usb/*' mode 0660 group operator</programlisting>
 
       <programlisting>devfs_system_ruleset="system"</programlisting>
 
-      <para>然后， 从其 devfs：</para>
+      <para>然后， 重启 devfs 服务：</para>
 
       <screen>&prompt.root; <userinput>service devfs restart</userinput></screen>
 
@@ -1039,16 +1040,16 @@ add path 'usb/*' mode 0660 group operator</programlisting>
       <para>访问宿主机 DVD/CD 设备是通过共享物理设备来实现的。 在 &virtualbox; 虚拟机存储设置界面，
           首先需要先创建一个空的 IDE CD/DVD  设备， 然后在虚拟 CD/DVD 设备选择物理设备。
           弹出的复选框 <literal>Passthrough</literal> 后就允许虚拟机使用物理设备了。
-          例如， 这样就可以使用物理音频 CD 或 burner 了。</para>
+          例如， 使用物理音频 CD 或 burner 了。</para>
 
-      <para><application>&virtualbox;</application> 使用 DVD/CD 需要启用 <acronym>HAL</acronym> ，
+      <para><application>&virtualbox;</application> 使用 DVD/CD 需要启用 <acronym>HAL</acronym> 服务，
           要启用它， 添加以下内容到 <filename>/etc/rc.conf</filename> 中：</para>
 
       <programlisting>hald_enable="YES"</programlisting>
 
       <screen>&prompt.root; <userinput>service hald start</userinput></screen>
 
-      <para>为了让用户能够正常使用的 <application>&virtualbox;</application> 的 DVD/CD 功能，
+      <para>为了让用户能够正常使用的 <application>&virtualbox;</application> 物理 DVD/CD 功能，
           需要用户对下列 <filename>/dev/xpt0</filename> 、 <filename>/dev/cdN</filename> 和 <filename>/dev/passN</filename> 设备具有访问权，
           通常的做法是将用户加入到  <systemitem class="groupname">operator</systemitem> 用户组中。
           通过修改 <filename>/etc/devfs.conf</filename> 文件修正这些设备的权限：</para>
