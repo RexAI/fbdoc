@@ -314,6 +314,10 @@
 <!ENTITY a.newbus "<link xmlns='http://docbook.org/ns/docbook' xlink:href='&a.newbus.url;'>FreeBSD new-bus 邮件列表</link>">
 <!ENTITY a.newbus.name "<link xmlns='http://docbook.org/ns/docbook' xlink:href='&a.newbus.url;'>freebsd-new-bus</link>">
 
+<!ENTITY a.numerics.url "&a.mailman.listinfo;/freebsd-numerics">
+<!ENTITY a.numerics "<link xmlns='http://docbook.org/ns/docbook' xlink:href='&a.numerics.url;'>Discussions of high quality implementation of libm functions</link>">
+<!ENTITY a.numerics.name "<link xmlns='http://docbook.org/ns/docbook' xlink:href='&a.numerics.url;'>freebsd-numerics</link>">
+
 <!ENTITY a.office.url "&a.mailman.listinfo;/freebsd-office">
 <!ENTITY a.office "<link xmlns='http://docbook.org/ns/docbook' xlink:href='&a.office.url;'>FreeBSD 办公套件应用 邮件列表</link>">
 <!ENTITY a.office.name "<link xmlns='http://docbook.org/ns/docbook' xlink:href='&a.office.url;'>freebsd-office</link>">
