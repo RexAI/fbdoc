@@ -1,0 +1,8 @@
+http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/index.html
+http://www.freebsd.org/doc/zh_CN.UTF-8/books/handbook/index.html
+
+翻译规则：
+1. 尽量保持文档原有格式，例如不要改变缩进量。
+2. 中文间必须使用中文标点，中文标点后空格，中文间的英文前后空格。
+3. 只能在可以空格的地方换行，例如带逗号的句子可以在逗号后换行。
+4. 专用名词若翻译后能保留其首字母则直接翻译，若不能保留则不翻译，但将带括号的翻译结果添加至其后。

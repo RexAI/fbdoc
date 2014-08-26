@@ -1,5 +1,0 @@
-1. bsdinstall
-2. ports
-3. jails
-4. disks
-5. geom
