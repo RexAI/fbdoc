@@ -1,1 +1,22 @@
-安装FreeBSD 9.x及之后版本
+http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/bsdinstall.html
+http://www.freebsd.org/doc/zh_CN.UTF-8/books/handbook/bsdinstall.html
+注：目前为第3章，最终为第2章。
+
+第3章 安装FreeBSD 9.x及之后版本
+重构、改编及部分重写：Jim Mock
+对bsdinstall的更新：Gavin Atkinson与Warren Block
+对root-on-ZFS的更新：Allan Jude
+
+目录
+3.1. 概述
+3.2. 最小硬件需求
+3.3. 安装前的准备工作
+3.4. 开始安装
+3.5. 使用bsdinstall
+3.6. 分配磁盘空间
+3.7. 确认安装
+3.8. 安装后的配置
+3.9. 故障排除
+3.10. 使用Live CD
+
+3.1 概述
