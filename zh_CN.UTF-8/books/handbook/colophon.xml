@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     The FreeBSD Documentation Project
+     The FreeBSD Simplified Chinese Project
+
+     Original Revision: r43258
+     $FreeBSD$
+-->
+<colophon xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="colophon">
+    <para>本书是 <quote>FreeBSD 文档计划</quote> 的数百名贡献者的工作成果。
+        贡献者们采用 DocBook DTD 标准编写 XML 源文件， 通过可扩展样式表转换语言（XSLT）引擎转换为其他格式的文档。
+        由于 Donald Knuth 的 &tex; 排版语言、 Leslie Lamport 的 <application>LaTeX</application> ，
+        以及 Sebastian Rahtz 的<application>JadeTeX</application>  宏集的存在，
+        使得本书的印刷版的上市成为可能。</para>
+</colophon>

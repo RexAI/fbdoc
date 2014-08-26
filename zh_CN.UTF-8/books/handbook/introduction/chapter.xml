@@ -1,0 +1,924 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     The FreeBSD Documentation Project
+     The FreeBSD Simplified Chinese Project
+
+     Original Revision: r43258
+     $FreeBSD$
+-->
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="introduction">
+  <info><title>引言</title>
+    <authorgroup>
+      <author><personname><firstname>Jim</firstname><surname>Mock</surname></personname><contrib>改制重组及部分修改， 由： </contrib></author>
+    </authorgroup>
+  </info>
+
+  
+
+  <sect1 xml:id="introduction-synopsis">
+    <title>概述</title>
+
+    <para>感谢您对 &os; 的关注！ 以下章节涵盖了 &os; 项目的各个方面，
+        例如它的历史、 目标、 开发模式等等。</para>
+
+    <para>阅读完本章， 您将了解：</para>
+
+    <itemizedlist>
+      <listitem>
+	<para>&os; 与其它计算机操作系统的关系。</para>
+      </listitem>
+
+      <listitem>
+	<para>&os; 项目的历史。</para>
+      </listitem>
+
+      <listitem>
+	<para>&os; 项目的目标。</para>
+      </listitem>
+
+      <listitem>
+	<para>&os; 开放源代码开发模式的基础。</para>
+      </listitem>
+      <listitem>
+    <para>当然， 还有 <quote>&os;</quote> 这个名称的由来。</para>
+      </listitem>
+    </itemizedlist>
+  </sect1>
+
+  <sect1 xml:id="nutshell">
+    <title>欢迎来到 &os; 的世界！</title>
+
+    <indexterm><primary>4.4BSD-Lite</primary></indexterm>
+
+    <para>&os; 是一个基于 4.4BSD-Lite ， 运行于英特尔 （ x86 和 &itanium; ） 、 AMD64 、
+        Sun &ultrasparc; 架构的计算机之上的操作系统。
+        向到其它架构的移植工作也正在进行中。 需要了解更多信息，
+        您也可以阅读 <link linkend="history">&os; 的历史</link>
+        或 <link linkend="relnotes">最新发行版</link> 。
+        如果希望贡献您的一份力量 （代码， 硬件， 资金）， 请看
+        <link xlink:href="&url.articles.contributing;/index.html">为 &os;
+            提供帮助</link> 这篇文章。</para>
+
+    <sect2 xml:id="os-overview">
+      <title>&os; 能做些什么？</title>
+
+      <para>&os; 具有许多非凡特性。 例如：</para>
+
+      <itemizedlist>
+	<listitem>
+	  <para><emphasis>抢占式多任务</emphasis><indexterm>
+	      <primary>preemptive multitasking</primary>
+      </indexterm> 与动态优先级调整， 确保应用程序平滑运行， 并确保用户能公平的使用系统资源，
+      即使高负载的情况下。</para>
+	</listitem>
+
+	<listitem>
+	  <para><emphasis>多用户</emphasis><indexterm>
+	      <primary>multi-user facilities</primary>
+      </indexterm>  使得多个用户能同时使用 &os; 系统做各自的事情。
+      这意味着， 像打印机和磁带驱动器这样的系统外设，
+      可以完全共享给系统上的或网络中的所有用户， 通过对用户或用户组进行限制，
+      可以保证系统资源不被滥用。</para>
+	</listitem>
+
+	<listitem>
+	  <para>强大的 <emphasis>TCP/IP
+	      网络</emphasis><indexterm>
+	      <primary>TCP/IP networking</primary>
+      </indexterm> 支持许多行业标准 （如： SCTP 、 DHCP 、 NFS 、 NIS 、
+      PPP 、 SLIP 、 IPsec 和 IPv6 ）。 这意味着您的 &os; 主机可以很便捷与其他系统进行协同工作，
+      也可以作为企业服务器， 提供一些像是 NFS （远程文件访问） ，
+      电子邮件服务之类的重要服务， 或者为您的组织接入互联网提供 WWW 、 FTP 、
+      路由和防火墙 （安全） 服务。</para>
+	</listitem>
+
+	<listitem>
+	  <para><emphasis>内存保护</emphasis><indexterm>
+	      <primary>memory protection</primary>
+  </indexterm> 确保应用程序 （ 或用户 ） 间不会互相干扰
+  一个应用程序的崩溃不会以任何方式影响到他人。 </para>
+	</listitem>
+
+	<listitem>
+        <para>行业标准的 <emphasis>X Window
+	      系统</emphasis><indexterm>
+	      <primary>X Window System</primary>
+      </indexterm> （ X11R7 ） 可以在任何计算机上提供了一个图形用户界面（ GUI ），
+      并且其完整的源代码也是完全开放的。</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    <indexterm>
+	      <primary>binary compatibility</primary>
+	      <secondary>Linux</secondary>
+	    </indexterm>
+	    <indexterm>
+	      <primary>binary compatibility</primary>
+	      <secondary>SCO</secondary>
+	    </indexterm>
+	    <indexterm>
+	      <primary>binary compatibility</primary>
+	      <secondary>SVR4</secondary>
+	    </indexterm>
+	    <indexterm>
+	      <primary>binary compatibility</primary>
+	      <secondary>BSD/OS</secondary>
+	    </indexterm>
+	    <indexterm>
+	      <primary>binary compatibility</primary>
+	      <secondary>NetBSD</secondary>
+	    </indexterm>
+	    <emphasis>二进制兼容</emphasis> 为 Linux 、 SCO 、 SVR4 、 BSDI 、
+        NetBSD 的许多程序提供二进制兼容。</para>
+	</listitem>
+
+	<listitem>
+        <para>成千上万的 <emphasis>即开即用 （ ready-to-run ）</emphasis> 应用程序，
+            可以在 &os; 的 <emphasis>ports</emphasis> 和
+	    <emphasis>预编译包</emphasis> 套件中找到。
+        您可以轻松的从这里获得， 何须搜索网络？</para>
+	</listitem>
+
+	<listitem>
+	  <para>可以通过互联网找到无数
+          <emphasis>容易移植 （ easy-to-port ）</emphasis> 的应用程序。
+          &os; 提供了绝大多数 &unix; 系统的源代码级兼容，
+          因此， 大多数应用程序并不需要修改或只需要很少的修改就可以通过编译。</para>
+	</listitem>
+	<listitem>
+	  <para>需要时请求分页 <emphasis>虚拟内存</emphasis><indexterm>
+	      <primary>virtual memory</primary>
+      </indexterm> 和 <quote>集成 VM/缓冲区高速缓存</quote> 为运行大内存需求的应用程序时，
+      依旧能保持其他用户的交互式迅速响应。</para>
+	</listitem>
+
+	<listitem>
+	  <para><emphasis>SMP</emphasis><indexterm>
+	      <primary>Symmetric Multi-Processing
+		(SMP)</primary>
+	    </indexterm> 为多处理器的计算机提供支持。</para>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    <indexterm>
+	      <primary>compilers</primary>
+	      <secondary>C</secondary>
+	    </indexterm>
+	    <indexterm>
+	      <primary>compilers</primary>
+	      <secondary>C++</secondary>
+	    </indexterm>
+	    一个完整的 <emphasis>C</emphasis>
+	    和 <emphasis>C++</emphasis>
+        开发环境。 也可以通过 ports 和预编译包套件找到更多的高级研究和其他开发语言程序。</para>
+	</listitem>
+
+	<listitem>
+	  <para>完整的操作系统 <emphasis>源代码</emphasis><indexterm>
+	      <primary>source code</primary>
+      </indexterm> 这意味着赋予您最大控制环境。
+      当您可以拥有一个真正开放的系统时， 为什么还要受商业公司摆布呢？</para>
+	</listitem>
+
+	<listitem>
+	  <para>丰富的 <emphasis>在线文档</emphasis> 。</para>
+	</listitem>
+
+	<listitem>
+	  <para><emphasis>还有更多！</emphasis></para>
+	</listitem>
+      </itemizedlist>
+
+      <para>&os; 是基于加州大学伯克利分校计算机系统研究组（ CSRG ） 的 4.4BSD-Lite<indexterm>
+	  <primary>4.4BSD-Lite</primary>
+	</indexterm> 发行的， <indexterm>
+	  <primary>Computer Systems Research Group (CSRG)</primary>
+  </indexterm> 并继承了 BSD 的优良传统。
+    除了 CSRG  提供的高品质的成果， &os; 项目还投入数千小时以上的时间来调整优化系统，
+    使其在高负载的情况下仍然拥有良好的性能和可靠性。
+    &os; 提供了媲美商业产品的性能和可靠性， 甚至某些先进功能还超越了它们。</para>
+
+      <para>真正限制 &os; 的应用范围的， 也许只有您自己的想象力了。
+          从软件开发到工厂自动化， 从库存管理到远程卫星天线矫正， 只要商业 &unix;
+          能做到的， &os; 更有能力做到。
+          &os; 有个更显著的优势， 全球数以千计的研究中心和大学开发了大量的，
+          几乎没有任何成本的高质量应用程序。 此外， 大量的商业程序也在快速增加。</para>
+
+      <para>由于 &os; 的源代码是完全开放的， 使得对于特定的应用程序或项目，
+          可以对系统进行最大限度的定制， 而对于大多数商业操作系统来说，
+          这通常是不可能的， 以下是一些目前人们使用 &os; 服务的例子：</para>
+
+      <itemizedlist>
+	<listitem>
+        <para><emphasis>互联网服务：</emphasis> &os; 内置功能强大的 TCP/IP 网络，
+            使它成为各种互联网服务最理想的平台：</para>
+
+	  <itemizedlist>
+	    <listitem>
+	      <para>万维网服务 （ WWW ）<indexterm>
+		  <primary>web servers</primary>
+		</indexterm>
+		（标准或安全 [SSL] ）</para>
+	    </listitem>
+
+	    <listitem>
+	      <para>IPv4 和 IPv6 路由</para>
+	    </listitem>
+
+	    <listitem>
+	      <para>防火墙<indexterm>
+		  <primary>firewall</primary>
+		</indexterm>
+		和 NAT<indexterm>
+		  <primary>NAT</primary>
+		</indexterm>
+		（ <quote>IP 伪装</quote> ）网关</para>
+	    </listitem>
+
+	    <listitem>
+	      <para>FTP 服务<indexterm>
+		  <primary>FTP servers</primary>
+		</indexterm></para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		<indexterm>
+		  <primary>electronic mail</primary>
+		  <see>email</see>
+		</indexterm>
+		<indexterm>
+		  <primary>email</primary>
+		</indexterm>
+		电子邮件服务</para>
+	    </listitem>
+
+	    <listitem>
+	      <para>还有更多...</para>
+	    </listitem>
+	  </itemizedlist>
+	</listitem>
+
+	<listitem>
+        <para><emphasis>教育：</emphasis> 若您是计算机科学或者相关工程领域的学生，
+            那么再没有比 &os; 更适合学习操作系统， 计算机架构和网络的了，
+            还有一些如 CAD 、 数学和图形开发包等工具可以免费获取，
+            用于您完成一些 <emphasis>其他</emphasis> 相关工作。</para>
+	</listitem>
+
+	<listitem>
+        <para><emphasis>研究：</emphasis> 完整的开源操作系统源代码，
+            &os; 对于研究操作系统以及其他计算机科学都是一个极好的平台。
+            &os; 可自由获得的特性，
+            也使得处于不同地域的开发团队不必担心版权及系统开放性问题，
+            而展开自由的交流与合作。</para>
+	</listitem>
+
+	<listitem>
+        <para><emphasis>网络：</emphasis> 需要一个新的路由器？<indexterm>
+	      <primary>router</primary>
+	    </indexterm> 一台域名服务器 （ DNS ）？<indexterm>
+	      <primary>DNS Server</primary>
+	    </indexterm> 再或者一个隔离您内部网络的防火墙？
+        &os; 可以轻松地将您不再使用的个人电脑变成一个功能完善的带数据包过滤功能的高级路由器。</para>
+	</listitem>
+
+	<listitem>
+        <para><emphasis>嵌入式：</emphasis> 使用 &os; 来构建嵌入式系统，
+            是一个极好的主意。<indexterm>
+	      <primary>embedded</primary>
+	    </indexterm>
+        跨越 &arm; 、 &mips; 和 &powerpc; 平台，
+        支持强大的网络协议栈， 顶尖功能和采用
+        <link xlink:href="&url.books.faq;/introduction.html#bsd-license-restrictions">BSD 许可证</link>
+        为 &os; 成为嵌入式路由器， 防火墙或其他设备提供良好的基础。</para>   
+    </listitem>
+
+	<listitem>
+	  <para>
+	    <indexterm>
+	      <primary>X Window System</primary>
+	    </indexterm>
+	    <indexterm>
+	      <primary>GNOME</primary>
+	    </indexterm>
+	    <indexterm>
+	      <primary>KDE</primary>
+	    </indexterm>
+        <emphasis>桌面：</emphasis> X11 服务器是 &os; 上一个免费的桌面解决方案。
+        &os; 提供了很多开源的桌面环境， 包括标准的 <application>GNOME</application>
+        和 <application>KDE</application> 图形用户界面。
+        &os; 甚至可以从一个中央服务器 <quote>无盘</quote> 启动，
+        使得终端变得更为便宜和易于管理。</para>
+	</listitem>
+
+	<listitem>
+        <para><emphasis>软件开发：</emphasis> &os; 基本系统附带了一些开发工具，
+            包括一个完整的 C/C++<indexterm>
+	      <primary>Compiler</primary>
+	    </indexterm>
+        编译器和调试器套件。 还有许多其他语言的工具可通过 ports 和预编译包安装。</para>
+	</listitem>
+      </itemizedlist>
+
+      <para>&os; 可免费下载到， 也可通过 CD-ROM 或 DVD 获得。
+          请参阅 <xref linkend="mirrors"/> 以获得更多有关获取 &os; 的相关信息。</para>
+    </sect2>
+
+    <sect2 xml:id="introduction-nutshell-users">
+      <title>谁在使用 &os; ？</title>
+
+      <indexterm>
+	<primary>users</primary>
+	<secondary>large sites running &os;</secondary>
+      </indexterm>
+
+      <para>&os; 是一个功能先进， 经得起安全考验和有稳定发布周期，
+          以及它的开放的授权许可证使其作为一个平台，
+          用于许多商业或开源驱动的设备和产品，
+          这包括世界上许多大型 IT 公司：</para>
+
+      <itemizedlist>
+	<listitem>
+	  <para><link xlink:href="http://www.apache.org/">Apache</link><indexterm>
+              <primary>Apache</primary></indexterm> - Apache
+          软件基金会运行其大部分面向公众的基础服务，
+          包括最大的 SVN 仓库， 在全球拥有超过 140 万次提交，包括 &os; 。</para>
+	</listitem>
+
+	<listitem>
+        <para><link xlink:href="http://www.apple.com/">Apple</link><indexterm>
+                <primary>Apple</primary></indexterm> - OS X 中大量借鉴了 &os; 的网络协议栈，
+            虚拟文件系统， 以及许多用户层组件。 苹果 iOS 也借鉴很多 &os; 元素。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.cisco.com/">Cisco</link><indexterm>
+              <primary>Cisco</primary></indexterm> - IronPort 
+          的网络安全和防垃圾邮件设备运行着定制后的 &os; 内核。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.citrix.com/">Citrix</link><indexterm>
+              <primary>Citrix</primary></indexterm> - NetScaler
+          系列安全设备提供 4-7 层负载均衡、 内容缓存、 应用防火墙、 安全 VPN
+          和移动云网络接入， 是由一个 &os; shell 驱动的。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.dell.com/KACE">Dell
+	      KACE</link><indexterm><primary>Dell
+              KACE</primary></indexterm> - KACE 系统管理设备基于 &os; ，
+      具有可靠性， 可扩展性， 和社区支持其持续发展。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.experts-exchange.com/">Experts
+	      Exchange</link><indexterm>
+	      <primary>Experts Exchange</primary>
+      </indexterm> - 所有对外服务的网页服务器都是由 &os; 驱动的，
+      他们广泛采用 jails 进行隔离开发和环境测试， 以减省虚拟化的开销。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.isilon.com/">Isilon</link><indexterm>
+              <primary>Isilon</primary></indexterm> - Isilon 的企业级存储设备是基于 &os; 的。
+          由于 &os; 使用极度宽松的许可证允许 Isilon 公司在整个内核中集成自己的知识产权，
+          并着力于打造自己的产品， 而不仅仅是一个操作系统。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.ixsystems.com/">iXsystems</link><indexterm>
+              <primary>iXsystems</primary></indexterm> - 统一存储设备 TrueNAS
+          是基于 &os; 的。 除了商业产品， iXsystems 也开发和管理着
+          PC-BSD 和 FreeNAS 开源项目。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.juniper.net/">Juniper</link><indexterm>
+              <primary>Juniper</primary></indexterm> - JunOS 是驱动着所有 Juniper 网络设备
+          （包括路由器， 交换机， 安全和网络设备） 的操作系统， 它是基于 &os; 的。
+          Juniper 网络与许多厂商， 展示项目和商业产品供应商之间的存在共生关系。
+          Juniper 网络改进 &os; 的 upstreamed 导入进 &os; 降低了 JunOS
+          新功能集成到 &os; 的复杂性。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.mcafee.com/">McAfee</link><indexterm>
+              <primary>McAfee</primary></indexterm> - SecurOS 为迈克菲的企业级防火墙产品，
+          包含的 Sidewinder 是基于 &os; 的。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.netapp.com/">NetApp</link><indexterm>
+	      <primary>NetApp</primary></indexterm> - Data ONTAP
+      GX 存储设备是基于 &os; 的。 此外 NetApp 还贡献了许可功能，
+      比如采用新 BSD 许可证的 bhyve 虚拟机管理程序。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.netflix.com/">Netflix</link><indexterm>
+              <primary>Netflix</primary></indexterm> - OpenConnect 是提供给
+          Netflix 用户的电影流媒体服务， 它是基于 &os; 的。
+          Netflix 公司对代码库有大量的贡献， 并致力于维护从主线 &os; 的零增量。
+          Netflix 的 OpenConnect 服务， 在北美贡献了超 32% 的网络流量。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.sandvine.com/">Sandvine</link>
+	    <indexterm><primary>Sandvine</primary></indexterm> -
+        Sandvine 公司使用 &os; 作为它们的智能网络的策略控制产品的高性能实时网络的处理平台。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.sony.com/">Sony</link>
+	    <indexterm><primary>Sony</primary></indexterm> -
+        两个 PlayStation 3 和 PlayStation 4 游戏机运行在修改版的 &os; 之上。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.sophos.com/">Sophos</link>
+	    <indexterm><primary>Sophos</primary></indexterm> -
+        Sophos 的电子邮件设备是基于固化的 &os; ， 扫描接收邮件中的垃圾邮件和病毒，
+        同时还监控发出邮件中的恶意软件， 以及敏感信息泄漏。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.spectralogic.com/">Spectra Logic</link>
+	    <indexterm><primary>Spectra Logic</primary></indexterm> -
+        归档文件级存储设备 nTier 运行着 &os; 和 OpenZFS 。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.weather.com/">The Weather
+	      Channel</link><indexterm><primary>The Weather
+              Channel</primary></indexterm> - IntelliStar 设备是为各个地方有线电视台提供天气预报，
+      通过运行在 &os; 有线电视网络程序实现的。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.verisign.com/">Verisign</link>
+	    <indexterm><primary>Verisign</primary></indexterm> -
+        VeriSign 公司负责运营的 .com 和 .net 的根域名的注册， 及其后的 DNS 服务。
+        它们依靠大量不同的网络操作系统包括 &os; ，
+        以确保出错时其他服务不被破坏。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.whatsapp.com/">WhatsApp</link>
+          <indexterm><primary>WhatsApp</primary></indexterm> -
+          当 WhatsApp 需要一个能够处理每个服务器超过 100 万并发的 TCP 连接时，
+          它们选择了 &os; 。 它使得单个服务器连接 250 万。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://wheelsystems.com/en/">Wheel Systems</link>
+	    <indexterm><primary>Wheel Systems</primary></indexterm> -
+        FUDO 安全设备允许企业监视， 控制， 记录和审计承包商和他们的系统管理员。
+        所有基于 &os; 的功能包括： ZFS 、 GELI 、 Capsicum 、
+        HAST 和 auditdistd 。</para>
+	</listitem>
+      </itemizedlist>
+
+      <para>&os; 也催生了一些相关的开源项目：</para>
+
+      <itemizedlist>
+	<listitem>
+	  <para><link xlink:href="http://bsdrp.net/">BSD Router</link><indexterm>
+              <primary>BSD Router</primary></indexterm> -
+          一个基于 &os; 的为替代大型企业路由器设计的运行于标准的 PC 硬件上。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.freenas.org/">FreeNAS</link><indexterm>
+              <primary>FreeNAS</primary></indexterm> -
+          一个定制的 &os; 被设计用来作为一个网络文件服务器设备。
+          提供了一个基于 Python 的网页界面来简化 UFS 和 ZFS 文件系统的管理工作。
+          提供包括 NFS ， SMB/CIFS ， AFP ，FTP 和 iSCSI 的支持。
+          集成基于 &os; jails 的一个可扩展的插件系统。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.ghostbsd.org/">GhostBSD</link><indexterm>
+              <primary>GhostBSD</primary></indexterm> -
+          采用 GNOME 桌面环境面向桌面的 &os; 发行版。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://mfsbsd.vx.sk/">mfsBSD</link><indexterm>
+              <primary>mfsBSD</primary></indexterm> -
+          一个工具包， 用于构建完全运行于内存中的 &os; 系统镜像。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.nas4free.org/">NAS4Free</link><indexterm>
+              <primary>NAS4Free</primary></indexterm> -
+          一个基于 &os; 的文件服务器使用一个 PHP 开发的网页界面。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.pcbsd.org/">PC-BSD</link><indexterm>
+              <primary>PC-BSD</primary></indexterm> -
+          &os; 的定制版本， 面向桌面用户提供了图形化的工具来为所有 &os; 用户提供服务。
+          旨在缓解 Windows 和 OS X 用户的过渡难度。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.pfsense.org/">pfSense</link><indexterm>
+              <primary>pfSense</primary></indexterm> -
+          基于 &os; 提供很多功能， 并支持 IPv6 的防火墙。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://m0n0.ch/wall/">m0n0wall</link><indexterm>
+              <primary>m0n0wall</primary></indexterm> -
+          -精简的 &os; 采用一个网页服务器和 PHP 。
+          设计作为一个小于 12 MB 存储空间的嵌入式防火墙设备。</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://zrouter.org/">ZRouter</link><indexterm>
+              <primary>ZRouter</primary></indexterm> -
+          基于 &os; 的嵌入式设备的一个开源的替代固件。
+          为取代专有固件上而设计的。</para>
+	</listitem>
+      </itemizedlist>
+
+      <para>&os; 也驱动了一些互联网上的大型网站， 它们包括：</para>
+
+      <itemizedlist>
+	<listitem>
+	  <para><link xlink:href="http://www.yahoo.com/">Yahoo!</link><indexterm>
+	      <primary>Yahoo!</primary></indexterm></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.yandex.ru/">Yandex</link><indexterm>
+	      <primary>Yandex</primary></indexterm></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.rambler.ru/">Rambler</link><indexterm>
+	      <primary>Rambler</primary></indexterm></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.sina.com/">Sina</link><indexterm>
+	      <primary>Sina</primary>
+	    </indexterm></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.pair.com/">Pair
+	      Networks</link><indexterm>
+	      <primary>Pair Networks</primary></indexterm></para>
+	</listitem>
+
+	<listitem>
+        <para><link xlink:href="http://www.sony.co.jp/">Sony
+            Japan</link><indexterm>
+	      <primary>Sony Japan</primary></indexterm></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.netcraft.com/">Netcraft</link><indexterm>
+	      <primary>Netcraft</primary></indexterm></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="https://signup.netflix.com/openconnect">Netflix</link>
+	    <indexterm><primary>Netflix</primary></indexterm></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.163.com/">NetEase</link><indexterm>
+	      <primary>NetEase</primary></indexterm></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.weathernews.com/">Weathernews</link>
+	    <indexterm><primary>Weathernews</primary></indexterm></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.telehouse.com/">TELEHOUSE
+	      America</link><indexterm>
+	      <primary>TELEHOUSE America</primary>
+	    </indexterm></para>
+	</listitem>
+
+      </itemizedlist>
+
+      <para>等等， 还有很多。
+          维基百科也维护着一份 <link xlink:href="http://en.wikipedia.org/wiki/List_of_products_based_on_FreeBSD">
+	  基于 &os; 的产品清单</link></para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="history">
+    <title>关于 &os; 项目</title>
+
+    <para>以下部分提供了有关项目的一些背景信息， 包括简史、 项目目标和项目开发模式。</para>
+
+    <sect2 xml:id="intro-history">
+      <title>&os; 简史</title>
+
+      <indexterm><primary>386BSD Patchkit</primary></indexterm>
+      <indexterm><primary>Hubbard, Jordan</primary></indexterm>
+      <indexterm><primary>Williams, Nate</primary></indexterm>
+      <indexterm><primary>Grimes, Rod</primary></indexterm>
+      <indexterm>
+	<primary>FreeBSD Project</primary>
+	<secondary>history</secondary>
+      </indexterm>
+      <para>&os; 项目于 1993 年初形成， 源自 Nate Williams 、 Rod Grimes 和 Jordan Hubbard
+          所维护的非官方 386BSD 补丁工具包。</para>
+
+      <indexterm><primary>386BSD</primary></indexterm>
+      <para>最初的目标是制作一份 386BSD 的修正快照版， 以解决一些补丁工具包机制不能够解决的的问题。
+          也许还有人记得， 最初的项目名称叫做 386BSD 0.5 或 386BSD Interim
+          其实就是这个原因。</para>
+
+      <indexterm><primary>Jolitz, Bill</primary></indexterm>
+      <para>386BSD 是 Bill Jolitz 的操作系统，
+          这在当时已经大约有一年的分裂讨论。 由于补丁工具包在过去的每一天里都在急剧的膨胀，
+          我们一致同意决定提供一个临时的 <quote>纯净（ cleanup ）</quote> 版本来帮助 Bill 。
+          然而， Bill Jolitz 却在没指定如何将项目继续下去的情况， 突然退出了这个项目，
+          最终这个项目只能被迫停止了。</para>
+
+      <indexterm><primary>Greenman, David</primary></indexterm>
+      <indexterm><primary>Walnut Creek CDROM</primary></indexterm>
+      <para>不久之后， 我们认为即便没有 Bill 的支持， 项目仍然有继续下去的价值，
+          因此我们采用了 David Greenman 的意见， 取名为 “&os;” 。
+          在与最初的用户协调后， 我们确定了项目目标， 当项目开始实施后，
+          一切都变得清晰了。 Jordan 联系了光盘商 Walnut Creek CDROM ， 拓展 &os;
+          的发行渠道， 以便那些不方便上网的用户可以以一种简单的方式获得。
+          Walnut Creek CDROM 不仅支持 &os; 光盘计划， 还为此提供所需的计算机和高速网络接入。
+          那时， 如果没有 Walnut Creek CD-ROM 对一个完全无法预测为开前景的项目的空前信任，
+          &os; 可能不能像它今天这样， 有如此深远的影响和如此迅速的发展速度。</para>
+
+      <indexterm><primary>4.3BSD-Lite</primary></indexterm>
+      <indexterm><primary>Net/2</primary></indexterm>
+      <indexterm><primary>U.C. Berkeley</primary></indexterm>
+      <indexterm><primary>386BSD</primary></indexterm>
+      <indexterm><primary>Free Software
+	  Foundation</primary></indexterm>
+      <para>第一个以 CD-ROM （及网络） 发行的是 &os;&nbsp;1.0 ， 发行于 1993 年 10 月。
+          这个版本是基于 U.C. Berkeley 的 4.3BSD-Lite (<quote>Net/2</quote>) 磁带，
+          其中也有许多组件是由 386BSD 和自由软件基金会提供的。
+          对于第一次发行， 这算是相当成功的， 接着我们于 1994 年五月更为成功的发行了 &os; 1.1 。</para>
+
+      <indexterm><primary>Novell</primary></indexterm>
+      <indexterm><primary>U.C. Berkeley</primary></indexterm>
+      <indexterm><primary>Net/2</primary></indexterm>
+      <indexterm><primary>AT&amp;T</primary></indexterm>
+      <para>然而此后不久， 一个意外在 Novell 和 U.C. Berkeley 关于 Berkeley Net/2
+          磁带知识产权的诉讼确定之后形成。 U.C. Berkeley 接受了大部分 Net/2
+          程序源代码是 <quote>侵占</quote> 了属于 Novell 的资产， 事实上是当时不久之前从
+          AT&amp;T 那获得的； 作为回报， Berkeley 得到 Novell 的 <quote>许诺</quote>
+          在 4.4BSD-Lite 正式发行时， 将不再是侵占行为。
+          而所有现有的 Net/2 用户都被强烈建议转移到新版本上， 这包括了 &os; ，
+          于是， 我们被要求于 1994 年六月前停止散布基于 Net/2 的产品。
+          在这个前提下， 项目在被允许的最后期限之前做了最后一次发行，
+          也就是 &os;&nbsp;1.1.5.1 。</para>
+
+      <para>接下来， &os; 便开始了艰苦的从全新的和不太完整的 4.4BSD-Lite
+          的基础上重建自己。 <quote>Lite</quote> 版中， 由于 Berkeley 的 CSRG
+          删除了用于系统引导的绝大部分代码 （由于各种法律要求），
+          事实上， 当时的 4.4 版本的 Intel 平台的移植尚未完成。
+          直到 1994年十一月， 我们才完成本项目的移植工作，
+          并于同年十二月发布了 &os;&nbsp;2.0 。 尽管系统还比较粗糙，
+          但这个版本还是取得巨大的成功， 并于 1995年六月发布了更强大更易于安装的
+          &os;&nbsp;2.0.5 。</para>
+
+      <para>自此以后， &os; 的每一次发行都相比前个版本提升一些稳定性， 速度和功能。</para>
+
+      <para>目前， 项目的长期开发版在 10.X-CURRENT (trunk) 分支中进行，
+          10.X 的快照版本的工作进度可以在
+          <link xlink:href="ftp://ftp.FreeBSD.org/pub/FreeBSD/snapshots/">快照服务器</link> 上获得。</para>
+    </sect2>
+
+    <sect2 xml:id="goals">
+      <info><title>&os; 项目的目标</title>
+	<authorgroup>
+	  <author><personname><firstname>Jordan</firstname><surname>Hubbard</surname></personname><contrib>撰写者： </contrib></author>
+	</authorgroup>
+      </info>
+
+      
+
+      <indexterm>
+	<primary>FreeBSD Project</primary>
+	<secondary>goals</secondary>
+      </indexterm>
+      <para>&os; 项目的目标是无附加条件的提供用于任何目的的软件。
+          我们之中的许多人对程序源代码投入了非常多的精力，
+          因此当然不会介意偶尔提供的资金补偿， 但我们并没打算要强行要求此类的资助。
+          我们相信， 我们的首要 <quote>使命</quote> 是为所有人提供源代码，
+          不管他们打算将这些代码用于什么目的， 因为只有这样， 才能使源代码最大范围的使用，
+          从而最大限量发挥它们的价值。 我们认为自由软件是最基本的，
+          同时也是我们所倡导的一个目标。</para>
+
+      <indexterm>
+	<primary>GNU General Public License (GPL)</primary>
+      </indexterm>
+      <indexterm>
+	<primary>GNU Lesser General Public License (LGPL)</primary>
+      </indexterm>
+      <indexterm><primary>BSD Copyright</primary></indexterm>
+      <para>我们的源代码树中属于 GNU 通用公共许可证（ GPL ） 或库通用公共许可证 （ LGPL ）
+          授权的带有少许的附加限制， 但还好只是强制要求开放源代码而不是其他的。
+          由于 GPL 的软件在商业用途上会增加一定的复杂性， 因此，
+          如果可以选择的话， 我们跟倾向于使用相对宽松的 BSD 许可证来发布软件。</para>
+    </sect2>
+
+    <sect2 xml:id="development">
+      <info><title>&os; 开发模式</title>
+	<authorgroup>
+	  <author><personname><firstname>Satoshi</firstname><surname>Asami</surname></personname><contrib>撰写者： </contrib></author>
+	</authorgroup>
+      </info>
+
+      
+
+      <indexterm>
+	<primary>FreeBSD Project</primary>
+	<secondary>development model</secondary>
+      </indexterm>
+      <para>&os; 的开发是一个非常开放和灵活的过程，
+          从 <link xlink:href="&url.articles.contributors;/article.html">贡献者名单</link>
+          可以看出它是由世界各地成千上万贡献者构建的。
+          &os; 的开发架构允许数以千计通过互联网展开协同工作。
+          我们也时常关注那些对我们项目感兴趣的新开发者和创意，
+          那些有兴趣进一步参与我们项目的用户只需要简单的通过
+          &a.hackers; 联系我们。
+          &a.announce; 也为希望了解我们工作进度的 &os; 用户提供相当有用的信息。</para>
+
+      <para>无论是独立开发者或是封闭式的团队合作，
+          多了解 &os; 项目和它的开发过程都是不错的选择：</para>
+
+      <variablelist>
+	<varlistentry>
+	  <term>SVN 仓库<anchor xml:id="development-cvs-repository"/></term>
+	  <listitem>
+	    <para>
+	      <indexterm>
+		<primary>CVS</primary>
+	      </indexterm>
+
+	      <indexterm>
+		<primary>CVS Repository</primary>
+	      </indexterm>
+
+	      <indexterm>
+		<primary>Concurrent Versions System</primary>
+		<see>CVS</see>
+	      </indexterm>
+
+	      <indexterm>
+		<primary>Subversion</primary>
+	      </indexterm>
+
+	      <indexterm>
+		<primary>Subversion Repository</primary>
+	      </indexterm>
+
+	      <indexterm>
+		<primary>SVN</primary>
+		<see>Subversion</see>
+	      </indexterm>
+          过去几年以来 &os; 中央源代码树都是由
+          <link xlink:href="http://www.nongnu.org/cvs/">CVS</link> （并行版本控制系统），
+          一个免费的源代码控制工具维护的。
+          自 2008 年 6 月起， 项目切换到了
+          <link xlink:href="http://subversion.tigris.org">SVN</link>
+          （ Subversion ）。 此次转换被视为必须，
+          因为 <application>CVS</application> 的先天性技术限制，
+          使得快速发展的源代码树和历史记录的限制越趋明显。
+          文档项目和 Ports Collection 仓库也于 2012 年 5 月和 2012 年 7 月从
+          <application>CVS</application> 迁移到 <application>SVN</application> 。
+          请参阅 <link linkend="synching">同步你的源代码树</link> 章节，
+          以获取更多关于 &os; <literal>src/</literal> 的信息，
+          参阅 <link linkend="ports-using">使用Ports Collection</link>
+          以获得有关 &os; Ports Collection 的更多信息。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>提交者（ committer ） 用户名单<anchor xml:id="development-committers"/></term>
+
+	  <listitem>
+	    <para><firstterm>提交者</firstterm><indexterm>
+		<primary>committers</primary></indexterm>
+    是指那些拥有对 Subversion 源代码树具有 <emphasis>写入</emphasis> 权限的开发者， 并被授权修改
+    &os; 源代码的权利 （术语 <quote>提交者 （ committer） </quote>  来自源码控制的
+    <command>commit</command> 参数， 它用来将新的修改提交到版本库）。
+    提交修正最好的方式是使用 &man.send-pr.1; 命令， 如果提交 PR 流程出现问题，
+    也可改为电子邮件方式， 将修正寄到 &a.committers; 即可。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>FreeBSD 核心团队<anchor xml:id="development-core"/></term>
+
+	  <listitem>
+	    <para>如果将 &os; 项目比作一家公司， 那么 <firstterm>&os; 核心团队</firstterm><indexterm>
+		<primary>core team</primary>
+    </indexterm> 相当于董事会。 核心团队的首要任务是确保项目的整体发展计划， 保持良好的状态，
+    并朝着正确的方向发展。 邀请敬业且负责任的软件开发者加入提交者队伍中也是核心团队的一样重要工作，
+    因为新的核心团队成员将会与原核心团队成员合作继续前进。
+    当前的核心团队于 2012 年 7 月从提交者中选举产生的。 选举每两年一次。</para>
+
+	    <note>
+            <para>与绝大多数开发着一样， 核心团队的大部分成员也都是志愿者，
+                从 &os; 项目的开发过程中不能获取任何报酬，
+                所以 <quote>承诺</quote> 不应被理解为
+                <quote>支持保证</quote> 。 前面所述的 <quote>董事会</quote>
+                使用类似规则推测也并不是十分恰当的， 或许我们应该这样理解：
+                他们为了 &os; ， 而放弃了更好的生活的人。</para>
+	    </note>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>外围贡献者</term>
+
+	  <listitem>
+          <para>最后一点， 但这绝非最不重要的， 最大的开发团队就是持续为我们提供反馈和 bug 修补的用户自己。
+              与 &os; 非核心开发者保持互动最主要的方式就是通过订阅 &a.hackers; 来进行沟通交流。
+              更多 &os; 邮件列表请参阅 <xref linkend="eresources"/> 。</para>
+
+	    <para><citetitle><link xlink:href="&url.articles.contributors;/article.html">
+		&os; 贡献者名单</link></citetitle><indexterm>
+    <primary>contributors</primary></indexterm> 很长并且在不断增长中，
+          只要有贡献就会被列入其中， 现在是否考虑考虑立即向 &os; 贡献反馈呢？</para>
+
+      <para>提交源代码并不是为本项目贡献的唯一方式； 完整的贡献工作列表， 请参阅
+          <link xlink:href="&url.base;/index.html">&os; 项目官方网站。</link> 。</para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+
+      <para>总的来说， 我们的开发模式是一组松散的同心圆。
+          &os; 这种集中的开发模式主要是为 <emphasis>用户</emphasis> 提供方便，
+          使他们可以轻松的跟踪一个中央代码库的， 而不会将潜在的贡献者排除在外！
+          我们致力于提供一个包含大量标准性 <link linkend="ports">应用程序</link>
+          的操作系统， 以便于用户轻松安装和使用 &mdash; 这一开发模式相当适合这一目标。</para>
+
+      <para>我们对于希望加入 &os; 开发的用户的期待是： 如当前其他开发者那样的投入，
+          以确保继续保持成功！</para>
+    </sect2>
+
+    <sect2 xml:id="relnotes">
+      <title>第三方软件</title>
+
+      <para>除了基本系统里的软件， &os; 提供了一个广受欢迎包含成千上万软件的 Ports Collection 。
+          截至写这篇文章时， 已有超过 &os.numports; 个 ports 包， 它们涵盖了
+          HTTP 服务器、 游戏、 语言、 编辑器以及您所能想到的几乎所有的东西。
+          整个 Ports Collection 大概需要 &ports.size; MB 的存储空间。
+          需要编译某个 port 时， 您只需要切换到对应目录执行
+          <command>make install</command> 命令， 之后只需要静候系统执行完成。
+          完整的软件源代码是通过 port 动态获取的， 因此您需要有足够的磁盘空间用以构建您需要的 port 。
+          对于不希望通过源代码编译安装的用户， 几乎所有的 port 都提供一个预编译的
+          <quote>软件包</quote> 可供选择， 它们可以通过一个简单的
+          (<command>pkg_add</command>) 命令来安装。
+          有关 ports 和 预编译包更多相关信息请参照 <xref linkend="ports"/> 。</para>
+    </sect2>
+
+    <sect2>
+      <title>附加文档</title>
+
+      <para>所有最近的 &os; 版本所提供了安装流程 （ 无论是 &man.sysinstall.8;
+          还是 &man.bsdinstall.8; ） ， 其附加文档默认安装目录都是在
+          <filename>/usr/local/share/doc/freebsd</filename> 目录中。
+          文档也可以在系统安装完毕后或其它任何时段通过使用
+          <xref linkend="doc-ports-install-package"/>
+          中介绍的方式安装。
+          您可以使用以下 URL 通过任何一个 HTML 浏览器来查阅本地安装的手册。</para>
+
+      <variablelist>
+	<varlistentry>
+	  <term>FreeBSD 使用手册</term>
+
+	  <listitem>
+	    <para><link xlink:href="file://localhost/usr/local/share/doc/freebsd/handbook/index.html"><filename>/usr/local/share/doc/freebsd/handbook/index.html</filename></link></para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>FreeBSD 常见问题</term>
+
+	  <listitem>
+	    <para><link xlink:href="file://localhost/usr/local/share/doc/freebsd/faq/index.html"><filename>/usr/local/share/doc/freebsd/faq/index.html</filename></link></para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+
+      <para>此外， 您也可以从主站
+          <uri xlink:href="http://www.FreeBSD.org/">http://www.FreeBSD.org/</uri>
+          上获得最新文档的副本 （这也是更新最及时的版本）。</para>
+    </sect2>
+  </sect1>
+</chapter>

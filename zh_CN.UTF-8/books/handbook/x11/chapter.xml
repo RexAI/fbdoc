@@ -1,0 +1,1277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     The FreeBSD Documentation Project
+     The FreeBSD Simplified Chinese Project
+
+     Original Revision: r43258
+     $FreeBSD$
+-->
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="x11">
+  <!--
+  <chapterinfo>
+    <authorgroup>
+      <author>
+	<firstname>Ken</firstname>
+	<surname>Tom</surname>
+	<contrib>Updated for X.Org's X11 server by </contrib>
+      </author>
+      <author>
+	<firstname>Marc</firstname>
+	<surname>Fonvieille</surname>
+      </author>
+    </authorgroup>
+  </chapterinfo>
+  -->
+
+  <title>X Window 系统</title>
+
+  <sect1 xml:id="x11-synopsis">
+    <title>概述</title>
+
+    <para>使用 <application>bsdinstall</application> 安装 &os; 不会自动安装上图形用户界面。
+        本章先介绍如何安装和配置  <application>&xorg;</application> ，它是一个 X Window 图形用户界面的开源实现。
+        之后介绍如何查找和安装一个桌面环境或窗口管理器。</para>
+
+    <note>
+      <para>Users who prefer an installation method that automatically
+	configures the <application>&xorg;</application> and offers
+	a choice of window managers during installation should
+	refer to the <link xlink:href="http://www.pcbsd.org/">pcbsd.org</link>
+	website.</para>
+    </note>
+
+    <para>欲了解 <application>&xorg;</application> 所支持的显示卡等硬件， 请访问 <link xlink:href="http://www.x.org/">x.org</link>  网站。</para>
+
+    <para>读完这章， 您将了解：</para>
+
+    <itemizedlist>
+      <listitem>
+	<para>X Window 系统的不同组件， 及它们是如何协同工作的。</para>
+      </listitem>
+
+      <listitem>
+	<para>如何安装和配置 <application>&xorg;</application>  。</para>
+      </listitem>
+
+      <listitem>
+	<para>如何安装和配置不同的窗口管理器和桌面环境。</para>
+      </listitem>
+
+      <listitem>
+          <para>如何在 <application>&xorg;</application> 中使用 &truetype; 字体。</para>
+      </listitem>
+
+      <listitem>
+	<para>如何为您的系统设置图形登录界面 （<application>XDM</application>）。</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>在阅读这一章之前， 您应该：</para>
+
+    <itemizedlist>
+      <listitem>
+	<para>知道如何安装额外的第三方应用程序 <xref linkend="ports"/> 。</para>
+      </listitem>
+    </itemizedlist>
+  </sect1>
+
+  <sect1 xml:id="x-understanding">
+    <title>X Window 术语</title>
+
+    <para>虽然您并不需要深入了解各种 X Window 组件的作用以及它们之间的相互影响，
+        但了解一些关于它们的基本知识还是很有必要的：</para>
+
+    <variablelist>
+      <varlistentry>
+	<term>X 服务器</term>
+
+	<listitem>
+        <para>X 一开始就是针对网络而设计的， 并采用了 <quote>客户端-服务器</quote> 架构模型。
+            在这个模型中， <quote>X 服务器</quote> 运行在有键盘， 显示器， 鼠标的计算机上。
+            服务器负责像是显示部分的管理， 处理来自键盘和鼠标的输入信息， 并与其他输入输出设备交互
+            (比如作为输入设备的触控板， 或者作为输出设备的投影仪)。
+            这点可能会让人产生困惑， 因为 X 术语与他们原本预想的不同。
+            他们原本以为 <quote>X 服务器</quote> 是运行在性能强劲的计算机上的， 而 <quote>X 客户端</quote> 则是
+            运行在他们桌面上的计算机上。</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>X 客户端</term>
+
+	<listitem>
+        <para>每个 X 应用程序, 比如 <application>XTerm</application> ， 或者 <application>Firefox</application> ，
+            都是 <quote>客户端程序</quote> 。 客户端程序给服务器发消息， 如 <quote>请在这些坐标上画一个窗口</quote> ，
+        而服务器则返回处理消息， 如 <quote>用户刚刚点击了确定按钮</quote> 。</para>
+
+    <para>在家庭或小型办公环境中， X 服务器和 X 客户端通常在同一台计算机上运行。
+        另外也可以在一台性能不是很强劲的计算机上运行 X 服务器， 并在另外一台性能强劲的计算机上运行 X 客户端程序。
+        这种情况下， X 客户端和服务器之间的通信通过网络来完成。</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>窗口管理器</term>
+
+	<listitem>
+        <para>X 没有规定窗口在屏幕上该如何显示、 如何移动光标、 使用快捷键切换窗口、
+        各个窗口标题栏的长相， 以及是否该有关闭按钮等等。
+        实际上， X 把这部分交给所谓 <quote>窗口管理器</quote> 的应用程序来管理。
+        有很多这样的 <link xlink:href="http://xwinman.org/">窗口管理器</link> 程序可用。
+        每种窗口管理器， 都提供不同的界面和外观： 有一些支持 “虚拟桌面”、 有一些允许自定义按键来管理您的桌面、
+        一些有 <quote>开始</quote> 按钮、 一些支持自定义主题， 通过安装新的主题， 可以完全改变外观。
+        这些以及很多其他的窗口管理器， 都可以在 Ports Collection 的 <filename>x11-wm</filename> 分类目录里找到。</para>
+
+    <para>每种窗口管理器也有不同的配置机制； 有些需要手工来写配置文件，
+        而其它大部分都是可以通过 GUI 工具来完成的配置任务。</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>桌面环境</term>
+
+	<listitem>
+	  <para><application>KDE</application> 和 <application>GNOME</application> 都被认为是一个完整的桌面环境，
+          因为它们都包含了日常工作所需的整套软件。 比如有 Offcie 套件、 网页浏览器和游戏。</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>焦点策略</term>
+
+	<listitem>
+        <para>窗口管理器负责鼠标的焦点策略（focus policy）。 它规定了哪个窗口正在积极接受按键输入，并显示哪个窗口处于活动状态。</para>
+
+        <para>您通常比较熟悉的是一个叫做 <quote>点击对焦</quote>（click-to-focus）的焦点策略。
+            也就是您在一个窗口上点击一下鼠标， 这个窗口就处于当前激活状态。
+            常见的焦点策略：
+            
+            <quote>focus-follows-mouse</quote> 策略， 即鼠标光标所在窗口获得焦点，如果移动到其它窗口则其它窗口获得焦点。
+            如果移动到根窗口（root window），那么跟窗口获得焦点。
+            <quote>sloppy-focus</quote> 策略，与 <quote>focus-follows-mouse</quote> 类似， 但它在鼠标移入根窗口的时候最近使用的窗口依旧具有焦点，
+            只有当光标进入新窗口后才改变。
+            <quote>点击对焦</quote> （click-to-focus） 焦点策略， 即当前窗口焦点由鼠标点击来获得。
+            窗口被“突出显示” ， 出现在所有其他窗口的前面。即使指针被移向了另一个窗口，所有的键盘输入 仍会被这个窗口接收。 
+            窗口被“突出显示” ， 出现在所有其他窗口的前面。即使指针被移向了另一个窗口，所有的键盘输入 仍会被这个窗口接收。</para>
+
+        <para>不同的窗口管理器支持不同的焦点策略。 所有窗口管理器都支持点击聚焦， 他们中的绝大多数也支持其他焦点政策。
+            它们具体支持哪些焦点策略，您可以查看它们的文档。咨询窗口管理器的文档，以确定哪些重点型号可供选择。</para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term>窗口小部件</term>
+
+	<listitem>
+        <para>窗口小部件 （Widget） 只是针对用户接口中所有列举项目的一个术语， 它可以用某种方法来点击或操作； 如按钮、 复选框、 单选按钮、
+            图标，列表框等等。 有几个流行的小部件开发工具包，包括 <application>KDE</application> 使用的Qt ， 和 <application>GNOME</application> 使用的GTK+ 。
+            因此， 应用程序不同的外观， 取决与采用哪些小部件开发包。</para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect1>
+
+  <sect1 xml:id="x-install">
+    <title>安装 <application>&xorg;</application></title>
+
+    <para><application>&xorg;</application> 是由 X.Org 基金会发行的 X Window 系统的开源实现。
+        在 &os; 中它可以通过预编译包或 Ports Collection 安装。
+        Ports Collection 中有一套完整的 X 服务器， 包括服务器端、 客户端、 库 （libraries）和 字体等等， 可以通过 <package>x11/xorg</package> 安装。
+        同时有个最小化的 <application>&xorg;</application> 软件可以通过 <package>x11/xorg-minimal</package> 来安装，有独立的 ports 可用于安装 文档，
+        库 （libraries） 和应用程序。
+      本章示例为安装完整 <application>&xorg;</application> 软件套件。</para>
+
+    <para>从 Ports Collection 编译安装 <application>&xorg;</application> ：</para>
+
+    <screen>&prompt.root; <userinput>cd /usr/ports/x11/xorg</userinput>
+&prompt.root; <userinput>make install clean</userinput></screen>
+
+    <note>
+      <para>编译完整的 <application>&xorg;</application> 软件套件需要至少 4&nbsp;GB 磁盘可用空间。</para>
+    </note>
+
+    <para>或者， 直接通过预编译包安装 <application>&xorg;</application> ， 通过 <application>pkg_add</application> 命令安装：</para>
+
+    <screen>&prompt.root; <userinput>pkg_add -r xorg</userinput></screen>
+
+    <para>通过 <application>pkg</application> 命令安装：</para>
+
+    <screen>&prompt.root; <userinput>pkg install xorg</userinput></screen>
+  </sect1>
+
+  <sect1 xml:id="x-config">
+    <!--
+    <sect1info>
+      <authorgroup>
+	<author>
+	  <firstname>Christopher</firstname>
+	  <surname>Shumway</surname>
+	  <contrib>Contributed in July 2001 by</contrib>
+	</author>
+      </authorgroup>
+    </sect1info>
+    -->
+    <title>配置 <application>&xorg;</application></title>
+
+    <indexterm><primary>&xorg;</primary></indexterm>
+    <indexterm><primary><application>&xorg;</application></primary></indexterm>
+
+    <para>多数情况下 <application>&xorg;</application> 并不需要配置。针对那些很久的或者不常见的硬件，开始配置前需要了解下列信息：</para>
+
+    <itemizedlist>
+      <listitem>
+	<para>显示器规格</para>
+      </listitem>
+
+      <listitem>
+	<para>显卡芯片类型</para>
+      </listitem>
+
+      <listitem>
+	<para>显卡显存容量</para>
+      </listitem>
+    </itemizedlist>
+
+    <indexterm>
+      <primary>horizontal sync frequency</primary>
+    </indexterm>
+    <indexterm>
+      <primary>horizontal scan rate</primary>
+      <see>horizontal sync frequency</see>
+    </indexterm>
+    <indexterm><primary>refresh rate</primary></indexterm>
+    <indexterm>
+      <primary>vertical sync frequency</primary>
+      <see>refresh rate</see>
+    </indexterm>
+    <indexterm>
+      <primary>vertical scan rate</primary>
+      <see>refresh rate</see>
+    </indexterm>
+
+    <para>屏幕分辨率和刷新率是由显示器的水平和垂直同步频率来确定。
+        几乎所有的显示器都支持自行检测这些值。 个别不支持的显示器则需要通过显示器附带的文档，
+        以及制造商的网站那里获取这些信息。</para>
+ 
+    <para>通常显卡芯片也能自动检测到， 并自行选择正确的显卡驱动。
+        但是事先了解还是有好处的， 以备系统自动检测失败时使用。</para>
+
+    <para>显卡的显存决定系统最大支持的分辨率和颜色深度。</para>
+
+    <sect2>
+      <title>注意事项</title>
+
+      <para>最佳的显示效果取决于显卡设备及其驱动的支持情况。 目前显卡驱动支持如下：</para>
+
+      <itemizedlist>
+	<listitem>
+	  <para>NVIDIA： NVIDIA 的显卡驱动都可以在 FreeBSD Ports Collection 中的 X11 类中找到， 可以通过它，安装 NVIDIA 显卡设备对应的显卡驱动。</para>
+	</listitem>
+
+	<listitem>
+        <para>Intel：从 FreeBSD 9.1 开始绝大部分 Intel 显卡支持 3D 加速，包括 IronLake、SandyBridge 和 IvyBridge 。
+            由于目前 KMS 还处于测试阶段，开启 KMS 支持将导致图像终端控制台（graphical console）与虚拟终端控制台（virtual console）无法使用 Crtl+Alt+F# 切换。</para>
+	</listitem>
+
+	<listitem>
+	  <para>ATI/Radeon:  ATI 和 Radeon 显卡的 3D 加速功能不能正常工作，直到 FreeBSD 完成 TTM 功能。 目前这些显卡需要使用 2D 驱动程序，
+          如果还是无法正常工作，只能使用 VESA 驱动。</para>
+	</listitem>
+
+	<listitem>
+	  <para>Optimus: currently there is no switching support
+	    between the two graphics adapters provided by Optimus.
+	    Optimus implementations vary, so FreeBSD may or may not
+	    be able to successfully load a graphics driver on all
+	    hardware. If you get a blank screen, check if the BIOS
+	    has an option to disable one of the graphics adapters or
+	    to set <quote>discrete</quote> mode.</para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>配置 <application>&xorg;</application></title>
+
+      <para><application>&xorg;</application> 使用 <acronym>HAL</acronym> 自动检测键盘和鼠标。
+          Ports 中 <package>sysutils/hal</package> 和 <package>devel/dbus</package> 作为 <package>x11/xorg</package> 的依赖自动安装进系统，
+          只需要在 <filename>/etc/rc.conf</filename> 文件中添加以下内容来启用它们：</para>
+
+      <programlisting>hald_enable="YES"
+dbus_enable="YES"</programlisting>
+
+      <para>配置 <application>&xorg;</application> 前启动这些服务：</para>
+
+      <screen>&prompt.root; <userinput>service hald start</userinput>
+&prompt.root; <userinput>service dbus start</userinput></screen>
+
+      <para>一旦这些服务启动完成， 就可以键入以下命令让 <application>&xorg;</application> 自动生成配置文件：</para>
+
+      <screen>&prompt.root; <userinput>Xorg -configure</userinput></screen>
+
+      <para>这将会生成一个名为 <filename>/root/xorg.conf.new</filename> 的文件，
+          它包含了 <application>&xorg;</application> 检测到的硬件信息以及它认为应该使用的驱动程序。
+          接下来测试自动生成的配置文件， 看它是否能让显卡设备正常工作：</para>
+
+      <screen>&prompt.root; <userinput>Xorg -config xorg.conf.new -retro</userinput></screen>
+
+      <para>如果看到黑灰的格子以及 X 型鼠标指针， 就表示配置成功了。
+          若要退出测试， 需要同时按下 <keycombo action="simul">
+	  <keycap>Ctrl</keycap>
+	  <keycap>Alt</keycap>
+	  <keycap>F<replaceable>n</replaceable></keycap>
+	</keycombo> （<keycap>F1</keycap> 表示第一个虚拟控制台）， 之后按下
+	<keycombo action="simul">
+	  <keycap>Ctrl</keycap>
+	  <keycap>C</keycap>
+	</keycombo>。</para>
+
+      <note>
+          <para>按下
+	  <keycombo action="simul">
+	    <keycap>Ctrl</keycap>
+	    <keycap>Alt</keycap>
+	    <keycap>Backspace</keycap>
+    </keycombo> 组合键也可以用来强制退出 <application>&xorg;</application> 。 要启用这个组合键，
+    您可以在可以在任何一个 X 终端模拟器中输入以下命令：</para>
+
+	<screen>&prompt.user; <userinput>setxkbmap -option terminate:ctrl_alt_bksp</userinput></screen>
+
+	<para>或者为 <application>hald</application> 创建一个文件名为 <filename>x11-input.fdi</filename> 的键盘配置文件，
+        并保存到 <filename>/usr/local/etc/hal/fdi/policy</filename> 目录中。这个文件需要包含以下内容：</para>
+
+	<programlisting>&lt;?xml version="1.0" encoding="iso-8859-1"?&gt;
+&lt;deviceinfo version="0.2"&gt;
+  &lt;device&gt;
+    &lt;match key="info.capabilities" contains="input.keyboard"&gt;
+	  &lt;merge key="input.x11_options.XkbOptions" type="string"&gt;terminate:ctrl_alt_bksp&lt;/merge&gt;
+    &lt;/match&gt;
+  &lt;/device&gt;
+&lt;/deviceinfo&gt;</programlisting>
+
+	<para>您将不得不重启你的计算机使 <application>hald</application> 重新读取这个文件。</para>
+
+    <para>此外，还需要在 <filename>xorg.conf.new</filename> 中的 <literal>ServerLayout</literal> 或 <literal>ServerFlags</literal> 小节中添加：</para>
+
+	<programlisting>Option	"DontZap"	"off"</programlisting>
+      </note>
+
+      <para>如果测试失败， 请参阅 <xref linkend="x11-understanding"/> 。 一旦测试成功，
+          就可以将配置文件复制到 <filename>/etc/X11/xorg.conf</filename> ：</para>
+
+	<screen>&prompt.root; <userinput>cp xorg.conf.new /etc/X11/xorg.conf</userinput></screen>
+
+      <note>
+          <para>桌面环境如 <application>GNOME</application> 、 <application>KDE</application> 或 <application>Xfce</application> 都提供了图形化的工具来修改参数，
+              如视频分辨率。使用图像配置工具，参阅  <xref linkend="x11-wm"/> 如何安装一个桌面环境。</para>
+      </note>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="x-fonts">
+    <!--
+    <sect1info>
+      <authorgroup>
+	<author>
+	  <firstname>Murray</firstname>
+	  <surname>Stokely</surname>
+	  <contrib>Contributed by </contrib>
+	</author>
+      </authorgroup>
+    </sect1info>
+    -->
+    <title>在 <application>&xorg;</application> 中使用字体</title>
+
+    <sect2 xml:id="type1">
+      <title>Type1 字体</title>
+
+      <para><application>&xorg;</application> 使用默认使用的字体不是很理想。
+          大字体显得参差不齐， 看起来很不专业， 小字体简直无法看清。
+          不过也有一些免费的、 高质量的 Type1 (&postscript;) 字体可供 <application>&xorg;</application> 使用。
+          例如： URW字体集合 （<package>x11-fonts/urwfonts</package>）就包含高质量的 type1 字体 (<trademark class="registered">Times Roman</trademark>，
+          <trademark class="registered">Helvetica</trademark>， <trademark class="registered">Palatino</trademark> 和一些其他字体)。
+          在 Freefont 集合中（<package>x11-fonts/freefonts</package>）包括更多的字体， 但它们中的绝大部分使用在图形软件中，
+          如 <application>Gimp</application> ， 在屏幕中使用并不完美。
+          此外， <application>&xorg;</application> 致力于最少的配置就能使用 &truetype; 字体。
+          欲了解更多这方面更多详细信息， 请参阅 &man.X.7; 联机手册或 <link linkend="truetype"> &truetype; 字体一节</link>。</para>
+
+      <para>如果希望使用 Ports Collection 来安装上面的 Type1 字体， 只需运行下面的命令：</para>
+
+      <screen>&prompt.root; <userinput>cd /usr/ports/x11-fonts/urwfonts</userinput>
+&prompt.root; <userinput>make install clean</userinput></screen>
+
+      <para>freefont 或其他的字库和上面所说的大致相同。 为了让 X 服务器能够检测到这些字体，
+          需要在 X 服务器的配置文件 （<filename>/etc/X11/xorg.conf</filename>) 中增加以下配置：</para>
+
+      <programlisting>FontPath "/usr/local/lib/X11/fonts/URW/"</programlisting>
+
+      <para>或者， 也可以在 X 会话（X session）中运行以下命令：</para>
+
+      <screen>&prompt.user; <userinput>xset fp+ /usr/local/lib/X11/fonts/URW</userinput>
+&prompt.user; <userinput>xset fp rehash</userinput></screen>
+
+      <para>这样当前 X 会话中立即生效， 但是 X 会话结束后自动失效。
+          除非它被添加到针启动器配置文件中去， （使用<command>startx</command> 会话方式启动的写到 <filename>~/.xinitrc</filename> 中，
+          或者当您使用类似 <application>XDM</application> 的图形登录管理器的则写到 <filename>~/.xsession</filename> 中。
+          第三种方法是创建新的 <filename>/usr/local/etc/fonts/local.conf</filename> 文件，
+          详见： <link linkend="antialias">anti-aliasing</link> 章节。</para>
+    </sect2>
+
+    <sect2 xml:id="truetype">
+      <title>&truetype; 字体</title>
+
+      <indexterm>
+	<primary>TrueType Fonts</primary>
+      </indexterm>
+      <indexterm>
+	<primary>fonts</primary>
+	<secondary>TrueType</secondary>
+      </indexterm>
+
+      <para><application>&xorg;</application> 内建了对  &truetype; 字体的支持。
+          有两种不同的模块能够启用这个功能。在这个例子中使用 freetype 这个模块，
+          因为它与其他的字体描绘后端有更好兼容性。
+          要启用 freetype 模块， 只需要将下面这行添加到 <filename>/etc/X11/xorg.conf</filename> 文件的 <literal>“Module”</literal> 部分。</para>
+
+      <programlisting>Load  "freetype"</programlisting>
+
+      <para>现在， 为 &truetype; 字体创建一个目录 (比如，/usr/local/lib/X11/fonts/TrueType) 然后把所有的  &truetype; 字体复制到这个目录。
+          记住您不能直接从 &macintosh; 计算机中提取 &truetype; 字体；
+          能被 X11 使用的必须是 &unix;/&ms-dos;/&windows; 格式的。 一旦您已经将这些文件复制到了这个目录，
+          就可以用 <command>ttmkfdir</command> 来创建 <filename>fonts.dir</filename> 文件，
+          以便让 X 字体引擎知道您已经安装了这些新字体。
+          <application>ttmkfdir</application> 可以在 FreeBSD Ports Collection 中的 <package>x11-fonts/ttmkfdir</package> 中找到。</para>
+
+      <screen>&prompt.root; <userinput>cd /usr/local/lib/X11/fonts/TrueType</userinput>
+&prompt.root; <userinput>ttmkfdir -o fonts.dir</userinput></screen>
+
+      <para>现在可以把 &truetype; 字体目录添加到字体路径中。 这和上面 <link linkend="type1">Type1</link> 字体的步骤是一样的，
+          使用以下命令：</para>
+
+      <screen>&prompt.user; <userinput>xset fp+ /usr/local/lib/X11/fonts/TrueType</userinput>
+&prompt.user; <userinput>xset fp rehash</userinput></screen>
+
+      <para>或者把 <literal>FontPath</literal> 这行加到 <filename>xorg.conf</filename>  文件中。</para>
+
+      <para>就是这样。现在 <application>Gimp</application>、
+          <application>Apache OpenOffice</application> 和所有其他的 X 应用程序应该可以认出安装的 &truetype; 字体。
+          一些很小的字体（如在网页中高分辨率显示的文本）和一些很大的字体（在 <application>&staroffice;</application>下）现在看起来已经很美观了。</para>
+    </sect2>
+
+    <sect2 xml:id="antialias">
+      <!--
+      <sect2info>
+	<authorgroup>
+	  <author>
+	    <firstname>Joe Marcus</firstname>
+	    <surname>Clarke</surname>
+	    <contrib>Updated in May 2003 by</contrib>
+	  </author>
+	</authorgroup>
+      </sect2info>
+      -->
+      <title>字体反锯齿</title>
+
+      <indexterm>
+	<primary>anti-aliased fonts</primary>
+      </indexterm>
+      <indexterm>
+	<primary>fonts</primary>
+	<secondary>anti-aliased</secondary>
+      </indexterm>
+
+      <para>对于所有支持 Xft 的应用程序，
+          所有放在 <filename>/usr/local/lib/X11/fonts/</filename> 和 <filename>~/.fonts/</filename> 目录中的<application>&xorg;</application> 字体都会自动启用反锯齿支持。
+          绝大多数较新的程序都提供了 Xft 支持，包括 <application>KDE</application> 、
+          <application>GNOME</application> 和 <application>Firefox</application> 。 GNOME 以及 Firefox。</para>
+
+      <para>要控制哪些字体需要开启反锯齿，或者需要配置反锯齿功能，需要创建（或编辑，如果文件已存）<filename>/usr/local/etc/fonts/local.conf</filename> 这个文件。
+          Xft 字体系统中的几个高级特性都可以使用这个文件来调整； 本章只介绍了几种最简单的用法。 要了解更多的细节， 请查阅 &man.fonts-conf.5; 。</para>
+
+      <indexterm><primary>XML</primary></indexterm>
+
+      <para>这个文件必须是XML格式的。 注意确保所有的标签都完全闭合。 这个文件头部是普通的 XML 头，
+          接着是 DOCTYPE 定义， <literal>&lt;fontconfig&gt;</literal> 标签：</para>
+
+      <programlisting>
+      &lt;?xml version="1.0"?&gt;
+      &lt;!DOCTYPE fontconfig SYSTEM "fonts.dtd"&gt;
+      &lt;fontconfig&gt;</programlisting>
+
+      <para>像前面所做的那样，所有支持 Xft 的应用程序都已经可以使用 <filename>/usr/local/lib/X11/fonts/</filename> 和
+          <filename>~/.fonts/</filename> 目录下的字体。如果您想添加这两个目录以外的其他字体目录，
+          只需要简单的添加下面这行到 <filename>/usr/local/etc/fonts/local.conf</filename> 文件中：</para>
+
+      <programlisting>&lt;dir&gt;/path/to/my/fonts&lt;/dir&gt;</programlisting>
+
+      <para>添加了新的字体,尤其是添加了新的字体目录后， 您应该运行以下命令重建字体缓存：</para>
+
+      <screen>&prompt.root; <userinput>fc-cache -f</userinput></screen>
+
+      <para>反锯齿会让字体边缘有些模糊， 这样增加了非常小的文本的可读性， 并从大文本字体中删除 <quote>锯齿</quote> 。
+          但如果使用在普通的文本， 则可能引起视力疲劳。 要禁止 14磅 以下字体的反锯齿， 需要增加以下配置：</para>
+
+      <programlisting>        &lt;match target="font"&gt;
+	    &lt;test name="size" compare="less"&gt;
+		&lt;double&gt;14&lt;/double&gt;
+	    &lt;/test&gt;
+	    &lt;edit name="antialias" mode="assign"&gt;
+		&lt;bool&gt;false&lt;/bool&gt;
+	    &lt;/edit&gt;
+	&lt;/match&gt;
+	&lt;match target="font"&gt;
+	    &lt;test name="pixelsize" compare="less" qual="any"&gt;
+		&lt;double&gt;14&lt;/double&gt;
+	    &lt;/test&gt;
+	    &lt;edit mode="assign" name="antialias"&gt;
+		&lt;bool&gt;false&lt;/bool&gt;
+	    &lt;/edit&gt;
+	&lt;/match&gt;</programlisting>
+
+      <indexterm>
+	<primary>fonts</primary>
+	<secondary>spacing</secondary>
+      </indexterm>
+
+      <para>使用反锯齿来分割一些等宽字体也是不合适的。 似乎 <application>KDE</application> 就有这问题。
+          要修复这个问题需要确保每个字体之间的间距保持在100。 添加一下内容：</para>
+
+      <programlisting>       &lt;match target="pattern" name="family"&gt;
+	   &lt;test qual="any" name="family"&gt;
+	       &lt;string&gt;fixed&lt;/string&gt;
+	   &lt;/test&gt;
+	   &lt;edit name="family" mode="assign"&gt;
+	       &lt;string&gt;mono&lt;/string&gt;
+	   &lt;/edit&gt;
+	&lt;/match&gt;
+	&lt;match target="pattern" name="family"&gt;
+	    &lt;test qual="any" name="family"&gt;
+		&lt;string&gt;console&lt;/string&gt;
+	    &lt;/test&gt;
+	    &lt;edit name="family" mode="assign"&gt;
+		&lt;string&gt;mono&lt;/string&gt;
+	    &lt;/edit&gt;
+	&lt;/match&gt;</programlisting>
+
+      <para>(this aliases the other common names for fixed fonts as
+	<literal>"mono"</literal>), and then add:</para>
+
+      <programlisting>         &lt;match target="pattern" name="family"&gt;
+	     &lt;test qual="any" name="family"&gt;
+		 &lt;string&gt;mono&lt;/string&gt;
+	     &lt;/test&gt;
+	     &lt;edit name="spacing" mode="assign"&gt;
+		 &lt;int&gt;100&lt;/int&gt;
+	     &lt;/edit&gt;
+	 &lt;/match&gt;      </programlisting>
+
+ <para>某些字体， 比如 Helvetica， 当开启反锯齿时可能存在些问题。 通常的表现为字体本身似乎被垂直的切成两半。糟糕的时候，
+     还可能导致应用程序崩溃。 为了避免这样的现象， 考虑添加以下几行到 <filename>local.conf</filename> 文件中：</para>
+
+      <programlisting>         &lt;match target="pattern" name="family"&gt;
+	     &lt;test qual="any" name="family"&gt;
+		 &lt;string&gt;Helvetica&lt;/string&gt;
+	     &lt;/test&gt;
+	     &lt;edit name="family" mode="assign"&gt;
+		 &lt;string&gt;sans-serif&lt;/string&gt;
+	     &lt;/edit&gt;
+	 &lt;/match&gt;        </programlisting>
+
+      <para>一旦您完成对 <filename>local.conf</filename> 文件的编辑， 确保您使用了 <literal>&lt;/fontconfig&gt;</literal> 标签来闭合文件。
+          不使用它将导致您的更改被忽略。</para>
+
+      <para>最后， 用户可以通过他们自己的 <filename>~/.fonts.conf</filename> 配置文件来添加自己的设置。
+          要做到这一点， 用户只需要简单的创建 <filename>~/.fonts.conf</filename> 文件，这个文件必须是 XML 格式的。</para>
+
+      <indexterm><primary>LCD screen</primary></indexterm>
+      <indexterm><primary>Fonts</primary>
+	<secondary>LCD screen</secondary></indexterm>
+
+<para>最后， 对于LCD屏幕， 可能希望使用子像素的取样。 简单而言， 就是通过分别控制 (水平方向分开的) 红、
+    绿、 蓝 像素， 来改善水平分辨率；这样做的效果一般会非常明显。
+    要启用它， 只需在 <filename>local.conf</filename> 文件的某个地方加入：</para>
+
+      <programlisting>
+	  &lt;match target="font"&gt;
+	     &lt;test qual="all" name="rgba"&gt;
+		 &lt;const&gt;unknown&lt;/const&gt;
+	     &lt;/test&gt;
+	     &lt;edit name="rgba" mode="assign"&gt;
+		 &lt;const&gt;rgb&lt;/const&gt;
+	     &lt;/edit&gt;
+	 &lt;/match&gt;</programlisting>
+
+      <note>
+          <para>根据您显示器的种类不同， 可能需要把 <literal>rgb</literal> 改为 <literal>bgr</literal>、
+              <literal>vrgb</literal> 或 <literal>vbgr</literal> 。 试验一下看看那个更好。</para>
+      </note>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="x-xdm">
+    <!--
+    <sect1info>
+      <authorgroup>
+	<author>
+	  <firstname>Seth</firstname>
+	  <surname>Kingsley</surname>
+	  <contrib>Contributed by </contrib>
+	</author>
+      </authorgroup>
+    </sect1info>
+    -->
+    <title>X 显示管理器</title>
+
+    <sect2>
+      <title>概要</title>
+
+      <indexterm><primary>X Display Manager</primary></indexterm>
+      <para>X 显示管理器（<application>XDM</application>） 是 X Window 系统用于管理登录会话的一个可选组件。
+          可用于 小型<quote>X 终端</quote>、 桌面和大型网络显示服务器。 既然 X Window 系统不受网络和协议的限制，
+          那对于通过网络连接起来的运行 X 客户端和服务器端的不同机器， 就会有很多的可配置项。
+          <application>XDM</application> 提供了一个图形用户界面， 让用户选择要连接到哪个显示服务器，
+          只需输入如登录用户名和密码这样的验证信息。</para>
+
+      <para>您也可以把 <application>XDM</application> 想象成与 &man.getty.8; （详见：<xref linkend="term-config"/>）一样的工具。
+          为用户提供了同样功能。 它可以完成系统的登录任务， 然后为用户运行一个会话管理器 (通常是一个 X 视窗管理器)。
+          接下来 <application>XDM</application> 就等待这个程序退出， 等用户发出登录结束信号， 退出到登录界面。
+          这时， <application>XDM</application> 就开始为下一个用户的登录提供图像选择界面了。</para>
+    </sect2>
+
+    <sect2>
+      <title>使用 XDM</title>
+
+      <para>如果希望使用 <application>XDM</application> 来管理启动， 就必须安装 <package>x11/xdm</package> 这个
+          port (在新版 <application>&xorg;</application> 中它并不是默认安装的)。
+          <application>XDM</application> 守护程序位于 <filename>/usr/local/bin/xdm</filename> 。
+          任何时候都可以以 <systemitem class="username">root</systemitem> 用户的身份来运行它，
+          用于管理本地系统的 X 显示。 如果希望 <application>XDM</application> 随机启动，
+          比较简便的做法是把它写到 <filename>/etc/ttys</filename> 配置中。
+          有关这个文件的具体格式和使用方法， 请参阅 <xref linkend="term-etcttys"/> 。
+          在默认的 <filename>/etc/ttys</filename> 文件， 已经包含了在虚拟终端上运行 <application>XDM</application> 服务的示例：</para>
+
+      <screen>ttyv8   "/usr/local/bin/xdm -nodaemon"  xterm   off secure</screen>
+
+      <para>默认情况下， 这个记录是关闭的， 要启用它， 您需要把第5部分的 <literal>off</literal> 改为 <literal>on</literal> ，
+          然后按照 <xref linkend="term-hup"/> 的指导来重启 &man.init.8; 服务。第一个字段显示虚拟终端名称是 <literal>ttyv8</literal>  。
+          这意味着 <application>XDM</application> 将运行在第9个虚拟终端上。</para>
+    </sect2>
+
+    <sect2>
+      <title>配置 XDM</title>
+
+      <para><application>XDM</application> 的配置文件位于 <filename>/usr/local/lib/X11/xdm</filename> 目录中。
+          里面的配置文件可以改变 <application>XDM</application> 行为和外观。您可以找到以下文件：</para>
+
+      <informaltable frame="none" pgwide="1">
+	<tgroup cols="2">
+	  <thead>
+	    <row>
+	      <entry>文件</entry>
+	      <entry>描述</entry>
+	    </row>
+	  </thead>
+
+	  <tbody>
+	    <row>
+	      <entry><filename>Xaccess</filename></entry>
+	      <entry>客户端认证规则。</entry>
+	    </row>
+
+	    <row>
+	      <entry><filename>Xresources</filename></entry>
+          <entry>默认的X资源值。</entry>
+	    </row>
+
+	    <row>
+	      <entry><filename>Xservers</filename></entry>
+	      <entry>远程和本地显示管理列表。</entry>
+	    </row>
+
+	    <row>
+	      <entry><filename>Xsession</filename></entry>
+	      <entry>用于登录的默认的会话脚本。</entry>
+	    </row>
+
+	    <row>
+	      <entry><filename>Xsetup_</filename>*</entry>
+	      <entry>登录之前用于加载应用程序的脚本。</entry>
+	    </row>
+
+	    <row>
+	      <entry><filename>xdm-config</filename></entry>
+	      <entry>运行在这台机器上的所有显示的全局配置。</entry>
+	    </row>
+
+	    <row>
+	      <entry><filename>xdm-errors</filename></entry>
+	      <entry>服务器程序产生的错误。</entry>
+	    </row>
+
+	    <row>
+	      <entry><filename>xdm-pid</filename></entry>
+	      <entry>当前运行的 XDM 的PID。</entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </informaltable>
+
+      <para>当 <application>XDM</application> 运行时， 这个目录中有几个脚本和程序可以用来设置桌面。
+          在这里简要的介绍下这些文件的简单用法。 这些文件更详细的语法和用法请参照 &man.xdm.1; 。</para>
+
+      <para>默认配置下登陆界面是一个简单的矩形窗口， 上面有计算机的名称、 <quote>Login:</quote> 和 <quote>Password:</quote> 。
+          提示下， 如果你想美化一下 <application>XDM</application> 登陆界面， 这是一个很好的开始。</para>
+
+      <sect3>
+	<title>Xaccess</title>
+
+    <para>用以连接到由 <application>XDM</application>  所控制的显示设备的协议， 叫做 X 显示管理器连接协议 (XDMCP)。
+        这个文件是一组用以控制来自远程计算机的 XDMCP 连接的规则。 除非您修改了 <filename>xdm-config</filename> 使其接受远程连接，
+        否则其内容将被忽略。 默认情况下， 它不允许来自任何客户端的连接。</para>
+      </sect3>
+
+      <sect3>
+	<title>Xresources</title>
+
+    <para>这是一个默认的用来显示选项和登录屏幕的应用程序文件。 您可以在这个文件中对登录程序的外观进行定制。
+        它的格式与 <application>&xorg;</application> 文档中描述的默认应用程序文件是一样的。</para>
+      </sect3>
+
+      <sect3>
+	<title>Xservers</title>
+
+	<para>这是一个可供选择的远程显示服务器列表。</para>
+      </sect3>
+
+      <sect3>
+	<title>Xsession</title>
+
+	<para>这是一个用户登录后针对 <application>XDM</application> 的默认会话脚本。
+        通常， 用户可自定义的会话脚本是 <filename>~/.xsession</filename> 文件。</para>
+      </sect3>
+
+      <sect3>
+	<title>Xsetup_*</title>
+
+	<para>在显示选择者或登录接口之前， 这些将被自动运行。 这是一个每个显示都要用到的脚本， 叫做 <filename>Xsetup_</filename> ，
+        后面会跟一个本地显示的数字（ 比如 <filename>Xsetup_0</filename> ）。 典型的，这些脚本将在后台 (如 <command>xconsole</command> )运行一个或两个程序。</para>
+      </sect3>
+
+      <sect3>
+	<title>xdm-config</title>
+
+    <para>这个文件是应用程序默认值的形式， 提供了安装时所使用的通用配置信息。</para>
+      </sect3>
+
+      <sect3>
+	<title>xdm-errors</title>
+
+    <para>这个文件包含了 <application>XDM</application> 运行的 X 服务器的日志输出。
+        如果， <application>XDM</application> 由于某种原因被挂起， 那么到这里寻找错误信息是个好主意。
+        这些信息会在每会话的基础上被写到用户的 <filename>~/.xsession-errors</filename> 文件中。</para>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>运行一个网络显示服务器</title>
+
+      <para>为了让其他客户端能链接到显示服务器， 您必须编辑访问控制规则， 并启用端口监听。 默认情况下，
+          这些设置比较保守值。 要让 <application>XDM</application> 能监听到连接请求，首先要注销掉 <filename>xdm-config</filename> 中的一行内容：</para>
+
+      <screen>! SECURITY: do not listen for XDMCP or Chooser requests
+! Comment out this line if you want to manage X terminals with xdm
+DisplayManager.requestPort:     0</screen>
+
+      <para>然后重启 <application>XDM</application> 。 切记默认程序配置注释以 <quote>!</quote> 开头
+          而不是一般情况使用的 <quote>#</quote> 。您需要设置严格的访问控制？ ── 看看在 <filename>Xaccess</filename> 里的实例，
+          并参考 &man.xdm.1; 联机手册， 以了解更多细节。</para>
+    </sect2>
+
+    <sect2>
+      <title>替换 XDM</title>
+
+      <para>有几个方案可以替换默认的 <application>XDM</application> 程序。
+          <application>KDM</application> （与 <application>KDE</application> 捆绑在一起的）就是它们中的一个方案，
+          <application>KDM</application> 提供了许多视觉上的改进和局部的修饰， 同样能让用户在启动时能选择他们喜欢的窗口管理器。</para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="x11-wm">
+    <!--
+    <sect1info>
+      <authorgroup>
+	<author>
+	  <firstname>Valentino</firstname>
+	  <surname>Vaschetto</surname>
+	  <contrib>Contributed in June 2001 by </contrib>
+	</author>
+      </authorgroup>
+    </sect1info>
+    -->
+
+    <title>桌面环境</title>
+
+    <para>这节介绍 FreeBSD 上基于 X 的不同的桌面环境。 <quote>桌面环境</quote> 可能仅仅是一个简单的窗口管理器，
+        也可能是个像 <application>KDE</application> 或者 <application>GNOME</application> 这样完整的应用套件。</para>
+
+    <sect2 xml:id="x11-wm-gnome">
+      <title>GNOME</title>
+
+      <sect3 xml:id="x11-wm-gnome-about">
+	<title>关于 GNOME</title>
+
+	<indexterm><primary>GNOME</primary></indexterm>
+	<para><application>GNOME</application> 是个用户界面友好的桌面环境，
+        能够使用户很容易地使用和配置他们的计算机。 <application>GNOME</application> 包括一个面板(用来启动应用程序和显示状态)，
+        一个桌面(存放数据和应用程序的地方)， 一套标准的桌面工具和应用程序， 和一套与其他人相互协同工作的协议集。
+        其他操作系统的用户在使用 <application>GNOME</application> 提供的强大的图形环境时也能很好的适应。
+        更多的关于 FreeBSD 上 <application>GNOME</application> 的信息，
+        可以在<link xlink:href="http://www.FreeBSD.org/gnome">FreeBSD GNOME Project</link> 的网站上找到。
+        此外， 这个网站也提供了相当详尽的关于安装、 配置和管理 <application>GNOME</application> 的常见问题解答 (FAQ)。</para>
+      </sect3>
+
+      <sect3 xml:id="x11-wm-gnome-install">
+	<title>安装 GNOME</title>
+
+	<para>这个软件可以很容易地通过预编译包或 Ports Collection 来安装：</para>
+
+	<para>通过网络安装 <application>GNOME</application> ， 只需要输入：</para>
+
+	<screen>&prompt.root; <userinput>pkg_add -r gnome2</userinput></screen>
+
+	<para>如果是 <application>pkgng</application> 用户， 则使用这个命令：</para>
+
+	<screen>&prompt.root; <userinput>pkg install gnome2</userinput></screen>
+
+    <para>从源代码编译 <application>GNOME</application> ， 可以从 ports tree 安装：</para>
+
+	<screen>&prompt.root; <userinput>cd /usr/ports/x11/gnome2</userinput>
+&prompt.root; <userinput>make install clean</userinput></screen>
+
+    <para><application>GNOME</application> 需要挂载 <filename>/proc</filename> 文件系统才能正常工作。 添加如下内容：</para>
+
+	<programlisting>proc           /proc       procfs  rw  0   0</programlisting>
+
+	<para>到 <filename>/etc/fstab</filename> 中，以便系统启动时自动挂载 &man.procfs.5; 。</para>
+
+	<para>一旦安装好了 <application>GNOME</application> ，就必须告诉 X server 启动
+        <application>GNOME</application> 而不是默认窗口管理器。</para>
+
+    <para>最简单的启动 <application>GNOME</application> 的方法是使用 <application>GDM</application> ，
+        GNOME 启动管理器。<application>GDM</application> 是 <application>GNOME</application> 桌面的一部分，
+        尽管默认是禁止启动的。 要启用它， 可以通过在 <filename>/etc/rc.conf</filename> 中加入以下这行：</para>
+
+	<programlisting>gdm_enable="YES"</programlisting>
+
+	<para>这样在您重启计算机时，<application>GDM</application> 将自动允许：</para>
+
+    <para>通常我们希望在 <application>GDM</application> 启动时，同时启动所有 <application>GNOME</application> 服务，
+        可以将以下这行加入  <filename>/etc/rc.conf</filename> 文件中。</para>
+
+	<programlisting>gnome_enable="YES"</programlisting>
+
+    <para><application>GNOME</application> 也可以通过名为 <filename>.xinitrc</filename> 文件里添加命令行来启动。
+        如果已经有了自定义的 <filename>.xinitrc</filename> ，
+        将启动当前窗口管理器的那一行改为启动 <application>/usr/local/bin/gnome-session</application> 就可以了。 如果还没有，
+        那么只需简单地执行以下命令：</para>
+
+	<screen>&prompt.user; <userinput>echo "/usr/local/bin/gnome-session" &gt; ~/.xinitrc</userinput></screen>
+
+	<para>接下来， 输入 <command>startx</command> ，<application>GNOME</application> 桌面环境就启动了。</para>
+
+	<note>
+        <para>如果之前使用了一些旧式的显示管理器， 例如 <application>XDM</application> ， 则这样做无效。
+            此时应建立一个可执行的 <filename>.xsession</filename> 文件， 其中包含同样的命令。
+            要完成这项工作， 需要用 <application>/usr/local/bin/gnome-session</application> 取代取代现有的窗口管理器：</para>
+	</note>
+
+	<screen>&prompt.user; <userinput>echo "#!/bin/sh" &gt; ~/.xsession</userinput>
+&prompt.user; <userinput>echo "/usr/local/bin/gnome-session" &gt;&gt; ~/.xsession</userinput>
+&prompt.user; <userinput>chmod +x ~/.xsession</userinput></screen>
+
+    <para>另外一种选择是配置显示管理器允许在登录时选择的窗口管理器；
+        在 <link linkend="x11-wm-kde-details">KDE 细节</link> 章节中介绍关于如何为 <application>KDM</application> 进行这样的配置。</para>
+      </sect3>
+    </sect2>
+
+    <sect2 xml:id="x11-wm-kde">
+      <title>KDE</title>
+
+      <indexterm><primary>KDE</primary></indexterm>
+      <sect3 xml:id="x11-wm-kde-about">
+	<title>关于 KDE</title>
+
+	<para><application>KDE</application> 是一个易于使用的现代桌面环境。
+	  <application>KDE</application> 有很多很好的特性：</para>
+
+	<itemizedlist>
+	  <listitem>
+	    <para>一个美丽的现代的桌面</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>一个完美集成网络环境的桌面</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>一个集成帮助系统， 能够方便、 高效地帮助您使用 <application>KDE</application> 桌面和它的应用程序</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>所有的 <application>KDE</application> 应用程序具有统一的外观</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>标准的菜单和工具栏， 键盘布局， 颜色配置等</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>国际化： <application>KDE</application> 可以使用超过 55 种语言</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>集中化、 统一的对话框驱动的桌面配置</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>有大量的 <application>KDE</application> 应用程序可供选择</para>
+	  </listitem>
+	</itemizedlist>
+
+	<para><application>KDE</application> 自带的网页浏览器名叫 <application>Konqueror</application> ，
+        它是运行于 &unix; 系统上的其它浏览器的一个强大的竞争对手。关于 <application>KDE</application> 更多详情，
+        可以访问, <link xlink:href="http://www.kde.org/">KDE 网站</link>。
+        与 FreeBSD 相关的 <application>KDE</application> 信息和资源， 参阅 <link xlink:href="http://freebsd.kde.org/">KDE/FreeBSD initiative</link>'s 网站。</para>
+      </sect3>
+
+      <sect3 xml:id="x11-wm-kde-install">
+	<title>安装 KDE</title>
+
+    <para>与 <application>GNOME</application> 和其它桌面环境类似， 这个软件可以很容易地通过预编译包或 Ports Collection 来安装：</para>
+
+	<para>通过网络安装 <application>KDE 4</application> 预编译包， 使用：</para>
+
+	<screen>&prompt.root; <userinput>pkg_add -r kde4</userinput></screen>
+
+	<para>&man.pkg.add.1; 就会自动的下载最新版的应用程序。</para>
+
+	<para>对于 <application>pkgng</application> 包管理用户， 可使用：</para>
+
+	<screen>&prompt.root; <userinput>pkg install kde4</userinput></screen>
+
+	<para>从源代码安装 <application>KDE</application> 可使用 ports tree：</para>
+
+	<screen>&prompt.root; <userinput>cd /usr/ports/x11/kde4</userinput>
+&prompt.root; <userinput>make install clean</userinput></screen>
+
+    <para>首次使用 Ports 安装， 会弹出一个菜单用于选择要使用选项， 推荐使用默认选项。</para>
+
+	<para><application>KDE 4</application> 是个大型应用程序， 即使您的计算机性能很好也需要很长时间编译。</para>
+
+    <para>安装好 <application>KDE</application> 之后， 还需通知 X 服务器启动它来替换默认的窗口管理器。
+        这可以通过编辑 <filename>.xinitrc</filename> 文件来完成：</para>
+
+	<screen>&prompt.user; <userinput>echo "exec /usr/local/kde4/bin/startkde" &gt; ~/.xinitrc</userinput></screen>
+
+    <para>现在，无论您何时使用 <command>startx</command> 进入 X Window 系统，
+        <application>KDE</application> 都将成为您的默认桌面环境。</para>
+
+    <para>如果正在使用显示管理器，例如 <application>XDM</application> ， 那么配置稍有不同， 需要编辑 <filename>.xsession</filename>文件。
+        有关 <application>KDM</application> 的用法会在这章的后面介绍。</para>
+      </sect3>
+    </sect2>
+
+    <sect2 xml:id="x11-wm-kde-details">
+      <title>有关 KDE 的更多细节</title>
+
+      <para>现在 <application>KDE</application> 已经被安装到系统中了， 通过帮助页面或点击多个菜单可以发现很多东西。
+           &windows; 或 &mac; 用户会有种熟悉的感觉。</para>
+
+      <para>关于 <application>KDE</application> 最好的参考资料是它的在线文档。 <application>KDE</application> 拥有自己的网页浏览器：
+          <application>Konqueror</application> ， 还有很多其他的应用程序和丰富文档。这节的余下部分将讨论一些很难用走马观花的方法来学习的技术项目。</para>
+
+      <sect3 xml:id="x11-wm-kde-kdm">
+	<title>KDE 显示管理器</title>
+
+	<indexterm>
+	  <primary>KDE</primary>
+	  <secondary>display manager</secondary>
+	</indexterm>
+    <para>如果在同一系统上有多个用户， 则管理员通常会希望使用图形化的登录界面。 前面已经提到，
+        使用 <link linkend="x-xdm">XDM</link> 可以完成这项工作。 不过， <application>KDE</application> 本身也提供了另一个选择,
+      即 <application>KDM</application> ， 它的外观更富吸引力， 而且还提供了更多的登录选项。
+      值得一提的是， 用户还能通过选择菜单轻易地选择希望使用的桌面环境 （<application>KDE</application> 、
+	  <application>GNOME</application> 或者其它桌面。</para>
+
+	<para><application>KDE 4</application> 需要启用 &man.procfs.5; ， 添加以下这行到 <filename>/etc/rc.conf</filename> 文件中：</para>
+
+	<programlisting>kdm4_enable="YES"</programlisting>
+      </sect3>
+    </sect2>
+
+    <sect2 xml:id="x11-wm-xfce">
+      <title>Xfce</title>
+
+      <sect3 xml:id="x11-wm-xfce-about">
+	<title>关于 Xfce</title>
+
+    <para><application>Xfce</application> 是基于使用 <application>GNOME</application> GTK+ 工具包的桌面环境，
+        但是更加轻巧， 适合于那些需要一个易于使用和配置并且简单而高效的桌面的人。 它看起来非常像使用在商业 &unix; 系统上的 <application>CDE</application> 桌面环境。
+        <application>Xfce</application> 主要以下特性：</para>
+
+	<itemizedlist>
+	  <listitem>
+	    <para>一个简单，易于使用的桌面</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>完全通过鼠标的拖动和按键来控制</para>
+	  </listitem>
+
+	  <listitem>
+          <para>与 <application>CDE</application> 相似的主面板、 菜单、 挂件（applets）和应用程序启动器</para>
+	  </listitem>
+
+	  <listitem>
+          <para>集成窗口管理器、 文件管理器、 声音管理器、 <application>GNOME</application> 应用模块等等</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>主题 （因为它使用GTK+）</para>
+	  </listitem>
+
+	  <listitem>
+          <para>快速， 轻便， 高效： 非常适合比较老的/性能差的计算机或内存有限的计算机</para>
+	  </listitem>
+	</itemizedlist>
+
+	<para>更多有关 <application>Xfce</application> 的信息可以参考 <link xlink:href="http://www.xfce.org/">Xfce 网站</link> 。</para>
+      </sect3>
+
+      <sect3 xml:id="x11-wm-xfce-install">
+	<title>安装 Xfce</title>
+
+	<para>通过网络安装 <application>Xfce</application> ， 只需输入：</para>
+
+	<screen>&prompt.root; <userinput>pkg_add -r xfce4</userinput></screen>
+
+	<para>如果是 <application>pkgng</application> 包管理用户， 则使用：</para>
+
+	<screen>&prompt.root; <userinput>pkg install xfce4</userinput></screen>
+
+	<para>另外， 也可以使用 Ports Collection 从源代码编译安装：</para>
+
+	<screen>&prompt.root; <userinput>cd /usr/ports/x11-wm/xfce4</userinput>
+&prompt.root; <userinput>make install clean</userinput></screen>
+
+    <para>现在， 要告诉 X 服务器在下次X启动时执行 <application>Xfce</application> 。
+        只要执行以下命令：</para>
+
+	<screen>&prompt.user; <userinput>echo "/usr/local/bin/startxfce4" &gt; ~/.xinitrc</userinput></screen>
+
+    <para>接下来就是启动 X ， <application>Xfce</application> 将成为您的桌面。 与以前一样，
+        如果使用像 <application>XDM</application> 这样的显示管理器， 需要创建一个 <filename>.xsession</filename> 文件，
+        就像 <link linkend="x11-wm-gnome">GNOME</link>那节的介绍， 使用 <filename>/usr/local/bin/startxfce4</filename>命令，
+        或者， 配置显示管理器允许在启动时选择一个桌面， 就像 <link linkend="x11-wm-kde-kdm">kdm</link> 那节的介绍。</para>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="x11-understanding">
+
+    <title>故障排除</title>
+
+    <para>如果鼠标无法正常工作，您将需要在继续深入配置之前， 先配置它。
+        参阅  &os; 安装一章中的 <xref linkend="mouse"/> 。另外，
+        新版 <application>Xorg</application> 将会忽略 <filename>xorg.conf</filename> 中的 <literal>InputDevice</literal> 部分，
+        这有助于自动检测硬件设备。 如果需要恢复旧的模式， 可以在这个文件中的 <literal>ServerLayout</literal> 或 <literal>ServerFlags</literal> 部分加入一下选项：</para>
+
+      <programlisting>Option "AutoAddDevices" "false"</programlisting>
+
+      <para>输入设备连同其他需要的选项 (比如， 键盘布局切换) 就可以像以前版本那样配置了。</para>
+
+      <note>
+          <para>正如前面所提到的， 默认情况下 <application>hald</application>  守护进程会自动检测你的键盘可能检测出你的键盘布局或型号有差异，
+              在桌面环境中， 比如 <application>GNOME</application> ，<application>KDE</application> 或 <application>Xfce</application> 提供了工具来配置键盘。
+              另外， 也可在 &man.setxkbmap.1; 工具的帮助下或者通过 <application>hald</application> 的配置文件来直接设置键盘的属性。</para>
+
+          <para>举个例， 如果某人想要使用一个 PC 102 键的键盘，
+              我们就需要为 <application>hald</application> 创建一个名为  <filename>x11-input.fdi</filename> 的配置文件，
+              并保存到 <filename>/usr/local/etc/hal/fdi/policy</filename> 目录中。文件需包含如下内容：</para>
+
+	<programlisting>&lt;?xml version="1.0" encoding="iso-8859-1"?&gt;
+&lt;deviceinfo version="0.2"&gt;
+  &lt;device&gt;
+    &lt;match key="info.capabilities" contains="input.keyboard"&gt;
+	  &lt;merge key="input.x11_options.XkbModel" type="string"&gt;pc102&lt;/merge&gt;
+	  &lt;merge key="input.x11_options.XkbLayout" type="string"&gt;fr&lt;/merge&gt;
+    &lt;/match&gt;
+  &lt;/device&gt;
+&lt;/deviceinfo&gt;</programlisting>
+
+	<para>如果这个文件已经存在， 只要把键盘配置相关的部分拷贝加入即可。</para>
+
+    <para>您需要重启您的计算机， 使 <application>hald</application> 读入此文件。</para>
+
+	<para>也可以在 X 模拟终端或一个脚本中使用以下的命令达到相同的效果：</para>
+
+	<screen>&prompt.user; <userinput>setxkbmap -model pc102 -layout fr</userinput></screen>
+
+	<para><filename>/usr/local/share/X11/xkb/rules/base.lst</filename> 列出了各种不同的键盘， 布局和可用的选项。</para>
+      </note>
+
+      <indexterm><primary><application>&xorg;</application>
+	  tuning</primary></indexterm>
+
+      <para>接下来是调整 <filename>xorg.conf.new</filename> 配置文件并作测试。使用文本编辑器如  &man.emacs.1; 或 &man.ee.1;  打开这个文件。
+          如果是不支持自动检测刷新率的比较旧或者不常见的显示器，
+          需要在 <filename>xorg.conf.new</filename> 文件的 <literal>"Monitor"</literal> 部分指定分辨率：</para>
+
+      <programlisting>Section "Monitor"
+	Identifier   "Monitor0"
+	VendorName   "Monitor Vendor"
+	ModelName    "Monitor Model"
+	HorizSync    30-107
+	VertRefresh  48-120
+EndSection</programlisting>
+
+      <para>由于大多数显示器支持自动检测同步频率， 使得手动输入这些值变得很不必要。
+          对于那些不支持自动检测的显示器， 推荐使用制造商提供的值， 避免对显示器潜在的损伤。</para>
+
+      <para>X 能够使用显示器所支持的 DPMS (能源之星) 功能。 &man.xset.1; 程序可以控制超时时间，
+          并强制待机、 挂起或关机。 如果希望启用显示器的 DPMS 功能， 则需要把以下设置内容添加到 monitor 部分：</para>
+
+      <programlisting>Option       "DPMS"</programlisting>
+
+      <indexterm>
+	<primary><filename>xorg.conf</filename></primary>
+      </indexterm>
+
+      <para>关闭 <filename>xorg.conf.new</filename> 之前还应该选择默认的分辨率和色深。
+          这是在 <literal>"Screen"</literal> 部分中定义的：</para>
+
+      <programlisting>Section "Screen"
+	Identifier "Screen0"
+	Device     "Card0"
+	Monitor    "Monitor0"
+	DefaultDepth 24
+	SubSection "Display"
+		Viewport  0 0
+		Depth     24
+		Modes     "1024x768"
+	EndSubSection
+EndSection</programlisting>
+
+      <para><literal>DefaultDepth</literal> 关键字描述了要运行的默认色深。 这可以通过 &man.Xorg.1; 的 <option>-depth</option> 命令行开关来替代配置文件中的设置。
+          <literal>Modes</literal> 关键字描述了给定颜色深度下屏幕的分辨率。 需要说明的是， 目标系统的图形硬件只支持由 VESA 定义的标准模式。
+          前面的例子中， 默认色深是使用 24位色。 在采用这个色深时， 允许的分辨率是 1024x768。</para>
+
+      <para>最后就是将配置文件存盘， 并使用前面介绍的测试模式测试一下。</para>
+
+      <note>
+          <para>在发现并解决问题的过程中，
+              包含了与 <application>&xorg;</application> 服务器相关的各个设备的信息的 <application>&xorg;</application> 日志文件会为您发现和排除问题有所帮助。
+              <application>&xorg;</application> 日志的文件名是 <filename>/var/log/Xorg.0.log</filename> 这样的格式。
+              实际的日志文件名可能是 <filename>Xorg.0.log</filename> 到 <filename>Xorg.8.log</filename> 等等。</para>
+      </note>
+
+      <para>如果一切准备妥当， 就可以把配置文件复制到指定目录中。 您可以在 &man.Xorg.1; 的联机手册里找到具体位置。
+            这个位置通常是 <filename>/etc/X11/xorg.conf</filename> 或是 <filename>/usr/local/etc/X11/xorg.conf</filename> 。</para>
+
+      <screen>&prompt.root; <userinput>cp xorg.conf.new /etc/X11/xorg.conf</userinput></screen>
+
+      <para><application>&xorg;</application> 的配置过程已经完成。 现在可以通过 &man.startx.1; 启动 <application>&xorg;</application> ，
+          也可以配合  &man.xdm.1; 来启动 <application>&xorg;</application> 服务器。</para>
+
+      <sect2>
+	<title>配置 &intel; <literal>i810</literal> 显示芯片组</title>
+
+	<indexterm>
+	  <primary>Intel i810 graphic chipset</primary>
+	</indexterm>
+
+    <para>配置 &intel; i810 芯片组的显示卡需要有针对 <application>&xorg;</application> 的能够用来驱动显卡的 <filename>agpgart</filename> AGP 程序接口。
+        请参阅 &man.agp.4; 驱动程序的联机手册了解更多细节。</para>
+
+    <para>这也适用于其他的图形卡硬件配置。 注意如果系统没有将 &man.agp.4; 驱动程序编译进内核，
+        尝试用 &man.kldload.8; 加载模块是无效的。 这个驱动程序必须编译进内核或者使用 <filename>/boot/loader.conf</filename> 在启动时加载进入内核。</para>
+      </sect2>
+
+      <sect2>
+	<title>添加宽屏平板显示器</title>
+
+	<indexterm>
+	  <primary>widescreen flatpanel configuration</primary>
+	</indexterm>
+
+    <para>这一节假定您了解一些关于高级配置的知识。 如果使用前面的标准配置工具不能产生可用的配置，
+        则在日志文件中提供的信息应该足以修正配置使其正常工作。 如果需要的话，您应使用一个文本编辑器来完成这项工作。</para>
+
+    <para>目前的宽屏（WSXGA、WSXGA+、WUXGA、WXGA、WXGA+，等等）支持 16:10 和 10:9 或一些支持不太好的显示比例。 常见的一些 16:10 比例的分辨率包括：</para>
+
+	<itemizedlist>
+	  <listitem>
+	    <para>2560x1600</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>1920x1200</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>1680x1050</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>1440x900</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>1280x800</para>
+	  </listitem>
+	</itemizedlist>
+
+    <para>有时， 可以简单地把这些分辨率作为 <literal>Section "Screen"</literal> 中的<literal>Mode</literal> 来
+        进行配置， 像下面这样：</para>
+
+	<programlisting>Section "Screen"
+Identifier "Screen0"
+Device     "Card0"
+Monitor    "Monitor0"
+DefaultDepth 24
+SubSection "Display"
+	Viewport  0 0
+	Depth     24
+	Modes     "1680x1050"
+EndSubSection
+EndSection</programlisting>
+
+    <para><application>&xorg;</application> 能够自动地通过 I2C/DDC 信息来自动获取宽屏显示器的分辨率信息，并处理显示器支持的频率和分辨率。</para>
+
+	<para>如果驱动程序没有找到对应的 <literal>ModeLines</literal> ， 就需要给 <application>&xorg;</application> 一些提示了。
+        使用 <filename>/var/log/Xorg.0.log</filename>  能够提取足够的信息， 就可以写一个可用的 <literal>ModeLine</literal> 了。 这类信息如下所示：</para>
+
+	<programlisting>(II) MGA(0): Supported additional Video Mode:
+(II) MGA(0): clock: 146.2 MHz   Image Size:  433 x 271 mm
+(II) MGA(0): h_active: 1680  h_sync: 1784  h_sync_end 1960 h_blank_end 2240 h_border: 0
+(II) MGA(0): v_active: 1050  v_sync: 1053  v_sync_end 1059 v_blanking: 1089 v_border: 0
+(II) MGA(0): Ranges: V min: 48  V max: 85 Hz, H min: 30  H max: 94 kHz, PixClock max 170 MHz</programlisting>
+
+	<para>这些信息称为 EDID 信息。 从中建立 <literal>ModeLine</literal> 只是把这些数据重新排列顺序而已：</para>
+
+	<programlisting>ModeLine &lt;name&gt; &lt;clock&gt; &lt;4 horiz. timings&gt; &lt;4 vert. timings&gt;</programlisting>
+
+    <para>如此， 本例中 <literal>Section "Monitor"</literal> 中的 <literal>ModeLine</literal> 应似下面的形式：</para>
+
+	<programlisting>Section "Monitor"
+Identifier      "Monitor1"
+VendorName      "Bigname"
+ModelName       "BestModel"
+ModeLine        "1680x1050" 146.2 1680 1784 1960 2240 1050 1053 1059 1089
+Option          "DPMS"
+EndSection</programlisting>
+
+	<para>经过简单的编辑步骤之后， X 就可以在您的宽屏显示器上启动了。</para>
+      </sect2>
+    </sect1>
+  </chapter>
