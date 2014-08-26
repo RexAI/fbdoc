@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE html PUBLIC "-//FreeBSD//DTD XHTML 1.0 Transitional-Based Extension//EN"
+"http://www.FreeBSD.org/XML/doc/share/xml/xhtml10-freebsd.dtd" [
+<!ENTITY title "FreeBSD &java; プロジェクト">
+<!ENTITY url.books "../../../doc/en_US.ISO8859-1/books">
+<!-- $FreeBSD$ -->
+<!-- The FreeBSD Japanese Documentation Project -->
+<!-- Original revision: r42047 -->
+]>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+      <title>&title;</title>
+
+      <cvs:keyword xmlns:cvs="http://www.FreeBSD.org/XML/CVS">$FreeBSD$</cvs:keyword>
+    </head>
+
+    <body class="navinclude.developers">
+
+  <a href="http://java.sun.com/"><img src="&enbase;/java/j2j.gif" hspace="10"
+    border="0" alt="Jump to &java;" align="right"/></a>
+
+  <p>&openjdk; プロジェクトは、&java; SE
+    プラットフォームのオープンソースな実装を提供しています。
+    サポートされている FreeBSD リリースの i386 と amd64 プラットフォームにおいて、
+    バージョン 6 および 7 が利用できます。
+    どちらのバージョンも FreeBSD Ports Collection
+    (それぞれ <code>openjdk6</code> と <code>openjdk7</code>) を用いて、
+    ソースコードから構築してインストールできます。
+    そして、コンパイル済みのバイナリ package が FreeBSD mirrors を通じて配布されており、
+    <code>pkg_add(1)</code> を用いて直接インストールすることもできます。</p>
+
+  <p>&openjdk; は、FreeBSD において推奨される &java; の実装です。
+    FreeBSD Foundation は、今後 Sun のパートナーソースベースの
+    &java; &jdk; や &jre; packages の提供はおこないません。
+    古い &java; &jdk; および &jre; の 5.0 や 6.0 の packages は、
+    現在でも参照やレガシー使用の目的のみで利用できますが、
+    これらは現在サポートされていません。</p>
+
+  <p>サポートが終了したバイナリのダウンロードについての詳細は、
+    <a href="http://www.FreeBSDFoundation.org/java">FreeBSD
+      Foundation Java ダウンロード</a> をご覧ください。</p>
+
+  <h2>ニュース</h2>
+
+  <ul>
+    <li><a href="newsflash.html">アナウンス</a></li>
+  </ul>
+
+  <h2><b>ソフトウェア</b></h2>
+
+  <ul>
+    <li><a href="install.html">FreeBSD 用の &java; を手にいれる</a></li>
+    <li><a href="dists/">リリース情報</a></li>
+    <li><a href="&enbase;/java/dists/16.html">JDK 1.6.x</a></li>
+    <li><a href="&enbase;/java/dists/17.html">JDK 1.7.x</a></li>
+    <li><a href="../ports/java.html">手にはいる ports...</a></li>
+    <li><a href="howhelp.html">手伝えることある?</a></li>
+    <li><a href="&enbase;/java/howhelp.html#BUG">バグじゃないの!?! (英文)</a></li>
+<!--
+    <li><a href="howhelp.html#BUG">バグじゃないの!?!</a></li>
+-->
+  </ul>
+
+  <h2><b>文書</b></h2>
+
+  <ul>
+    <li><a href="&url.books;/porters-handbook/using-java.html">ports を作る。</a></li>
+    <li><a href="links.html">リンク</a></li>
+  </ul>
+
+  </body>
+</html>

@@ -1,0 +1,3736 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!--
+     The FreeBSD Documentation Project
+
+     $FreeBSD$
+-->
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="security">
+  <info><title>Security</title>
+    <authorgroup>
+      <author><personname><firstname>Matthew</firstname><surname>Dillon</surname></personname><contrib>Much of this chapter has been taken from the
+	  security(7) manual page by </contrib></author>
+    </authorgroup>
+  </info>
+
+  
+
+  <indexterm><primary>security</primary></indexterm>
+
+  <sect1 xml:id="security-synopsis">
+    <title>Synopsis</title>
+
+    <para>This chapter provides a basic introduction to system
+      security concepts, some general good rules of thumb, and some
+      advanced topics under &os;.  Many of the topics covered here
+      can be applied to system and Internet security in general.
+      Securing a system is imperative to protect data, intellectual
+      property, time, and much more from the hands of hackers and the
+      like.</para>
+
+    <para>&os; provides an array of utilities and mechanisms to
+      protect the integrity and security of the system and
+      network.</para>
+
+    <para>After reading this chapter, you will know:</para>
+
+    <itemizedlist>
+      <listitem>
+	<para>Basic &os; system security concepts.</para>
+      </listitem>
+
+      <listitem>
+	<para>The various crypt mechanisms available in &os;.</para>
+      </listitem>
+
+      <listitem>
+	<para>How to set up one-time password authentication.</para>
+      </listitem>
+
+      <listitem>
+	<para>How to configure <acronym>TCP</acronym> Wrappers for use
+	  with &man.inetd.8;.</para>
+      </listitem>
+
+      <listitem>
+	<para>How to set up <application>Kerberos</application> on
+	  &os;.</para>
+      </listitem>
+
+      <listitem>
+	<para>How to configure IPsec and create a
+	  <acronym>VPN</acronym>.</para>
+      </listitem>
+
+      <listitem>
+	<para>How to configure and use
+	  <application>OpenSSH</application> on &os;.</para>
+      </listitem>
+
+      <listitem>
+	<para>How to use filesystem <acronym>ACL</acronym>s.</para>
+      </listitem>
+
+      <listitem>
+	<para>How to use <application>portaudit</application> to
+	  audit third party software packages installed from the
+	  Ports Collection.</para>
+      </listitem>
+
+      <listitem>
+	<para>How to utilize &os; security advisories.</para>
+      </listitem>
+
+      <listitem>
+	<para>What Process Accounting is and how to enable it on
+	  &os;.</para>
+      </listitem>
+
+      <listitem>
+	<para>Understand the resource limits database and
+	  how to utilize it to control user resources.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>Before reading this chapter, you should:</para>
+
+    <itemizedlist>
+      <listitem>
+	<para>Understand basic &os; and Internet concepts.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>Additional security topics are covered elsewhere in this
+      Handbook.  For example, Mandatory Access Control is discussed in
+      <xref linkend="mac"/> and Internet firewalls are discussed in
+      <xref linkend="firewalls"/>.</para>
+  </sect1>
+
+  <sect1 xml:id="security-intro">
+    <title>Introduction</title>
+
+    <para>Security is a function that begins and ends with the system
+      administrator.  While &os; provides some inherent security, the
+      job of configuring and maintaining additional security
+      mechanisms is probably one of the single largest undertakings of
+      the sysadmin.</para>
+
+    <para>System security also pertains to dealing with various forms
+      of attack, including attacks that attempt to crash, or otherwise
+      make a system unusable, but do not attempt to compromise the
+      <systemitem class="username">root</systemitem> account.  Security concerns can be
+      split up into several categories:</para>
+
+    <orderedlist>
+      <listitem>
+	<para>Denial of service attacks.</para>
+      </listitem>
+
+      <listitem>
+	<para>User account compromises.</para>
+      </listitem>
+
+      <listitem>
+	<para>Root compromise through accessible services.</para>
+      </listitem>
+
+      <listitem>
+	<para>Root compromise via user accounts.</para>
+      </listitem>
+
+      <listitem>
+	<para>Backdoor creation.</para>
+      </listitem>
+    </orderedlist>
+
+    <indexterm>
+      <primary>DoS attacks</primary>
+      <see>Denial of Service (DoS)</see>
+    </indexterm>
+    <indexterm>
+      <primary>security</primary>
+      <secondary>DoS attacks</secondary>
+      <see>Denial of Service (DoS)</see>
+    </indexterm>
+    <indexterm><primary>Denial of Service (DoS)</primary></indexterm>
+
+    <para>A Denial of Service <acronym>DoS</acronym> attack is an
+      action that deprives the machine of needed resources.
+      Typically, <acronym>DoS</acronym> attacks are brute-force
+      mechanisms that attempt to crash or otherwise make a machine
+      unusable by overwhelming its services or network stack.  Attacks
+      on servers can often be fixed by properly specifying options to
+      limit the load the servers incur on the system under adverse
+      conditions.  Brute-force network attacks are harder to deal
+      with.  This type of attack may not be able to take the machine
+      down, but it can saturate the Internet connection.</para>
+
+    <indexterm>
+      <primary>security</primary>
+      <secondary>account compromises</secondary>
+    </indexterm>
+
+    <para>A user account compromise is more common than a
+      <acronym>DoS</acronym> attack.  Many sysadmins still run
+      unencrypted services, meaning that users logging into the
+      system from a remote location are vulnerable to having their
+      password sniffed.  The attentive sysadmin analyzes the remote
+      access logs looking for suspicious source addresses and
+      suspicious logins.</para>
+
+    <para>In a well secured and maintained system, access to a user
+      account does not necessarily give the attacker access to
+      <systemitem class="username">root</systemitem>.  Without <systemitem class="username">root</systemitem>
+      access, the attacker cannot generally hide his tracks and may,
+      at best, be able to do nothing more than mess with the user's
+      files or crash the machine.  User account compromises are common
+      because users tend not to take the precautions that sysadmins
+      take.</para>
+
+    <indexterm>
+      <primary>security</primary>
+      <secondary>backdoors</secondary>
+    </indexterm>
+
+    <para>There are potentially many ways to break
+      <systemitem class="username">root</systemitem>:  the attacker may know the
+      <systemitem class="username">root</systemitem> password, the attacker may exploit a
+      bug in a service which runs as <systemitem class="username">root</systemitem>, or the
+      attacker may know of a bug in a SUID-root program.  An attacker
+      may utilize a program known as a backdoor to search for
+      vulnerable systems, take advantage of unpatched exploits to
+      access a system, and hide traces of illegal activity.</para>
+
+    <para>Security remedies should always be implemented with a
+      multi-layered <quote>onion peel</quote> approach and can be
+      categorized as follows:</para>
+
+    <orderedlist>
+      <listitem>
+	<para>Secure <systemitem class="username">root</systemitem> and staff
+	  accounts.</para>
+      </listitem>
+
+      <listitem>
+	<para>Secure <systemitem class="username">root</systemitem>&ndash;run servers
+	  and SUID/SGID binaries.</para>
+      </listitem>
+
+      <listitem>
+	<para>Secure user accounts.</para>
+      </listitem>
+
+      <listitem>
+	<para>Secure the password file.</para>
+      </listitem>
+
+      <listitem>
+	<para>Secure the kernel core, raw devices, and
+	  filesystems.</para>
+      </listitem>
+
+      <listitem>
+	<para>Quick detection of inappropriate changes made to the
+	  system.</para>
+      </listitem>
+
+      <listitem>
+	<para>Paranoia.</para>
+      </listitem>
+    </orderedlist>
+
+    <para>The next section covers these items in greater depth.</para>
+  </sect1>
+
+  <sect1 xml:id="securing-freebsd">
+    <title>Securing &os;</title>
+
+    <indexterm>
+      <primary>security</primary>
+      <secondary>securing &os;</secondary>
+    </indexterm>
+
+    <para>This section describes methods for securing a &os; system
+      against the attacks that were mentioned in the <link linkend="security-intro">previous section</link>.</para>
+
+    <sect2 xml:id="securing-root-and-staff">
+      <title>Securing the <systemitem class="username">root</systemitem> Account</title>
+
+      <indexterm>
+	<primary>&man.su.1;</primary>
+      </indexterm>
+
+      <para>Most
+	systems have a password assigned to the
+	<systemitem class="username">root</systemitem> account.  Assume that this password
+	is <emphasis>always</emphasis> at risk of being compromised.
+	This does not mean that the password should be disabled as the
+	password is almost always necessary for console access to the
+	machine.  However, it should not be possible to use this
+	password outside of the console or possibly even with
+	&man.su.1;.  For example, setting the entries in
+	<filename>/etc/ttys</filename> to <literal>insecure</literal>
+	prevents <systemitem class="username">root</systemitem> logins to the specified
+	terminals.  In &os;, <systemitem class="username">root</systemitem> logins using
+	&man.ssh.1; are disabled by default as
+	<literal>PermitRootLogin</literal> is set to
+	<literal>no</literal> in
+	<filename>/etc/ssh/sshd_config</filename>.  Consider every
+	access method as services such as FTP often fall through the
+	cracks.  Direct <systemitem class="username">root</systemitem> logins should only
+	be allowed via the system console.</para>
+
+      <indexterm>
+	<primary><systemitem class="groupname">wheel</systemitem></primary>
+      </indexterm>
+
+      <para>Since a sysadmin needs access to
+	<systemitem class="username">root</systemitem>, additional password verification
+	should be configured.  One method is to add appropriate user
+	accounts to <systemitem class="groupname">wheel</systemitem> in
+	<filename>/etc/group</filename>.  Members of
+	<systemitem class="groupname">wheel</systemitem> are allowed to &man.su.1; to
+	<systemitem class="username">root</systemitem>.  Only those users who actually need
+	to have <systemitem class="username">root</systemitem> access should be placed in
+	<systemitem class="groupname">wheel</systemitem>.  When using Kerberos for
+	authentication, create a <filename>.k5login</filename> in
+	the home directory of <systemitem class="username">root</systemitem> to allow
+	&man.ksu.1; to be used without having to place anyone in
+	<systemitem class="groupname">wheel</systemitem>.</para>
+
+      <para>To lock an account completely, use &man.pw.8;:</para>
+
+      <screen>&prompt.root; <userinput>pw lock staff</userinput></screen>
+
+      <para>This will prevent the specified user from logging in using
+	any mechanism, including &man.ssh.1;.</para>
+
+      <para>Another method of blocking access to accounts would be to
+	replace the encrypted password with a single
+	<quote><literal>*</literal></quote> character.  This character
+	would never match the encrypted password and thus blocks user
+	access.  For example, the entry for the following
+	account:</para>
+
+      <programlisting>foobar:R9DT/Fa1/LV9U:1000:1000::0:0:Foo Bar:/home/foobar:/usr/local/bin/tcsh</programlisting>
+
+      <para>could be changed to this using &man.vipw.8;:</para>
+
+      <programlisting>foobar:*:1000:1000::0:0:Foo Bar:/home/foobar:/usr/local/bin/tcsh</programlisting>
+
+      <para>This prevents <systemitem class="username">foobar</systemitem> from logging in
+	using conventional methods.  This method for access
+	restriction is flawed on sites using
+	<application>Kerberos</application> or in situations where the
+	user has set up keys with &man.ssh.1;.</para>
+
+      <para>These security mechanisms assume that users are logging
+	in from a more restrictive server to a less restrictive
+	server.  For example, if the server is running network
+	services, the workstation should not be running any.  In
+	order for a workstation to be reasonably secure, run zero or
+	as few services as possible and run a password-protected
+	screensaver.  Of course, given physical access to any system,
+	an attacker can break any sort of security.  Fortunately,
+	many break-ins occur remotely, over a network, from people who
+	do not have physical access to the system.</para>
+
+      <para>Using Kerberos provides the ability to disable or change
+	the password for a user in one place, and have it immediately
+	affect all the machines on which the user has an account.  If
+	an account is compromised, the ability to instantly change the
+	associated password on all machines should not be underrated.
+	Additional restrictions can be imposed with Kerberos:  a
+	Kerberos ticket can be configured to timeout and the Kerberos
+	system can require that the user choose a new password after a
+	configurable period of time.</para>
+    </sect2>
+
+    <sect2>
+      <title>Securing Root-run Servers and SUID/SGID Binaries</title>
+
+      <indexterm>
+	<primary>sandboxes</primary>
+      </indexterm>
+      <indexterm>
+	<primary>&man.sshd.8;</primary>
+      </indexterm>
+
+      <para>The prudent sysadmin only enables required services and is
+	aware that third party servers are often the most bug-prone.
+	Never run a server that has not been checked out carefully.
+	Think twice before running any service as
+	<systemitem class="username">root</systemitem> as many daemons can be run as a
+	separate service account or can be started in a
+	<firstterm>sandbox</firstterm>.  Do not activate insecure
+	services such as &man.telnetd.8; or &man.rlogind.8;.</para>
+
+      <para>Another potential security hole is SUID-root and SGID
+	binaries.  Most of these binaries, such as &man.rlogin.1;,
+	reside in <filename>/bin</filename>,
+	<filename>/sbin</filename>, <filename>/usr/bin</filename>, or <filename>/usr/sbin</filename>.  While nothing is
+	100% safe, the system-default SUID and SGID binaries can be
+	considered reasonably safe.  It is recommended to restrict
+	SUID binaries to a special group that only staff can access,
+	and to delete any unused SUID binaries.  SGID binaries can be
+	almost as dangerous.  If an intruder can break an SGID-kmem
+	binary, the intruder might be able to read
+	<filename>/dev/kmem</filename> and thus read the encrypted
+	password file, potentially compromising user accounts.
+	Alternatively, an intruder who breaks group
+	<literal>kmem</literal> can monitor keystrokes sent through
+	ptys, including ptys used by users who login through secure
+	methods.  An intruder that breaks the
+	<systemitem class="groupname">tty</systemitem> group can write to almost any
+	user's tty.  If a user is running a terminal program or
+	emulator with a keyboard-simulation feature, the intruder can
+	potentially generate a data stream that causes the user's
+	terminal to echo a command, which is then run as that
+	user.</para>
+    </sect2>
+
+    <sect2 xml:id="secure-users">
+      <title>Securing User Accounts</title>
+
+      <para>User accounts are usually the most difficult to secure.
+	Be vigilant in the monitoring of user accounts.  Use of
+	&man.ssh.1; and Kerberos for user accounts requires extra
+	administration and technical support, but provides a good
+	solution compared to an encrypted password file.</para>
+    </sect2>
+
+    <sect2>
+      <title>Securing the Password File</title>
+
+      <para>The only sure fire way is to star out as many passwords as
+	possible and use &man.ssh.1; or Kerberos for access to those
+	accounts.  Even though the encrypted password file
+	(<filename>/etc/spwd.db</filename>) can only be read by
+	<systemitem class="username">root</systemitem>, it may be possible for an intruder
+	to obtain read access to that file even if the attacker cannot
+	obtain root-write access.</para>
+
+      <para>Security scripts should be used to check for and report
+	changes to the password file as described in the <link linkend="security-integrity">Checking file integrity</link>
+	section.</para>
+    </sect2>
+
+    <sect2>
+      <title>Securing the Kernel Core, Raw Devices, and
+	Filesystems</title>
+
+      <para>Most modern kernels have a packet sniffing device driver
+	built in.  Under &os; it is called
+	<filename>bpf</filename>.  This device is needed for DHCP,
+	but can be removed in the custom kernel configuration file of
+	systems that do not provide or use DHCP.</para>
+
+      <indexterm>
+	<primary>&man.sysctl.8;</primary>
+      </indexterm>
+
+      <para>Even if <filename>bpf</filename> is disabled,
+	<filename>/dev/mem</filename> and
+	<filename>/dev/kmem</filename> are still problematic.  An
+	intruder can still write to raw disk devices.  An enterprising
+	intruder can use &man.kldload.8; to install his own
+	<filename>bpf</filename>, or another sniffing device, on a
+	running kernel.  To avoid these problems, run the kernel at a
+	higher security level, at least security level 1.</para>
+
+      <para>The security level of the kernel can be set in a variety
+	of ways.  The simplest way of raising the security level of a
+	running kernel is to set
+	<varname>kern.securelevel</varname>:</para>
+
+      <screen>&prompt.root; <userinput>sysctl kern.securelevel=1</userinput></screen>
+
+      <para>By default, the &os; kernel boots with a security level of
+	-1.  This is called <quote>insecure mode</quote> because
+	immutable file flags may be turned off and all devices may be
+	read from or written to.  The security level will remain at -1
+	unless it is altered, either by the administrator or by
+	&man.init.8;, because of a setting in the startup scripts.
+	The security level may be raised during system startup by
+	setting
+	<varname>kern_securelevel_enable</varname> to
+	<literal>YES</literal> in <filename>/etc/rc.conf</filename>,
+	and the value of <varname>kern_securelevel</varname> to the
+	desired security level.</para>
+
+      <para>Once the security level is set to 1 or a higher value, the
+	append-only and immutable files are honored, they cannot be
+	turned off, and access to raw devices is denied.  Higher
+	levels restrict even more operations.  For a full description
+	of the effect of various security levels, refer to
+	&man.security.7; and &man.init.8;.</para>
+
+      <note>
+	<para>Bumping the security level to 1 or higher may cause a
+	  few problems to <application>&xorg;</application>, as access
+	  to <filename>/dev/io</filename> will be blocked, or to the
+	  installation of &os; built from source as
+	  <buildtarget>installworld</buildtarget> needs to temporarily
+	  reset the append-only and immutable flags of some files.
+	  In the case of <application>&xorg;</application>, it may be
+	  possible to work around this by starting &man.xdm.1; early
+	  in the boot process, when the security level is still low
+	  enough.  Workarounds may not be possible for all secure
+	  levels or for all the potential restrictions they enforce.
+	  A bit of forward planning is a good idea.  Understanding the
+	  restrictions imposed by each security level is important as
+	  they severely diminish the ease of system use.  It will also
+	  make choosing a default setting much simpler and prevent any
+	  surprises.</para>
+      </note>
+
+      <para>If the kernel's security level is raised to 1 or a higher
+	value, it may be useful to set the <literal>schg</literal>
+	flag on critical startup binaries, directories, script files,
+	and  everything that gets run up to the point where the
+	security level is set.  A less strict compromise is to run
+	the system at a higher security level but skip setting the
+	<literal>schg</literal> flag.  Another possibility is to
+	mount <filename>/</filename> and <filename>/usr</filename> read-only.  It should be
+	noted that being too draconian about what is permitted may
+	prevent detection of an intrusion.</para>
+    </sect2>
+
+    <sect2 xml:id="security-integrity">
+      <title>Checking File Integrity</title>
+
+      <para>One can only protect the core system configuration and
+	control files so much before the convenience factor rears its
+	ugly head.  For example, using &man.chflags.1; to set the
+	<literal>schg</literal> bit on most of the files in <filename>/</filename> and <filename>/usr</filename> is probably
+	counterproductive, because while it may protect the files, it
+	also closes an intrusion detection window.  Security measures
+	are useless or, worse, present a false sense of security, if
+	potential intrusions cannot be detected.  Half the job of
+	security is to slow down, not stop, an attacker, in order to
+	catch him in the act.</para>
+
+      <para>The best way to detect an intrusion is to look for
+	modified, missing, or unexpected files.  The best way to look
+	for modified files is from another, often centralized,
+	limited-access system.  Writing security scripts on the
+	extra-security limited-access system makes them mostly
+	invisible to potential attackers.  In order to take maximum
+	advantage, the limited-access box needs significant access to
+	the other machines, usually either through a read-only
+	<acronym>NFS</acronym> export or by setting up
+	&man.ssh.1; key-pairs.  Except for its network traffic,
+	<acronym>NFS</acronym> is the least visible method, allowing
+	the administrator to monitor the filesystems on each client
+	box virtually undetected.  If a limited-access server is
+	connected to the client boxes through a switch, the
+	<acronym>NFS</acronym> method is often the better choice.  If
+	a limited-access server is connected to the client boxes
+	through several layers of routing, the <acronym>NFS</acronym>
+	method may be too insecure and &man.ssh.1; may be the better
+	choice.</para>
+
+      <para>Once a limited-access box has been given at least read
+	access to the client systems it is supposed to monitor, create
+	the monitoring scripts.  Given an <acronym>NFS</acronym>
+	mount, write scripts out of simple system utilities such as
+	&man.find.1; and &man.md5.1;.  It is best to physically
+	&man.md5.1; the client system's files at least once a day, and
+	to test control files such as those found in <filename>/etc</filename> and <filename>/usr/local/etc</filename> even more often.
+	When mismatches are found, relative to the base md5
+	information the limited-access machine knows is valid, it
+	should alert the sysadmin.  A good security script will also
+	check for inappropriate SUID binaries and for new or deleted
+	files on system partitions such as <filename>/</filename> and <filename>/usr</filename>.</para>
+
+      <para>When using &man.ssh.1; rather than <acronym>NFS</acronym>,
+	writing the security script is more difficult.  For example,
+	&man.scp.1; is needed to send the scripts to the client box in
+	order to run them.  The &man.ssh.1; client on the client box
+	may already be compromised.  Using &man.ssh.1; may be
+	necessary when running over insecure links, but it is harder
+	to deal with.</para>
+
+      <para>A good security script will also check for changes to
+	hidden configuration files, such as
+	<filename>.rhosts</filename> and
+	<filename>.ssh/authorized_keys</filename>, as these files
+	might fall outside the purview of the
+	<literal>MD5</literal> check.</para>
+
+      <para>For a large amount of user disk space, it may take too
+	long to run through every file on those partitions.  In this
+	case, consider setting mount flags to disallow SUID binaries
+	by using <literal>nosuid</literal> with &man.mount.8;.  Scan
+	these partitions at least once a week, since the objective is
+	to detect a break-in attempt, whether or not the attempt
+	succeeds.</para>
+
+      <para>Process accounting (see &man.accton.8;) is a relatively
+	low-overhead feature of &os; which might help as a
+	post-break-in evaluation mechanism.  It is especially useful
+	in tracking down how an intruder broke into a system, assuming
+	the file is still intact after the break-in has
+	occurred.</para>
+
+      <para>Finally, security scripts should process the log files,
+	and the logs themselves should be generated in as secure a
+	manner as possible and sent to a remote syslog server.  An
+	intruder will try to cover his tracks, and log files are
+	critical to the sysadmin trying to track down the time and
+	method of the initial break-in.  One way to keep a permanent
+	record of the log files is to run the system console to a
+	serial port and collect the information to a secure machine
+	monitoring the consoles.</para>
+    </sect2>
+
+    <sect2>
+      <title>Paranoia</title>
+
+      <para>A little paranoia never hurts.  As a rule, a sysadmin can
+	add any number of security features which do not affect
+	convenience and can add security features that
+	<emphasis>do</emphasis> affect convenience with some added
+	thought.  More importantly, a security administrator should
+	mix it up a bit.  If recommendations, such as those mentioned
+	in this section, are applied verbatim, those methodologies are
+	given to the prospective attacker who also has access to this
+	document.</para>
+    </sect2>
+
+    <sect2>
+      <title>Denial of Service Attacks</title>
+
+      <indexterm>
+	<primary>Denial of Service (DoS)</primary>
+      </indexterm>
+
+      <para>A <acronym>DoS</acronym> attack is typically a packet
+	attack.  While there is not much one can do about spoofed
+	packet attacks that saturate a network, one can generally
+	limit the damage by ensuring that the attack cannot take down
+	servers by:</para>
+
+      <orderedlist>
+	<listitem>
+	  <para>Limiting server forks.</para>
+	</listitem>
+
+	<listitem>
+	  <para>Limiting springboard attacks such as ICMP response
+	    attacks and ping broadcasts.</para>
+	</listitem>
+
+	<listitem>
+	  <para>Overloading the kernel route cache.</para>
+	</listitem>
+      </orderedlist>
+
+      <para>A common <acronym>DoS</acronym> attack scenario is to
+	force a forking server to spawn so many child processes that
+	the host system eventually runs out of memory and file
+	descriptors, and then grinds to a halt.  There are several
+	options to &man.inetd.8; to limit this sort of attack.  It
+	should be noted that while it is possible to prevent a machine
+	from going down, it is not generally possible to prevent a
+	service from being disrupted by the attack.  Read
+	&man.inetd.8; carefully and pay specific attention to
+	<option>-c</option>, <option>-C</option>, and
+	<option>-R</option>.  Spoofed IP attacks will circumvent
+	<option>-C</option> to &man.inetd.8;, so typically a
+	combination of options must be used.  Some standalone servers
+	have self-fork-limitation parameters.</para>
+
+      <para><application>Sendmail</application> provides
+	<option>-OMaxDaemonChildren</option>, which tends to work
+	better than trying to use
+	<application>Sendmail</application>'s load limiting options
+	due to the load lag.  Specify a
+	<literal>MaxDaemonChildren</literal> when starting
+	<application>Sendmail</application> which is high enough to
+	handle the expected load, but not so high that the computer
+	cannot handle that number of
+	<application>Sendmail</application> instances.  It is prudent
+	to run <application>Sendmail</application> in queued mode
+	using <option>-ODeliveryMode=queued</option> and to run the
+	daemon (<command>sendmail -bd</command>) separate from the
+	queue-runs (<command>sendmail -q15m</command>).  For
+	real-time delivery, run the queue at a much lower interval,
+	such as <option>-q1m</option>, but be sure to specify a
+	reasonable <literal>MaxDaemonChildren</literal> to prevent
+	cascade failures.</para>
+
+      <para>&man.syslogd.8; can be attacked directly and it is
+	strongly recommended to use
+	<option>-s</option> whenever possible, and
+	<option>-a</option> otherwise.</para>
+
+      <para>Be careful with connect-back services such as
+	reverse-identd, which can be attacked directly.  The
+	reverse-ident feature of
+	<application>TCP Wrappers</application> is not recommended for
+	this reason.</para>
+
+      <para>It is recommended to protect internal services from
+	external access by firewalling them at the border routers.
+	This is to prevent saturation attacks from outside the LAN,
+	not so much to protect internal services from network-based
+	<systemitem class="username">root</systemitem> compromise.  Always configure an
+	exclusive firewall which denies everything by default except
+	for traffic which is explicitly allowed.  The range of port
+	numbers used for dynamic binding in &os; is controlled by
+	several <varname>net.inet.ip.portrange</varname>
+	&man.sysctl.8; variables.</para>
+
+      <para>Another common <acronym>DoS</acronym> attack, called a
+	springboard attack, causes the server to generate responses
+	which overloads the server, the local network, or some other
+	machine.  The most common attack of this nature is the
+	<emphasis>ICMP ping broadcast attack</emphasis>.  The attacker
+	spoofs ping packets sent to the LAN's broadcast address with
+	the source IP address set to the machine to attack.  If the
+	border routers are not configured to drop ping packets sent to
+	broadcast addresses, the LAN generates sufficient responses to
+	the spoofed source address to saturate the victim, especially
+	when the attack is against several dozen broadcast addresses
+	over several dozen different networks at once.  A second
+	common springboard attack constructs packets that generate
+	ICMP error responses which can saturate a server's incoming
+	network and cause the server to saturate its outgoing network
+	with ICMP responses.  This type of attack can crash the
+	server by running it out of memory, especially if the server
+	cannot drain the ICMP responses it generates fast enough.  Use
+	the &man.sysctl.8; variable
+	<literal>net.inet.icmp.icmplim</literal> to limit these
+	attacks.  The last major class of springboard attacks is
+	related to certain internal &man.inetd.8; services such as the
+	UDP echo service.  An attacker spoofs a UDP packet with a
+	source address of server A's echo port and a destination
+	address of server B's echo port, where server A and B on the
+	same LAN.  The two servers bounce this one packet back and
+	forth between each other.  The attacker can overload both
+	servers and the LAN by injecting a few packets in this manner.
+	Similar problems exist with the
+	<application>chargen</application> port.  These inetd-internal
+	test services should remain disabled.</para>
+
+      <para>Spoofed packet attacks may be used to overload the kernel
+	route cache.  Refer to the
+	<varname>net.inet.ip.rtexpire</varname>,
+	<varname>rtminexpire</varname>, and
+	<varname>rtmaxcache</varname> &man.sysctl.8; parameters.  A
+	spoofed packet attack that uses a random source IP will cause
+	the kernel to generate a temporary cached route in the route
+	table, viewable with <command>netstat -rna | fgrep
+	  W3</command>.  These routes typically timeout in 1600
+	seconds or so.  If the kernel detects that the cached route
+	table has gotten too big, it will dynamically reduce the
+	<varname>rtexpire</varname> but will never decrease it to less
+	than <varname>rtminexpire</varname>.  This creates two
+	problems:</para>
+
+      <orderedlist>
+	<listitem>
+
+	  <para>The kernel does not react quickly enough when a
+	    lightly loaded server is suddenly attacked.</para>
+	</listitem>
+
+	<listitem>
+	  <para>The <varname>rtminexpire</varname> is not low enough
+	    for the kernel to survive a sustained attack.</para>
+	</listitem>
+      </orderedlist>
+
+      <para>If the servers are connected to the Internet via a T3 or
+	better, it may be prudent to manually override both
+	<varname>rtexpire</varname> and <varname>rtminexpire</varname>
+	via &man.sysctl.8;.  Never set either parameter to zero
+	as this could crash the machine.  Setting both parameters to 2
+	seconds should be sufficient to protect the route table from
+	attack.</para>
+    </sect2>
+
+    <sect2>
+      <title>Access Issues with Kerberos and &man.ssh.1;</title>
+
+      <indexterm><primary>&man.ssh.1;</primary></indexterm>
+
+      <para>There are a few issues with both Kerberos and &man.ssh.1;
+	that need to be addressed if they are used.  Kerberos is an
+	excellent authentication protocol, but there are bugs in the
+	kerberized versions of &man.telnet.1; and &man.rlogin.1; that
+	make them unsuitable for dealing with binary streams.  By
+	default, Kerberos does not encrypt a session unless
+	<option>-x</option> is used whereas  &man.ssh.1; encrypts
+	everything.</para>
+
+      <para>While &man.ssh.1; works well, it forwards encryption keys
+	by default.  This introduces a security risk to a user who
+	uses &man.ssh.1; to access an insecure machine from a secure
+	workstation.  The keys themselves are not exposed, but
+	&man.ssh.1; installs a forwarding port for the duration of the
+	login.  If an attacker has broken <systemitem class="username">root</systemitem> on
+	the insecure machine, he can utilize that port to gain access
+	to any other machine that those keys unlock.</para>
+
+      <para>It is recommended that &man.ssh.1; is used in combination
+	with Kerberos whenever possible for staff logins and
+	&man.ssh.1; can be compiled with Kerberos support.  This
+	reduces reliance on potentially exposed <acronym>SSH</acronym>
+	keys while protecting passwords via Kerberos.  Keys should
+	only be used for automated tasks from secure machines as this
+	is something that Kerberos is unsuited to.  It is recommended
+	to either turn off key-forwarding in the
+	<acronym>SSH</acronym> configuration, or to make use
+	of <literal>from=IP/DOMAIN</literal> in
+	<filename>authorized_keys</filename> to make the key only
+	usable to entities logging in from specific machines.</para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="crypt">
+    <info><title>DES, Blowfish, MD5, SHA256, SHA512, and Crypt</title>
+      <authorgroup>
+	<author><personname><firstname>Bill</firstname><surname>Swingle</surname></personname><contrib>Parts rewritten and updated by </contrib></author>
+      </authorgroup>
+      
+    </info>
+
+    
+
+    <indexterm>
+      <primary>security</primary>
+      <secondary>crypt</secondary>
+    </indexterm>
+
+    <indexterm><primary>crypt</primary></indexterm>
+    <indexterm><primary>Blowfish</primary></indexterm>
+    <indexterm><primary>DES</primary></indexterm>
+    <indexterm><primary>MD5</primary></indexterm>
+    <indexterm><primary>SHA256</primary></indexterm>
+    <indexterm><primary>SHA512</primary></indexterm>
+
+    <para>Every user on a &unix; system has a password associated with
+      their account.  In order to keep these passwords secret, they
+      are encrypted with a <quote>one-way hash</quote>, as they can
+      be easily encrypted but not decrypted.  The operating system
+      itself does not know the password.  It only knows the
+      <emphasis>encrypted</emphasis> form of the password.  The only
+      way to get the <quote>plain-text</quote> password is by a brute
+      force search of the space of possible passwords.</para>
+
+    <para>Originally, the only secure way to encrypt passwords in
+      &unix; was based on the Data Encryption Standard
+      (<acronym>DES</acronym>).  Since the source code for
+      <acronym>DES</acronym> could not be exported outside the US,
+      &os; had to find a way to both comply with US law and retain
+      compatibility with other &unix; variants that used
+      <acronym>DES</acronym>.  The solution was MD5 which is believed
+      to be more secure than <acronym>DES</acronym>.</para>
+
+    <sect2>
+      <title>Recognizing the Crypt Mechanism</title>
+
+      <para>Currently the library supports <acronym>DES</acronym>,
+	MD5, Blowfish, SHA256, and SHA512 hash functions.  To identify
+	which encryption method &os; is set up to use, examine the
+	encrypted passwords in
+	<filename>/etc/master.passwd</filename>.  Passwords encrypted
+	with the MD5 hash are longer than those encrypted with the
+	<acronym>DES</acronym> hash and begin with the characters
+	<literal>&dollar;1&dollar;</literal>.  Passwords starting with
+	<literal>&dollar;2a&dollar;</literal> are encrypted with the
+	Blowfish hash function.  <acronym>DES</acronym> password
+	strings do not have any particular identifying
+	characteristics, but they are shorter than MD5 passwords, and
+	are coded in a 64-character alphabet which does not include
+	the <literal>&dollar;</literal> character, so a relatively
+	short string which does not begin with a dollar sign is very
+	likely a <acronym>DES</acronym> password.  Both SHA256 and
+	SHA512 begin with the characters
+	<literal>&dollar;6&dollar;</literal>.</para>
+
+      <para>The password format used for new passwords is controlled
+	by the <literal>passwd_format</literal> login capability in
+	<filename>/etc/login.conf</filename>, which takes values of
+	<literal>des</literal>, <literal>md5</literal>,
+	<literal>blf</literal>, <literal>sha256</literal> or
+	<literal>sha512</literal>.  Refer to &man.login.conf.5; for
+	more information about login capabilities.</para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="one-time-passwords">
+    <title>One-time Passwords</title>
+
+    <indexterm><primary>one-time passwords</primary></indexterm>
+    <indexterm>
+      <primary>security</primary>
+      <secondary>one-time passwords</secondary>
+    </indexterm>
+
+    <para>By default, &os; includes support for One-time Passwords In
+      Everything (<acronym>OPIE</acronym>), which uses the MD5 hash by
+      default.</para>
+
+    <para>There are three different types of passwords.  The first is
+      the usual &unix; style or Kerberos password.  The second is the
+      one-time password which is generated by &man.opiekey.1; and
+      accepted by &man.opiepasswd.1; and the login prompt.  The final
+      type of password is the <quote>secret password</quote> used by
+      &man.opiekey.1;, and sometimes &man.opiepasswd.1;, to generate
+      one-time passwords.</para>
+
+    <para>The secret password has nothing to do with the &unix;
+      password.  They can be the same, but this is not recommended.
+      <acronym>OPIE</acronym> secret passwords are not limited to 8
+      characters like old &unix; passwords<footnote><para>Under &os;
+	  the standard login password may be up to 128 characters in
+	  length.</para></footnote>.  Passwords of six or seven word
+      long phrases are fairly common.  For the most part, the
+      <acronym>OPIE</acronym> system operates completely independently
+      of the &unix; password system.</para>
+
+    <para>Besides the password, there are two other pieces of data
+      that are important to <acronym>OPIE</acronym>.  One is the
+      <quote>seed</quote> or <quote>key</quote>, consisting of two
+      letters and five digits.  The other is the <quote>iteration
+	count</quote>, a number between 1 and 100.
+      <acronym>OPIE</acronym> creates the one-time password by
+      concatenating the seed and the secret password, applying the MD5
+      hash as many times as specified by the iteration count, and
+      turning the result into six short English words.  These six
+      English words are the one-time password.  The authentication
+      system (primarily PAM) keeps track of the last one-time password
+      used, and the user is authenticated if the hash of the
+      user-provided password is equal to the previous password.
+      Because a one-way hash is used, it is impossible to generate
+      future one-time passwords if a successfully used password is
+      captured.  The iteration count is decremented after each
+      successful login to keep the user and the login program in sync.
+      When the iteration count gets down to 1,
+      <acronym>OPIE</acronym> must be reinitialized.</para>
+
+    <para>There are a few programs involved in this process.
+      &man.opiekey.1; accepts an iteration count, a seed, and a secret
+      password, and generates a one-time password or a consecutive
+      list of one-time passwords.  In addition to initializing
+      <acronym>OPIE</acronym>, &man.opiepasswd.1; is used to change
+      passwords, iteration counts, or seeds.  It takes either a secret
+      passphrase, or an iteration count, seed, and a one-time
+      password.  The relevant credential files in
+      <filename>/etc/opiekeys</filename> are examined by
+      &man.opieinfo.1; which prints out the invoking user's current
+      iteration count and seed.</para>
+
+    <para>There are four different sorts of operations.  The first is
+      to use &man.opiepasswd.1; over a secure connection to set up
+      one-time-passwords for the first time, or to change the password
+      or seed.  The second operation is to use &man.opiepasswd.1; over
+      an insecure connection, in conjunction with &man.opiekey.1; over
+      a secure connection, to do the same.  The third is to use
+      &man.opiekey.1; to log in over an insecure connection.  The
+      fourth is to use &man.opiekey.1; to generate a number of keys
+      which can be written down or printed out to carry to insecure
+      locations in order to make a connection to anywhere.</para>
+
+    <sect2>
+      <title>Secure Connection Initialization</title>
+
+      <para>To initialize <acronym>OPIE</acronym> for the first time,
+	execute &man.opiepasswd.1;:</para>
+
+      <screen>&prompt.user; <userinput>opiepasswd -c</userinput>
+[grimreaper] ~ $ opiepasswd -f -c
+Adding unfurl:
+Only use this method from the console; NEVER from remote. If you are using
+telnet, xterm, or a dial-in, type ^C now or exit with no password.
+Then run opiepasswd without the -c parameter.
+Using MD5 to compute responses.
+Enter new secret pass phrase:
+Again new secret pass phrase:
+
+ID unfurl OTP key is 499 to4268
+MOS MALL GOAT ARM AVID COED</screen>
+
+      <para>At the <prompt>Enter new secret pass phrase:</prompt> or
+	<prompt>Enter secret password:</prompt> prompt, enter a
+	password or phrase.  This is not the login password as this
+	password is used to generate the one-time login keys.  The
+	<quote>ID</quote> line gives the parameters of the instance:
+	the login name, iteration count, and seed.  When logging in,
+	the system will remember these parameters and display them,
+	meaning that they do not have to be memorized.  The last line
+	gives the particular one-time password which corresponds to
+	those parameters and the secret password.  At the next login,
+	this one-time password is the one to use.</para>
+    </sect2>
+
+    <sect2>
+      <title>Insecure Connection Initialization</title>
+
+      <para>To initialize or change the secret password over an
+	insecure connection, a secure connection is needed to some
+	place where &man.opiekey.1; can be run.  This might be a shell
+	prompt on a trusted machine.  An iteration count is needed,
+	where 100 is probably a good value, and the seed can either be
+	specified or the randomly-generated one used.  On the insecure
+	connection, the machine being initialized, use
+	&man.opiepasswd.1;:</para>
+
+      <screen>&prompt.user; <userinput>opiepasswd</userinput>
+
+Updating unfurl:
+You need the response from an OTP generator.
+Old secret pass phrase:
+	otp-md5 498 to4268 ext
+	Response: GAME GAG WELT OUT DOWN CHAT
+New secret pass phrase:
+	otp-md5 499 to4269
+	Response: LINE PAP MILK NELL BUOY TROY
+
+ID mark OTP key is 499 gr4269
+LINE PAP MILK NELL BUOY TROY</screen>
+
+      <para>To accept the default seed, press <keycap>Return</keycap>.
+	Before entering an access password, move over to the secure
+	connection and give it the same parameters:</para>
+
+      <screen>&prompt.user; <userinput>opiekey 498 to4268</userinput>
+Using the MD5 algorithm to compute response.
+Reminder: Do not use opiekey from telnet or dial-in sessions.
+Enter secret pass phrase:
+GAME GAG WELT OUT DOWN CHAT</screen>
+
+      <para>Switch back over to the insecure connection, and copy
+	the generated one-time password over to the relevant
+	program.</para>
+    </sect2>
+
+    <sect2>
+      <title>Generating a Single One-time Password</title>
+
+      <para>After initializing <acronym>OPIE</acronym> and logging in,
+	a prompt like this will be displayed:</para>
+
+      <screen>&prompt.user; <userinput>telnet example.com</userinput>
+Trying 10.0.0.1...
+Connected to example.com
+Escape character is '^]'.
+
+FreeBSD/i386 (example.com) (ttypa)
+
+login: <userinput>&lt;username&gt;</userinput>
+otp-md5 498 gr4269 ext
+Password: </screen>
+
+      <para>The <acronym>OPIE</acronym> prompts provides a useful
+	feature.  If <keycap>Return</keycap> is pressed at the
+	password prompt, the prompt will turn echo on and display
+	what is typed.  This can be useful when attempting to type in
+	a password by hand from a printout.</para>
+
+      <indexterm><primary>MS-DOS</primary></indexterm>
+      <indexterm><primary>Windows</primary></indexterm>
+      <indexterm><primary>MacOS</primary></indexterm>
+
+      <para>At this point, generate the one-time password to answer
+	this login prompt.  This must be done on a trusted system
+	where it is safe to run &man.opiekey.1;.  There are versions
+	of this command for &windows;, &macos; and &os;.  This command
+	needs the iteration count and the seed as command line
+	options.  Use cut-and-paste from the login prompt on the
+	machine being logged in to.</para>
+
+      <para>On the trusted system:</para>
+
+      <screen>&prompt.user; <userinput>opiekey 498 to4268</userinput>
+Using the MD5 algorithm to compute response.
+Reminder: Do not use opiekey from telnet or dial-in sessions.
+Enter secret pass phrase:
+GAME GAG WELT OUT DOWN CHAT</screen>
+
+      <para>Once the one-time password is generated, continue to log
+	in.</para>
+    </sect2>
+
+    <sect2>
+      <title>Generating Multiple One-time Passwords</title>
+
+      <para>Sometimes there is no access to a trusted machine or
+	secure connection.  In this case, it is possible to use
+	&man.opiekey.1; to generate a number of one-time passwords
+	beforehand.  For example:</para>
+
+      <screen>&prompt.user; <userinput>opiekey -n 5 30 zz99999</userinput>
+Using the MD5 algorithm to compute response.
+Reminder: Do not use opiekey from telnet or dial-in sessions.
+Enter secret pass phrase: <userinput>&lt;secret password&gt;</userinput>
+26: JOAN BORE FOSS DES NAY QUIT
+27: LATE BIAS SLAY FOLK MUCH TRIG
+28: SALT TIN ANTI LOON NEAL USE
+29: RIO ODIN GO BYE FURY TIC
+30: GREW JIVE SAN GIRD BOIL PHI</screen>
+
+      <para>The <option>-n 5</option> requests five keys in sequence,
+	and <option>30</option> specifies what the last iteration
+	number should be.  Note that these are printed out in
+	<emphasis>reverse</emphasis> order of use.  The really
+	paranoid might want to write the results down by hand;
+	otherwise, print the list.  Each line shows both the iteration
+	count and the one-time password.  Scratch off the passwords as
+	they are used.</para>
+    </sect2>
+
+    <sect2>
+      <title>Restricting Use of &unix; Passwords</title>
+
+      <para><acronym>OPIE</acronym> can restrict the use of &unix;
+	passwords based on the IP address of a login session.  The
+	relevant file is <filename>/etc/opieaccess</filename>, which
+	is present by default.  Refer to &man.opieaccess.5; for more
+	information on this file and which security considerations to
+	be aware of when using it.</para>
+
+      <para>Here is a sample <filename>opieaccess</filename>:</para>
+
+      <programlisting>permit 192.168.0.0 255.255.0.0</programlisting>
+
+      <para>This line allows users whose IP source address (which is
+	vulnerable to spoofing) matches the specified value and mask,
+	to use &unix; passwords at any time.</para>
+
+      <para>If no rules in <filename>opieaccess</filename> are
+	matched, the default is to deny non-<acronym>OPIE</acronym>
+	logins.</para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="tcpwrappers">
+    <info><title>TCP Wrappers</title>
+      <authorgroup>
+	<author><personname><firstname>Tom</firstname><surname>Rhodes</surname></personname><contrib>Written by </contrib></author>
+      </authorgroup>
+    </info>
+
+    
+
+    <indexterm><primary>TCP Wrappers</primary></indexterm>
+
+    <para><acronym>TCP</acronym> Wrappers extends the abilities of
+      <xref linkend="network-inetd"/> to provide support for every
+      server daemon under its control.  It can be configured
+      to provide logging support, return messages to connections, and
+      permit a daemon to only accept internal connections.  While some
+      of these features can be provided by implementing a firewall,
+      <acronym>TCP</acronym> Wrappers adds an extra layer of
+      protection and goes beyond the amount of control a firewall can
+      provide.</para>
+
+    <para><acronym>TCP</acronym> Wrappers should not be considered a
+      replacement for a properly configured firewall.
+      <acronym>TCP</acronym> Wrappers should be used in conjunction
+      with a firewall and other security enhancements.</para>
+
+    <sect2>
+      <title>Initial Configuration</title>
+
+      <para>To enable <acronym>TCP</acronym> Wrappers in &os;, ensure
+	the &man.inetd.8; server is started from
+	<filename>/etc/rc.conf</filename> with
+	<option>-Ww</option>.  Then, properly configure
+	<filename>/etc/hosts.allow</filename>.</para>
+
+      <note>
+	<para>Unlike other implementations of <acronym>TCP</acronym>
+	  Wrappers, the use of <filename>hosts.deny</filename> has
+	  been deprecated.  All configuration options should be placed
+	  in <filename>/etc/hosts.allow</filename>.</para>
+      </note>
+
+      <para>In the simplest configuration, daemon connection policies
+	are set to either be permitted or blocked depending on the
+	options in <filename>/etc/hosts.allow</filename>.  The default
+	configuration in &os; is to allow a connection to every daemon
+	started with &man.inetd.8;.</para>
+
+      <para>Basic configuration usually takes the form of
+	<literal>daemon : address : action</literal>, where
+	<literal>daemon</literal> is the daemon which &man.inetd.8;
+	started, <literal>address</literal> is a valid hostname,
+	<acronym>IP</acronym> address, or an IPv6 address enclosed in
+	brackets ([&nbsp;]), and <literal>action</literal> is
+	either <literal>allow</literal> or <literal>deny</literal>.
+	<acronym>TCP</acronym> Wrappers uses a first rule match
+	semantic, meaning that the configuration file is scanned in
+	ascending order for a matching rule.  When a match is found,
+	the rule is applied and the search process stops.</para>
+
+      <para>For example, to allow <acronym>POP</acronym>3 connections
+	via the <package>mail/qpopper</package>
+	daemon, the following lines should be appended to
+	<filename>hosts.allow</filename>:</para>
+
+      <programlisting># This line is required for POP3 connections:
+qpopper : ALL : allow</programlisting>
+
+      <para>After adding this line, &man.inetd.8; needs to be
+	restarted:</para>
+
+	<screen>&prompt.root; <userinput>service inetd restart</userinput></screen>
+    </sect2>
+
+    <sect2>
+      <title>Advanced Configuration</title>
+
+      <para><acronym>TCP</acronym> Wrappers provides advanced options
+	to allow more control over the way connections are handled.
+	In some cases, it may be appropriate to return a comment to
+	certain hosts or daemon connections.  In other cases, a log
+	entry should be recorded or an email sent to the
+	administrator.  Other situations may require the use of a
+	service for local connections only.  This is all possible
+	through the use of configuration options known as
+	<literal>wildcards</literal>, expansion characters and
+	external command execution.</para>
+
+      <sect3>
+	<title>External Commands</title>
+
+	<para>Suppose that a situation occurs where a connection
+	  should be denied yet a reason should be sent to the
+	  individual who attempted to establish that connection.  That
+	  action is possible with <option>twist</option>.  When a
+	  connection attempt is made, <option>twist</option> executes
+	  a shell command or script.  An example exists in
+	  <filename>hosts.allow</filename>:</para>
+
+	<programlisting># The rest of the daemons are protected.
+ALL : ALL \
+	: severity auth.info \
+	: twist /bin/echo "You are not welcome to use %d from %h."</programlisting>
+
+	<para>In this example, the message <quote>You are not allowed
+	    to use <literal>daemon</literal> from
+	    <literal>hostname</literal>.</quote> will be returned for
+	  any daemon not previously configured in the access file.
+	  This is useful for sending a reply back to the connection
+	  initiator right after the established connection is dropped.
+	  Any message returned <emphasis>must</emphasis> be wrapped in
+	  quote (<literal>"</literal>) characters.</para>
+
+	<warning>
+	  <para>It may be possible to launch a denial of service
+	    attack on the server if an attacker, or group of
+	    attackers, could flood these daemons with connection
+	    requests.</para>
+	</warning>
+
+	<para>Another possibility is to use <option>spawn</option>.
+	  Like <option>twist</option>, <option>spawn</option>
+	  implicitly denies the connection and may be used to run
+	  external shell commands or scripts.  Unlike
+	  <option>twist</option>, <option>spawn</option> will not send
+	  a reply back to the individual who established the
+	  connection.  For example, consider the following
+	  configuration line:</para>
+
+	<programlisting># We do not allow connections from example.com:
+ALL : .example.com \
+	: spawn (/bin/echo %a from %h attempted to access %d &gt;&gt; \
+	  /var/log/connections.log) \
+	: deny</programlisting>
+
+	<para>This will deny all connection attempts from <systemitem class="fqdomainname">*.example.com</systemitem> and log the hostname,
+	  <acronym>IP</acronym> address, and the daemon to which
+	  access was attempted to
+	  <filename>/var/log/connections.log</filename>.</para>
+
+	<para>This example uses the substitution characters
+	  <literal>%a</literal> and <literal>%h</literal>.  Refer to
+	  &man.hosts.access.5; for the complete list.</para>
+      </sect3>
+
+      <sect3>
+	<title>Wildcard Options</title>
+
+	<para>The <literal>ALL</literal> option may be used to match
+	  every instance of a daemon, domain, or an
+	  <acronym>IP</acronym> address.  Another wildcard is
+	  <literal>PARANOID</literal> which may be used to match
+	  any host which provides an <acronym>IP</acronym> address
+	  that may be forged.  For example,
+	  <literal>PARANOID</literal> may be used to define an action
+	  to be taken whenever a connection is made from an
+	  <acronym>IP</acronym> address that differs from its
+	  hostname.  In this example, all connection requests to
+	  &man.sendmail.8; which have an <acronym>IP</acronym> address
+	  that varies from its hostname will be denied:</para>
+
+	<programlisting># Block possibly spoofed requests to sendmail:
+sendmail : PARANOID : deny</programlisting>
+
+	<caution>
+	  <para>Using the <literal>PARANOID</literal> wildcard may
+	    severely cripple servers if the client or server has a
+	    broken <acronym>DNS</acronym> setup.  Administrator
+	    discretion is advised.</para>
+	</caution>
+
+	<para>To learn more about wildcards and their associated
+	  functionality, refer to &man.hosts.access.5;.</para>
+
+	<para>Before any of the specific configuration lines above
+	  will work, the first configuration line should be commented
+	  out in <filename>hosts.allow</filename>.</para>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="kerberos5">
+    <info><title><application>Kerberos5</application></title>
+      <authorgroup>
+	<author><personname><firstname>Tillman</firstname><surname>Hodgson</surname></personname><contrib>Contributed by </contrib></author>
+      </authorgroup>
+      <authorgroup>
+	<author><personname><firstname>Mark</firstname><surname>Murray</surname></personname><contrib>Based on a contribution by </contrib></author>
+      </authorgroup>
+    </info>
+
+    
+
+    <para><application>Kerberos</application> is a network add-on
+      system/protocol that allows users to authenticate themselves
+      through the services of a secure server.
+      <application>Kerberos</application> can be described as an
+      identity-verifying proxy system.  It can also be described as a
+      trusted third-party authentication system.  After a user
+      authenticates with <application>Kerberos</application>, their
+      communications can be encrypted to assure privacy and data
+      integrity.</para>
+
+    <para>The only function of <application>Kerberos</application> is
+      to provide the secure authentication of users on the network.
+      It does not provide authorization functions (what users are
+      allowed to do) or auditing functions (what those users did).  It
+      is recommended that <application>Kerberos</application> be used
+      with other security methods which provide authorization and
+      audit services.</para>
+
+    <para>This section provides a guide on how to set up
+      <application>Kerberos</application> as distributed for &os;.
+      Refer to the relevant manual pages for more complete
+      descriptions.</para>
+
+    <para>For purposes of demonstrating a
+      <application>Kerberos</application> installation, the various
+      name spaces will be as follows:</para>
+
+    <itemizedlist>
+      <listitem>
+	<para>The <acronym>DNS</acronym> domain (<quote>zone</quote>)
+	  will be <systemitem class="fqdomainname">example.org</systemitem>.</para>
+      </listitem>
+
+      <listitem>
+	<para>The <application>Kerberos</application> realm will be
+	  <literal>EXAMPLE.ORG</literal>.</para>
+      </listitem>
+    </itemizedlist>
+
+    <note>
+      <para>Use real domain names when setting up
+	<application>Kerberos</application> even if it will run
+	internally.  This avoids <acronym>DNS</acronym> problems
+	and assures inter-operation with other
+	<application>Kerberos</application> realms.</para>
+    </note>
+
+    <sect2>
+      <title>History</title>
+
+      <indexterm>
+	<primary>Kerberos5</primary>
+	<secondary>history</secondary>
+      </indexterm>
+
+      <para><application>Kerberos</application> was created by
+	<acronym>MIT</acronym> as a solution to network security
+	problems.  The <application>Kerberos</application> protocol
+	uses strong cryptography so that a client can prove its
+	identity to a server (and vice versa) across an insecure
+	network connection.</para>
+
+      <para><application>Kerberos</application> is both the name of a
+	network authentication protocol and an adjective to describe
+	programs that implement it, such as
+	<application>Kerberos</application> telnet.  The current
+	version of the protocol is version 5, described in
+	<acronym>RFC</acronym>&nbsp;1510.</para>
+
+      <para>Several free implementations of this protocol are
+	available, covering a wide range of operating systems.  The
+	Massachusetts Institute of Technology
+	(<acronym>MIT</acronym>), where
+	<application>Kerberos</application> was originally developed,
+	continues to develop their <application>Kerberos</application>
+	package.  It is commonly used in the <acronym>US</acronym> as
+	a cryptography product, and has historically been affected by
+	<acronym>US</acronym> export regulations.  The
+	<acronym>MIT</acronym> <application>Kerberos</application> is
+	available as the <package>security/krb5</package> package or port.
+	Heimdal <application>Kerberos</application> is another version
+	5 implementation, and was explicitly developed outside of the
+	<acronym>US</acronym> to avoid export regulations.  The
+	Heimdal <application>Kerberos</application> distribution is
+	available as a the <package>security/heimdal</package> package or port,
+	and a minimal installation is included in the base &os;
+	install.</para>
+
+      <para>These instructions assume the use of the Heimdal
+	distribution included in &os;.</para>
+    </sect2>
+
+    <sect2>
+      <title>Setting up a Heimdal <acronym>KDC</acronym></title>
+
+      <indexterm>
+	<primary>Kerberos5</primary>
+	<secondary>Key Distribution Center</secondary>
+      </indexterm>
+
+      <para>The Key Distribution Center (<acronym>KDC</acronym>) is
+	the centralized authentication service that
+	<application>Kerberos</application> provides.  It is the
+	computer that issues <application>Kerberos</application>
+	tickets.  The <acronym>KDC</acronym> is considered
+	<quote>trusted</quote> by all other computers in the
+	<application>Kerberos</application> realm, and thus has
+	heightened security concerns.</para>
+
+      <para>While running the <application>Kerberos</application>
+	server requires very few computing resources, a dedicated
+	machine acting only as a <acronym>KDC</acronym> is recommended
+	for security reasons.</para>
+
+      <para>To begin setting up a <acronym>KDC</acronym>, ensure that
+	<filename>/etc/rc.conf</filename> contains the correct
+	settings to act as a <acronym>KDC</acronym>.  As required,
+	adjust paths to reflect the system:</para>
+
+      <programlisting>kerberos5_server_enable="YES"
+kadmind5_server_enable="YES"</programlisting>
+
+      <para>Next, edit <filename>/etc/krb5.conf</filename> as
+	follows:</para>
+
+      <programlisting>[libdefaults]
+    default_realm = EXAMPLE.ORG
+[realms]
+    EXAMPLE.ORG = {
+        kdc = kerberos.example.org
+        admin_server = kerberos.example.org
+    }
+[domain_realm]
+    .example.org = EXAMPLE.ORG</programlisting>
+
+      <para>This <filename>/etc/krb5.conf</filename> implies that the
+	<acronym>KDC</acronym> will use the fully-qualified hostname
+	<systemitem class="fqdomainname">kerberos.example.org</systemitem>.  Add a
+	CNAME (alias) entry to the zone file to accomplish this
+	if the <acronym>KDC</acronym> has a different hostname.</para>
+
+      <note>
+	<para>For large networks with a properly configured
+	  <acronym>DNS</acronym> server, the above example could be
+	  trimmed to:</para>
+
+	<programlisting>[libdefaults]
+      default_realm = EXAMPLE.ORG</programlisting>
+
+	<para>With the following lines being appended to the
+	  <systemitem class="fqdomainname">example.org</systemitem> zone file:</para>
+
+	<programlisting>_kerberos._udp      IN  SRV     01 00 88 kerberos.example.org.
+_kerberos._tcp      IN  SRV     01 00 88 kerberos.example.org.
+_kpasswd._udp       IN  SRV     01 00 464 kerberos.example.org.
+_kerberos-adm._tcp  IN  SRV     01 00 749 kerberos.example.org.
+_kerberos           IN  TXT     EXAMPLE.ORG</programlisting>
+      </note>
+
+      <note>
+	<para>For clients to be able to find the
+	  <application>Kerberos</application> services, it
+	  <emphasis>must</emphasis> have either a fully configured
+	  <filename>/etc/krb5.conf</filename> or a minimally
+	  configured <filename>/etc/krb5.conf</filename>
+	  <emphasis>and</emphasis> a properly configured DNS
+	  server.</para>
+      </note>
+
+      <para>Next, create the <application>Kerberos</application>
+	database which contains the keys of all principals encrypted
+	with a master password.  It is not required to remember this
+	password as it will be stored in
+	<filename>/var/heimdal/m-key</filename>.  To create the
+	master key, run &man.kstash.8; and enter a password.</para>
+
+      <para>Once the master key has been created, initialize the
+	database using <command>kadmin -l</command>.  This option
+	instructs &man.kadmin.8; to modify the local database files
+	directly rather than going through the &man.kadmind.8; network
+	service.  This handles the chicken-and-egg problem of trying
+	to connect to the database before it is created.  At the
+	&man.kadmin.8; prompt, use <command>init</command> to create
+	the realm's initial database.</para>
+
+      <para>Lastly, while still in &man.kadmin.8;, create the first
+	principal using <command>add</command>.  Stick to the default
+	options for the principal for now, as these can be changed
+	later with <command>modify</command>.  Type
+	<literal>?</literal> at the &man.kadmin.8; prompt to see the
+	available options.</para>
+
+      <para>A sample database creation session is shown below:</para>
+
+      <screen>&prompt.root; <userinput>kstash</userinput>
+Master key: <userinput>xxxxxxxx</userinput>
+Verifying password - Master key: <userinput>xxxxxxxx</userinput>
+
+&prompt.root; <userinput>kadmin -l</userinput>
+kadmin&gt; <userinput>init EXAMPLE.ORG</userinput>
+Realm max ticket life [unlimited]:
+kadmin&gt; <userinput>add tillman</userinput>
+Max ticket life [unlimited]:
+Max renewable life [unlimited]:
+Attributes []:
+Password: <userinput>xxxxxxxx</userinput>
+Verifying password - Password: <userinput>xxxxxxxx</userinput></screen>
+
+      <para>Next, start the <acronym>KDC</acronym> services.  Run
+	<command>service kerberos start</command> and
+	<command>service kadmind start</command> to bring up the
+	services.  While there will not be any kerberized daemons
+	running at this point, it is possible to confirm that the
+	<acronym>KDC</acronym> is functioning by obtaining and
+	listing a ticket for the principal (user) that was just
+	created from the command-line of the <acronym>KDC</acronym>
+	itself:</para>
+
+      <screen>&prompt.user; <userinput>kinit tillman</userinput>
+tillman@EXAMPLE.ORG's Password:
+
+&prompt.user; <userinput>klist</userinput>
+Credentials cache: FILE:<filename>/tmp/krb5cc_500</filename>
+	Principal: tillman@EXAMPLE.ORG
+
+  Issued           Expires          Principal
+Aug 27 15:37:58  Aug 28 01:37:58  krbtgt/EXAMPLE.ORG@EXAMPLE.ORG</screen>
+
+      <para>The ticket can then be revoked when finished:</para>
+
+      <screen>&prompt.user; <userinput>kdestroy</userinput></screen>
+    </sect2>
+
+    <sect2>
+      <title><application>Kerberos</application> Enabling a Server
+	with Heimdal Services</title>
+
+      <indexterm>
+	<primary>Kerberos5</primary>
+	<secondary>enabling services</secondary>
+      </indexterm>
+
+      <para>First, copy
+	<filename>/etc/krb5.conf</filename> from the
+	<acronym>KDC</acronym> to the client computer in a secure
+	fashion, such as &man.scp.1;, or physically via removable
+	media.</para>
+
+      <para>Next, create <filename>/etc/krb5.keytab</filename>.
+	This is the major difference between a server providing
+	<application>Kerberos</application> enabled daemons and a
+	workstation:  the server must have a
+	<filename>keytab</filename>.  This file contains the
+	server's host key, which allows it and the
+	<acronym>KDC</acronym> to verify each others identity.  It
+	must be transmitted to the server in a secure fashion, as
+	the security of the server can be broken if the key is made
+	public.</para>
+
+      <para>Typically, the <filename>keytab</filename> is transferred
+	to the server using &man.kadmin.8;.  This is handy because the
+	host principal, the <acronym>KDC</acronym> end of the
+	<filename>krb5.keytab</filename>, is also created using
+	&man.kadmin.8;.</para>
+
+      <para>A ticket must already be obtained and this ticket must be
+	allowed to use the &man.kadmin.8; interface in the
+	<filename>kadmind.acl</filename>.  See the section titled
+	<quote>Remote administration</quote> in<command>info
+	  heimdal</command> for details on designing access control
+	lists.  Instead of enabling remote &man.kadmin.8; access, the
+	administrator can securely connect to the
+	<acronym>KDC</acronym> via the local console or &man.ssh.1;,
+	and perform administration locally using
+	<command>kadmin -l</command>.</para>
+
+      <para>After installing <filename>/etc/krb5.conf</filename>,
+	use <command>add --random-key</command> from the
+	<application>Kerberos</application> server.  This adds
+	the server's host principal.  Then, use <command>ext</command>
+	to extract the server's host principal to its own keytab.  For
+	example:</para>
+
+      <screen>&prompt.root; <userinput>kadmin</userinput>
+kadmin&gt;<userinput> add --random-key host/myserver.example.org</userinput>
+Max ticket life [unlimited]:
+Max renewable life [unlimited]:
+Attributes []:
+kadmin&gt;<userinput> ext host/myserver.example.org</userinput>
+kadmin&gt;<userinput> exit</userinput></screen>
+
+      <para>Note that <command>ext</command> stores the extracted key
+	in <filename>/etc/krb5.keytab</filename> by default.</para>
+
+      <para>If &man.kadmind.8; is not running on the
+	<acronym>KDC</acronym> and there is no access to
+	&man.kadmin.8; remotely, add the host principal
+	(<systemitem class="username">host/myserver.EXAMPLE.ORG</systemitem>) directly on
+	the <acronym>KDC</acronym> and then extract it to a
+	temporary file to avoid overwriting the
+	<filename>/etc/krb5.keytab</filename> on the
+	<acronym>KDC</acronym>, using something like this:</para>
+
+      <screen>&prompt.root; <userinput>kadmin</userinput>
+kadmin&gt;<userinput> ext --keytab=/tmp/example.keytab host/myserver.example.org</userinput>
+kadmin&gt;<userinput> exit</userinput></screen>
+
+      <para>The keytab can then be securely copied to the server
+	using &man.scp.1; or a removable media.  Be sure to specify a
+	non-default keytab name to avoid overwriting the keytab on the
+	<acronym>KDC</acronym>.</para>
+
+      <para>At this point, the server can communicate with the
+	<acronym>KDC</acronym> using
+	<filename>krb5.conf</filename> and it can prove its
+	own identity with <filename>krb5.keytab</filename>.  It is now
+	ready for the <application>Kerberos</application> services to
+	be enabled.  For this example, the &man.telnetd.8; service
+	is enabled in <filename>/etc/inetd.conf</filename> and
+	&man.inetd.8; has been restarted with <command>service inetd
+	  restart</command>:</para>
+
+      <programlisting>telnet    stream  tcp     nowait  root    /usr/libexec/telnetd  telnetd -a user</programlisting>
+
+      <para>The critical change is that the <option>-a</option>
+	authentication type is set to user.  Refer to &man.telnetd.8;
+	for more details.</para>
+    </sect2>
+
+    <sect2>
+      <title><application>Kerberos</application> Enabling a Client
+	with Heimdal</title>
+
+      <indexterm>
+	<primary>Kerberos5</primary>
+	<secondary>configure clients</secondary>
+      </indexterm>
+
+      <para>Setting up a client computer is easy as only
+	<filename>/etc/krb5.conf</filename> is needed.  Securely copy
+	this file over to the client computer from the
+	<acronym>KDC</acronym>.</para>
+
+      <para>Test the client by attempting to use &man.kinit.1;,
+	&man.klist.1;, and &man.kdestroy.1; from the client to obtain,
+	show, and then delete a ticket for the principal created
+	above.  <application>Kerberos</application> applications
+	should also be able to connect to
+	<application>Kerberos</application> enabled servers.  If that
+	does not work but obtaining a ticket does, the problem is
+	likely with the server and not with the client or the
+	<acronym>KDC</acronym>.</para>
+
+      <para>When testing a Kerberized application, try using a packet
+	sniffer such as &man.tcpdump.1; to confirm that the password
+	is not sent in the clear.</para>
+
+      <para>Various non-core <application>Kerberos</application>
+	client applications are available.  The <quote>minimal</quote>
+	installation in &os; installs &man.telnetd.8; as the only
+	<application>Kerberos</application> enabled service.</para>
+
+      <para>The Heimdal port installs
+	<application>Kerberos</application> enabled versions of
+	&man.ftpd.8;, &man.rshd.8;, &man.rcp.1;, &man.rlogind.8;, and
+	a few other less common programs.  The <acronym>MIT</acronym>
+	port also contains a full suite of
+	<application>Kerberos</application> client
+	applications.</para>
+    </sect2>
+
+    <sect2>
+      <title>User Configuration Files: <filename>.k5login</filename>
+	and <filename>.k5users</filename></title>
+
+      <indexterm>
+	<primary><filename>.k5login</filename></primary>
+      </indexterm>
+
+      <indexterm>
+	<primary><filename>.k5users</filename></primary>
+      </indexterm>
+
+      <para>Users within a realm typically have their
+	<application>Kerberos</application> principal mapped to a
+	local user account.  Occasionally, one needs to grant access
+	to a local user account to someone who does not have a
+	matching <application>Kerberos</application> principal.  For
+	example, <systemitem class="username">tillman@EXAMPLE.ORG</systemitem> may need
+	access to the local user account
+	<systemitem class="username">webdevelopers</systemitem>.  Other principals may also
+	need access to that local account.</para>
+
+      <para>The <filename>.k5login</filename> and
+	<filename>.k5users</filename> files, placed in a user's home
+	directory, can be used to solve this problem.  For example, if
+	<filename>.k5login</filename> with the following contents is
+	placed in the home directory of
+	<systemitem class="username">webdevelopers</systemitem>, both principals listed
+	will have access to that account without requiring a shared
+	password.:</para>
+
+      <screen>tillman@example.org
+jdoe@example.org</screen>
+
+      <para>Refer to &man.ksu.1; for more information about
+	<filename>.k5users</filename>.</para>
+    </sect2>
+
+    <sect2>
+      <title><application>Kerberos</application> Tips, Tricks, and
+	Troubleshooting</title>
+
+      <itemizedlist>
+	<listitem>
+	  <para>When using either the Heimdal or
+	    <acronym>MIT</acronym>
+	    <application>Kerberos</application><indexterm><primary>Kerberos5</primary><secondary>troubleshooting</secondary></indexterm> ports, ensure that
+	    the <envar>PATH</envar> lists the
+	    <application>Kerberos</application> versions of the
+	    client applications before the system versions.</para>
+	</listitem>
+
+	<listitem>
+	  <para>If all the computers in the realm do not have
+	    synchronized time settings, authentication may fail.
+	    <xref linkend="network-ntp"/> describes how to synchronize
+	    clocks using <acronym>NTP</acronym>.</para>
+	</listitem>
+
+	<listitem>
+	  <para><acronym>MIT</acronym> and Heimdal interoperate
+	    except for &man.kadmin.8;, which is not
+	    standardized.</para>
+	</listitem>
+
+	<listitem>
+	  <para>If the hostname is changed, the
+	    <systemitem class="username">host/</systemitem> principal must be changed and
+	    the keytab updated.  This also applies to special keytab
+	    entries like the <systemitem class="username">www/</systemitem> principal
+	    used for Apache's <package>www/mod_auth_kerb</package>.</para>
+	</listitem>
+
+	<listitem>
+	  <para>All hosts in the realm must be both forward and
+	    reverse resolvable in <acronym>DNS</acronym> or, at a
+	    minimum, in <filename>/etc/hosts</filename>.  CNAMEs
+	    will work, but the A and PTR records must be correct and
+	    in place.  The error message for unresolvable hosts is not
+	    intuitive: <errorname>Kerberos5 refuses authentication
+	      because Read req failed: Key table entry not
+	      found</errorname>.</para>
+	</listitem>
+
+	<listitem>
+	  <para>Some operating systems that act as clients to the
+	    <acronym>KDC</acronym> do not set the permissions for
+	    &man.ksu.1; to be setuid <systemitem class="username">root</systemitem>.  This
+	    means that &man.ksu.1; does not work.  This is not a
+	    <acronym>KDC</acronym> error.</para>
+	</listitem>
+
+	<listitem>
+	  <para>With <acronym>MIT</acronym>
+	    <application>Kerberos</application>, in order to allow a
+	    principal to have a ticket life longer than the default
+	    ten hours, use <command>modify_principal</command> at the
+	    &man.kadmin.8; prompt to change the maxlife of both the
+	    principal in question and the
+	    <systemitem class="username">krbtgt</systemitem> principal.  Then the
+	    principal can use <command>kinit -l</command> to request a
+	    ticket with a longer lifetime.</para>
+	</listitem>
+
+	<listitem>
+	  <note>
+	    <para>When running a packet sniffer on the
+	      <acronym>KDC</acronym> to aid in troubleshooting while
+	      running &man.kinit.1; from a workstation, the Ticket
+	      Granting Ticket (<acronym>TGT</acronym>) is sent
+	      immediately upon running &man.kinit.1;, even before the
+	      password is typed.  This is because the
+	      <application>Kerberos</application> server freely
+	      transmits a <acronym>TGT</acronym> to any unauthorized
+	      request.  However, every <acronym>TGT</acronym> is
+	      encrypted in a key derived from the user's password.
+	      When a user types their password, it is not sent to the
+	      <acronym>KDC</acronym>, it is instead used to decrypt
+	      the <acronym>TGT</acronym> that &man.kinit.1; already
+	      obtained.  If the decryption process results in a valid
+	      ticket with a valid time stamp, the user has valid
+	      <application>Kerberos</application> credentials.
+	      These credentials include a session key for
+	      establishing secure communications with the
+	      <application>Kerberos</application> server in the
+	      future, as well as the actual <acronym>TGT</acronym>,
+	      which is encrypted with the
+	      <application>Kerberos</application> server's own key.
+	      This second layer of encryption allows the
+	      <application>Kerberos</application> server to verify
+	      the authenticity of each <acronym>TGT</acronym>.</para>
+	  </note>
+	</listitem>
+
+	<listitem>
+	  <para>To use long ticket lifetimes, such as a week, when
+	    using <application>OpenSSH</application> to connect to the
+	    machine where the ticket is stored, make sure that
+	    <application>Kerberos</application>
+	    <option>TicketCleanup</option> is set to
+	    <literal>no</literal> in
+	    <filename>sshd_config</filename> or else tickets will be
+	    deleted at log out.</para>
+	</listitem>
+
+	<listitem>
+	  <para>Host principals can have a longer ticket lifetime.  If
+	    the user principal has a lifetime of a week but the host
+	    being connected to has a lifetime of nine hours, the user
+	    cache will have an expired host principal and the ticket
+	    cache will not work as expected.</para>
+	</listitem>
+
+	<listitem>
+	  <para>When setting up <filename>krb5.dict</filename> to
+	    prevent specific bad passwords from being used as
+	    described in &man.kadmind.8;, remember that it only
+	    applies to principals that have a password policy assigned
+	    to them.  The format used in
+	    <filename>krb5.dict</filename> is one string per line.
+	    Creating a symbolic link to
+	    <filename>/usr/share/dict/words</filename> might be
+	    useful.</para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>Differences with the <acronym>MIT</acronym>
+	Port</title>
+
+      <para>The major difference between <acronym>MIT</acronym> and
+	Heimdal relates to &man.kadmin.8; which has a different, but
+	equivalent, set of commands and uses a different protocol.
+	If the <acronym>KDC</acronym> is <acronym>MIT</acronym>, the
+	Heimdal version of &man.kadmin.8; cannot be used to administer
+	the <acronym>KDC</acronym> remotely, and vice versa.</para>
+
+      <para>The client applications may also use slightly different
+	command line options to accomplish the same tasks.
+	Following the instructions on the <acronym>MIT</acronym>
+	<application>Kerberos</application> <link xlink:href="http://web.mit.edu/Kerberos/www/">web site</link> is
+	recommended.  Be careful of path issues: the
+	<acronym>MIT</acronym> port installs into <filename>/usr/local/</filename> by default, and the
+	<quote>normal</quote> system applications run instead of
+	<acronym>MIT</acronym> versions if <envar>PATH</envar> lists
+	the system directories first.</para>
+
+      <note>
+	<para>With the &os; <acronym>MIT</acronym> <package>security/krb5</package> port, be sure to
+	  read
+	  <filename>/usr/local/share/doc/krb5/README.FreeBSD</filename>
+	  installed by the port to understand why logins via
+	  &man.telnetd.8; and <command>klogind</command> behave
+	  somewhat oddly.  Correcting the <quote>incorrect permissions
+	  on cache file</quote> behavior requires that the
+	  <command>login.krb5</command> binary be used for
+	  authentication so that it can properly change ownership for
+	  the forwarded credentials.</para>
+      </note>
+
+      <para>The following edits should also be made to
+	<filename>rc.conf</filename>:</para>
+
+      <programlisting>kerberos5_server="/usr/local/sbin/krb5kdc"
+kadmind5_server="/usr/local/sbin/kadmind"
+kerberos5_server_flags=""
+kerberos5_server_enable="YES"
+kadmind5_server_enable="YES"</programlisting>
+
+      <para>This is done because the applications for
+	<acronym>MIT</acronym> Kerberos installs binaries in the
+	<filename>/usr/local</filename>
+	hierarchy.</para>
+    </sect2>
+
+    <sect2>
+      <title>Mitigating Limitations Found in
+	<application>Kerberos</application></title>
+
+      <indexterm>
+	<primary>Kerberos5</primary>
+	<secondary>limitations and shortcomings</secondary>
+      </indexterm>
+
+      <sect3>
+	<title><application>Kerberos</application> is an
+	  All or Nothing Approach</title>
+
+	<para>Every service enabled on the network must be modified
+	  to work with <application>Kerberos</application>, or be
+	  otherwise secured against network attacks, or else the
+	  user's credentials could be stolen and re-used.  An example
+	  of this would be <application>Kerberos</application>
+	  enabling all remote shells but not converting the
+	  <acronym>POP3</acronym> mail server which sends passwords in
+	  plain text.</para>
+      </sect3>
+
+      <sect3>
+	<title><application>Kerberos</application> is Intended for
+	  Single-User Workstations</title>
+
+	<para>In a multi-user environment,
+	  <application>Kerberos</application> is less secure.  This is
+	  because it stores the tickets in <filename>/tmp</filename>, which is readable by
+	  all users.  If a user is sharing a computer with other
+	  users, it is possible that the user's tickets can be stolen
+	  or copied by another user.</para>
+
+	<para>This can be overcome with the <literal>-c</literal>
+	  command-line option or, preferably, the
+	  <envar>KRB5CCNAME</envar> environment variable.  Storing
+	  the ticket in the user's home directory and using file
+	  permissions are commonly used to mitigate this
+	  problem.</para>
+      </sect3>
+
+      <sect3>
+	<title>The KDC is a Single Point of Failure</title>
+
+	<para>By design, the <acronym>KDC</acronym> must be as secure
+	  as its master password database.  The <acronym>KDC</acronym>
+	  should have absolutely no other services running on it and
+	  should be physically secure.  The danger is high because
+	  <application>Kerberos</application> stores all passwords
+	  encrypted with the same <quote>master</quote> key which is
+	  stored as a file on the <acronym>KDC</acronym>.</para>
+
+	<para>A compromised master key is not quite as bad as one
+	  might fear.  The master key is only used to encrypt the
+	  <application>Kerberos</application> database and as a seed
+	  for the random number generator.  As long as access to the
+	  <acronym>KDC</acronym> is secure, an attacker cannot do much
+	  with the master key.</para>
+
+	<para>Additionally, if the <acronym>KDC</acronym> is
+	  unavailable, network services are unusable as authentication
+	  cannot be performed.  This can be alleviated with a single
+	  master <acronym>KDC</acronym> and one or more slaves, and
+	  with careful implementation of secondary or fall-back
+	  authentication using <acronym>PAM</acronym>.</para>
+      </sect3>
+
+      <sect3>
+	<title><application>Kerberos</application>
+	  Shortcomings</title>
+
+	<para><application>Kerberos</application> allows users, hosts
+	  and services to authenticate between themselves.  It does
+	  not have a mechanism to authenticate the
+	  <acronym>KDC</acronym> to the users, hosts or services.
+	  This means that a trojanned &man.kinit.1; could record all
+	  user names and passwords.  Filesystem integrity checking
+	  tools like <package>security/tripwire</package> can alleviate
+	  this.</para>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>Resources and Further Information</title>
+
+      <indexterm>
+	<primary>Kerberos5</primary>
+	<secondary>external resources</secondary>
+      </indexterm>
+
+      <itemizedlist>
+	<listitem>
+	  <para><link xlink:href="http://www.faqs.org/faqs/Kerberos-faq/general/preamble.html">
+	      The <application>Kerberos</application>
+	      FAQ</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://web.mit.edu/Kerberos/www/dialogue.html">Designing
+	      an Authentication System: a Dialog in Four
+	      Scenes</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.ietf.org/rfc/rfc1510.txt?number=1510">RFC
+	      1510, The <application>Kerberos</application> Network
+	      Authentication Service (V5)</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://web.mit.edu/Kerberos/www/"><acronym>MIT</acronym>
+	      <application>Kerberos</application> home
+	      page</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="http://www.pdc.kth.se/heimdal/">Heimdal
+	      <application>Kerberos</application> home
+	      page</link></para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="openssl">
+    <info><title>OpenSSL</title>
+      <authorgroup>
+	<author><personname><firstname>Tom</firstname><surname>Rhodes</surname></personname><contrib>Written by </contrib></author>
+      </authorgroup>
+    </info>
+
+    
+
+    <indexterm>
+      <primary>security</primary>
+      <secondary>OpenSSL</secondary>
+    </indexterm>
+
+    <para>The
+      <application>OpenSSL</application> toolkit is included in &os;.
+      It provides an encryption transport layer on top of the normal
+      communications layer, allowing it to be intertwined with many
+      network applications and services.</para>
+
+    <para>Some uses of <application>OpenSSL</application> may include
+      encrypted authentication of mail clients and web based
+      transactions such as credit card payments.  Many ports such as
+      <package>www/apache22</package>, and
+      <package>mail/claws-mail</package> offer
+      compilation support for building with
+      <application>OpenSSL</application>.</para>
+
+    <note>
+      <para>In most cases, the Ports Collection will attempt to build
+	the <package>security/openssl</package>
+	port unless <varname>WITH_OPENSSL_BASE</varname> is explicitly
+	set to <quote>yes</quote>.</para>
+    </note>
+
+    <para>The version of <application>OpenSSL</application> included
+      in &os; supports Secure Sockets Layer v2/v3 (SSLv2/SSLv3) and
+      Transport Layer Security v1 (TLSv1) network security protocols
+      and can be used as a general cryptographic library.</para>
+
+    <note>
+      <para>While <application>OpenSSL</application> supports the
+	<acronym>IDEA</acronym> algorithm, it is disabled by default
+	due to United States patents.  To use it, the license should
+	be reviewed and, if the restrictions are acceptable, the
+	<varname>MAKE_IDEA</varname> variable must be set in
+	<filename>/etc/make.conf</filename>.</para>
+    </note>
+
+    <para>One of the most common uses of
+      <application>OpenSSL</application> is to provide certificates
+      for use with software applications.  These certificates ensure
+      that the credentials of the company or individual are valid
+      and not fraudulent.  If the certificate in question has not
+      been verified by a <quote>Certificate Authority</quote>
+      (<acronym>CA</acronym>), a warning is produced.  A
+      <acronym>CA</acronym> is a company, such as <link xlink:href="http://www.verisign.com">VeriSign</link>, signs
+      certificates in order to validate the credentials of individuals
+      or companies.  This process has a cost associated with it and is
+      not a requirement for using certificates; however, it can put
+      users at ease.</para>
+
+    <sect2>
+      <title>Generating Certificates</title>
+
+      <indexterm>
+	<primary>OpenSSL</primary>
+	<secondary>certificate generation</secondary>
+      </indexterm>
+
+      <para>To generate a certificate, the following command is
+	available:</para>
+
+      <screen>&prompt.root; <userinput>openssl req -new -nodes -out req.pem -keyout cert.pem</userinput>
+Generating a 1024 bit RSA private key
+................++++++
+.......................................++++++
+writing new private key to 'cert.pem'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:<userinput>US</userinput>
+State or Province Name (full name) [Some-State]:<userinput>PA</userinput>
+Locality Name (eg, city) []:<userinput>Pittsburgh</userinput>
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:<userinput>My Company</userinput>
+Organizational Unit Name (eg, section) []:<userinput>Systems Administrator</userinput>
+Common Name (eg, YOUR name) []:<userinput>localhost.example.org</userinput>
+Email Address []:<userinput>trhodes@FreeBSD.org</userinput>
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:<userinput>SOME PASSWORD</userinput>
+An optional company name []:<userinput>Another Name</userinput></screen>
+
+      <para>Notice the response directly after the <quote>Common
+	  Name</quote> prompt shows a domain name.  This prompt
+	requires a server name to be entered for verification
+	purposes and placing anything but a domain name yields a
+	useless certificate.  Other options, such as the expire
+	time and alternate encryption algorithms, are available.  A
+	complete list of options is described in
+	&man.openssl.1;.</para>
+
+      <para>Two files should now exist in the directory in which this
+	command was issued.  The certificate request,
+	<filename>req.pem</filename>, may be sent to a
+	<acronym>CA</acronym> who will validate the entered
+	credentials, sign the request, and return the signed
+	certificate.  The second file is named
+	<filename>cert.pem</filename> and is the private key for the
+	certificate and should be protected at all costs.  If this
+	falls in the hands of others it can be used to impersonate
+	the user or the server.</para>
+
+      <para>In cases where a signature from a <acronym>CA</acronym>
+	is not required, a self signed certificate can be created.
+	First, generate the <acronym>RSA</acronym> key:</para>
+
+      <screen>&prompt.root; <userinput>openssl dsaparam -rand -genkey -out myRSA.key 1024</userinput></screen>
+
+      <para>Next, generate the <acronym>CA</acronym> key:</para>
+
+      <screen>&prompt.root; <userinput>openssl gendsa -des3 -out myca.key myRSA.key</userinput></screen>
+
+      <para>Use this key to create the certificate:</para>
+
+      <screen>&prompt.root; <userinput>openssl req -new -x509 -days 365 -key myca.key -out new.crt</userinput></screen>
+
+      <para>Two new files should appear in the directory: a
+	certificate authority signature file,
+	<filename>myca.key</filename> and the certificate itself,
+	<filename>new.crt</filename>.  These should be placed in a
+	directory, preferably under <filename>/etc</filename>, which is readable only by
+	<systemitem class="username">root</systemitem>.  Permissions of 0700 are
+	appropriate and can be set using &man.chmod.1;.</para>
+    </sect2>
+
+    <sect2>
+      <title>Using Certificates</title>
+
+      <para>One use for a certificate is to encrypt connections to the
+	<application>Sendmail</application> <acronym>MTA</acronym>.
+	This prevents the use of clear text authentication for users
+	who send mail via the local <acronym>MTA</acronym>.</para>
+
+      <note>
+	<para>Some <acronym>MUA</acronym>s will display error if the
+	  user has not installed the certificate locally.  Refer to
+	  the documentation included with the software for more
+	  information on certificate installation.</para>
+      </note>
+
+      <para>To configure <application>Sendmail</application>, the
+	following lines should be placed in the local
+	<filename>.mc</filename> file:</para>
+
+      <programlisting>dnl SSL Options
+define(`confCACERT_PATH',`/etc/certs')dnl
+define(`confCACERT',`/etc/certs/new.crt')dnl
+define(`confSERVER_CERT',`/etc/certs/new.crt')dnl
+define(`confSERVER_KEY',`/etc/certs/myca.key')dnl
+define(`confTLS_SRV_OPTIONS', `V')dnl</programlisting>
+
+      <para>In this example,  <filename>/etc/certs/</filename>
+	stores the certificate and key files locally.  After saving
+	the edits, rebuild the local <filename>.cf</filename> file by
+	typing
+	<command>make install</command>
+	within <filename>/etc/mail</filename>.
+	Follow that up with <command>make
+	  restart</command> which should
+	start the <application>Sendmail</application> daemon.</para>
+
+      <para>If all went well, there will be no error messages in
+	<filename>/var/log/maillog</filename> and
+	<application>Sendmail</application> will show up in the
+	process list.</para>
+
+      <para>For a simple test, connect to the mail server using
+	&man.telnet.1;:</para>
+
+      <screen>&prompt.root; <userinput>telnet example.com 25</userinput>
+Trying 192.0.34.166...
+Connected to <systemitem class="fqdomainname">example.com</systemitem>.
+Escape character is '^]'.
+220 <systemitem class="fqdomainname">example.com</systemitem> ESMTP Sendmail 8.12.10/8.12.10; Tue, 31 Aug 2004 03:41:22 -0400 (EDT)
+<userinput>ehlo example.com</userinput>
+250-example.com Hello example.com [192.0.34.166], pleased to meet you
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-8BITMIME
+250-SIZE
+250-DSN
+250-ETRN
+250-AUTH LOGIN PLAIN
+250-STARTTLS
+250-DELIVERBY
+250 HELP
+<userinput>quit</userinput>
+221 2.0.0 <systemitem class="fqdomainname">example.com</systemitem> closing connection
+Connection closed by foreign host.</screen>
+
+      <para>If the <quote>STARTTLS</quote> line appears in the
+	output, everything is working correctly.</para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="ipsec">
+    <info><title><acronym>VPN</acronym> over IPsec</title>
+      <authorgroup>
+	<author><personname><firstname>Nik</firstname><surname>Clayton</surname></personname><affiliation>
+	    <address><email>nik@FreeBSD.org</email></address>
+	  </affiliation><contrib>Written by </contrib></author>
+      </authorgroup>
+    </info>
+
+    
+
+    <indexterm>
+      <primary>IPsec</primary>
+    </indexterm>
+
+    <sect2>
+      <info><title>Understanding IPsec</title>
+	<authorgroup>
+	  <author><personname><firstname>Hiten M.</firstname><surname>Pandya</surname></personname><affiliation>
+	      <address><email>hmp@FreeBSD.org</email></address>
+	    </affiliation><contrib>Written by </contrib></author>
+	</authorgroup>
+      </info>
+
+      
+
+      <para>This section demonstrates the process of setting up IPsec.
+	It assumes familiarity with the concepts of building a custom
+	kernel (see <xref linkend="kernelconfig"/>).</para>
+
+      <para><emphasis>IPsec</emphasis> is a protocol which sits on
+	top of the Internet Protocol (<acronym>IP</acronym>) layer.
+	It allows two or more hosts to communicate in a secure manner.
+	The &os; IPsec <quote>network stack</quote> is based on the
+	<link xlink:href="http://www.kame.net/">KAME</link> implementation,
+	which has support for both IPv4 and IPv6.</para>
+
+      <indexterm>
+	<primary>IPsec</primary>
+	<secondary>ESP</secondary>
+      </indexterm>
+
+      <indexterm>
+	<primary>IPsec</primary>
+	<secondary>AH</secondary>
+      </indexterm>
+
+      <para>IPsec consists of two sub-protocols:</para>
+
+      <itemizedlist>
+	<listitem>
+	  <para><emphasis>Encapsulated Security Payload
+	      <acronym>ESP</acronym>)</emphasis>: this protocol
+	    protects the IP packet data from third party interference
+	    by encrypting the contents using symmetric cryptography
+	    algorithms such as Blowfish and 3DES.</para>
+	</listitem>
+
+	<listitem>
+	  <para><emphasis>Authentication Header
+	      (<acronym>AH</acronym>)</emphasis>: this protocol
+	    protects the IP packet header from third party
+	    interference and spoofing by computing a cryptographic
+	    checksum and hashing the IP packet header fields with a
+	    secure hashing function.  This is then followed by an
+	    additional header that contains the hash, to allow the
+	    information in the packet to be authenticated.</para>
+	</listitem>
+      </itemizedlist>
+
+      <para><acronym>ESP</acronym> and <acronym>AH</acronym> can
+	either be used together or separately, depending on the
+	environment.</para>
+
+      <indexterm>
+	<primary>VPN</primary>
+      </indexterm>
+
+      <indexterm>
+	<primary>virtual private network</primary>
+	<see>VPN</see>
+      </indexterm>
+
+      <para>IPsec can either be used to directly encrypt the traffic
+	between two hosts using <emphasis>Transport Mode</emphasis> or
+	to build <quote>virtual tunnels</quote> using
+	<emphasis>Tunnel Mode</emphasis>.  The latter mode is more
+	commonly known as a <emphasis>Virtual Private Network
+	(<acronym>VPN</acronym>)</emphasis>.  Consult &man.ipsec.4;
+	for detailed information on the IPsec subsystem in
+	&os;.</para>
+
+      <para>To add IPsec support to the kernel, add the following
+	options to the custom kernel configuration file:</para>
+
+      <indexterm>
+	<primary>kernel options</primary>
+	<secondary>IPSEC</secondary>
+      </indexterm>
+
+      <screen>options   IPSEC        #IP security
+device    crypto</screen>
+
+      <indexterm>
+	<primary>kernel options</primary>
+	<secondary>IPSEC_DEBUG</secondary>
+      </indexterm>
+
+      <para>If IPsec debugging support is desired, the following
+	kernel option should also be added:</para>
+
+      <screen>options   IPSEC_DEBUG  #debug for IP security</screen>
+    </sect2>
+
+    <sect2>
+      <title><acronym>VPN</acronym> Between a Home and Corporate
+	Network</title>
+
+      <indexterm>
+	<primary>VPN</primary>
+	<secondary>creating</secondary>
+      </indexterm>
+
+      <para>There is no standard for what constitutes a
+	<acronym>VPN</acronym>.  <acronym>VPN</acronym>s can be
+	implemented using a number of different technologies, each
+	of which has their own strengths and weaknesses.  This
+	section presents the strategies used for implementing a
+	<acronym>VPN</acronym> for the following scenario:</para>
+
+      <itemizedlist>
+	<listitem>
+	  <para>There are at least two sites where each site is using
+	    IP internally.</para>
+	</listitem>
+
+	<listitem>
+	  <para>Both sites are connected to the Internet through a
+	    gateway that is running &os;.</para>
+	</listitem>
+
+	<listitem>
+	  <para>The gateway on each network has at least one public
+	    IP address.</para>
+	</listitem>
+
+	<listitem>
+	  <para>The internal addresses of the two networks can be
+	    either public or private IP addresses.  However, the
+	    address space must not collide.  For example, both
+	    networks cannot use
+	    <systemitem class="ipaddress">192.168.1.x</systemitem>.</para>
+	</listitem>
+      </itemizedlist>
+
+      <sect3>
+	<info><title>Configuring IPsec on &os;</title>
+	  <authorgroup>
+	    <author><personname><firstname>Tom</firstname><surname>Rhodes</surname></personname><affiliation>
+		<address><email>trhodes@FreeBSD.org</email></address>
+	      </affiliation><contrib>Written by </contrib></author>
+	  </authorgroup>
+	</info>
+
+	
+
+	<para>To begin,
+	  <package>security/ipsec-tools</package>
+	  must be installed from the Ports Collection.  This software
+	  provides a number of applications which support the
+	  configuration.</para>
+
+	<para>The next requirement is to create two &man.gif.4;
+	  pseudo-devices which will be used to tunnel packets and
+	  allow both networks to communicate properly.  As
+	  <systemitem class="username">root</systemitem>, run the following commands,
+	  replacing <replaceable>internal</replaceable> and
+	  <replaceable>external</replaceable> with the real IP
+	  addresses of the internal and external interfaces of the two
+	  gateways:</para>
+
+	<screen>&prompt.root; <userinput>ifconfig gif0 create</userinput></screen>
+
+	<screen>&prompt.root; <userinput>ifconfig gif0 internal1 internal2</userinput></screen>
+
+	<screen>&prompt.root; <userinput>ifconfig gif0 tunnel external1 external2</userinput></screen>
+
+	<para>In this example, the corporate <acronym>LAN</acronym>'s
+	  external <acronym>IP</acronym> address is
+	  <systemitem class="ipaddress">172.16.5.4</systemitem> and its internal
+	  <acronym>IP</acronym> address is
+	  <systemitem class="ipaddress">10.246.38.1</systemitem>.  The home
+	  <acronym>LAN</acronym>'s external <acronym>IP</acronym>
+	  address is <systemitem class="ipaddress">192.168.1.12</systemitem> and
+	  its internal private <acronym>IP</acronym> address is
+	  <systemitem class="ipaddress">10.0.0.5</systemitem>.</para>
+
+	<para>If this is confusing, review the following example
+	  output from &man.ifconfig.8;:</para>
+
+	<programlisting>Gateway 1:
+
+gif0: flags=8051 mtu 1280
+tunnel inet 172.16.5.4 --&gt; 192.168.1.12
+inet6 fe80::2e0:81ff:fe02:5881%gif0 prefixlen 64 scopeid 0x6
+inet 10.246.38.1 --&gt; 10.0.0.5 netmask 0xffffff00
+
+Gateway 2:
+
+gif0: flags=8051 mtu 1280
+tunnel inet 192.168.1.12 --&gt; 172.16.5.4
+inet 10.0.0.5 --&gt; 10.246.38.1 netmask 0xffffff00
+inet6 fe80::250:bfff:fe3a:c1f%gif0 prefixlen 64 scopeid 0x4</programlisting>
+
+	<para>Once complete, both internal <acronym>IP</acronym>
+	  addresses should be reachable using &man.ping.8;:</para>
+
+	<programlisting>priv-net# ping 10.0.0.5
+PING 10.0.0.5 (10.0.0.5): 56 data bytes
+64 bytes from 10.0.0.5: icmp_seq=0 ttl=64 time=42.786 ms
+64 bytes from 10.0.0.5: icmp_seq=1 ttl=64 time=19.255 ms
+64 bytes from 10.0.0.5: icmp_seq=2 ttl=64 time=20.440 ms
+64 bytes from 10.0.0.5: icmp_seq=3 ttl=64 time=21.036 ms
+--- 10.0.0.5 ping statistics ---
+4 packets transmitted, 4 packets received, 0% packet loss
+round-trip min/avg/max/stddev = 19.255/25.879/42.786/9.782 ms
+
+corp-net# ping 10.246.38.1
+PING 10.246.38.1 (10.246.38.1): 56 data bytes
+64 bytes from 10.246.38.1: icmp_seq=0 ttl=64 time=28.106 ms
+64 bytes from 10.246.38.1: icmp_seq=1 ttl=64 time=42.917 ms
+64 bytes from 10.246.38.1: icmp_seq=2 ttl=64 time=127.525 ms
+64 bytes from 10.246.38.1: icmp_seq=3 ttl=64 time=119.896 ms
+64 bytes from 10.246.38.1: icmp_seq=4 ttl=64 time=154.524 ms
+--- 10.246.38.1 ping statistics ---
+5 packets transmitted, 5 packets received, 0% packet loss
+round-trip min/avg/max/stddev = 28.106/94.594/154.524/49.814 ms</programlisting>
+
+	<para>As expected, both sides have the ability to send and
+	  receive <acronym>ICMP</acronym> packets from the privately
+	  configured addresses.  Next, both gateways must be told how
+	  to route packets in order to correctly send traffic from
+	  either network.  The following command will achieve this
+	  goal:</para>
+
+	<screen>&prompt.root; <userinput>corp-net# route add 10.0.0.0 10.0.0.5 255.255.255.0</userinput></screen>
+
+	<screen>&prompt.root; <userinput>corp-net# route add net 10.0.0.0: gateway 10.0.0.5</userinput></screen>
+
+	<screen>&prompt.root; <userinput>priv-net# route add 10.246.38.0 10.246.38.1 255.255.255.0</userinput></screen>
+
+	<screen>&prompt.root; <userinput>priv-net# route add host 10.246.38.0: gateway 10.246.38.1</userinput></screen>
+
+	<para>At this point, internal machines should be reachable
+	  from each gateway as well as from machines behind the
+	  gateways.  Again, use &man.ping.8; to confirm:</para>
+
+	<programlisting>corp-net# ping 10.0.0.8
+PING 10.0.0.8 (10.0.0.8): 56 data bytes
+64 bytes from 10.0.0.8: icmp_seq=0 ttl=63 time=92.391 ms
+64 bytes from 10.0.0.8: icmp_seq=1 ttl=63 time=21.870 ms
+64 bytes from 10.0.0.8: icmp_seq=2 ttl=63 time=198.022 ms
+64 bytes from 10.0.0.8: icmp_seq=3 ttl=63 time=22.241 ms
+64 bytes from 10.0.0.8: icmp_seq=4 ttl=63 time=174.705 ms
+--- 10.0.0.8 ping statistics ---
+5 packets transmitted, 5 packets received, 0% packet loss
+round-trip min/avg/max/stddev = 21.870/101.846/198.022/74.001 ms
+
+priv-net# ping 10.246.38.107
+PING 10.246.38.1 (10.246.38.107): 56 data bytes
+64 bytes from 10.246.38.107: icmp_seq=0 ttl=64 time=53.491 ms
+64 bytes from 10.246.38.107: icmp_seq=1 ttl=64 time=23.395 ms
+64 bytes from 10.246.38.107: icmp_seq=2 ttl=64 time=23.865 ms
+64 bytes from 10.246.38.107: icmp_seq=3 ttl=64 time=21.145 ms
+64 bytes from 10.246.38.107: icmp_seq=4 ttl=64 time=36.708 ms
+--- 10.246.38.107 ping statistics ---
+5 packets transmitted, 5 packets received, 0% packet loss
+round-trip min/avg/max/stddev = 21.145/31.721/53.491/12.179 ms</programlisting>
+
+	<para>Setting up the tunnels is the easy part.  Configuring a
+	  secure link is a more in depth process.  The following
+	  configuration uses pre-shared (<acronym>PSK</acronym>)
+	  <acronym>RSA</acronym> keys.  Other than the
+	  <acronym>IP</acronym> addresses, the
+	  <filename>/usr/local/etc/racoon/racoon.conf</filename> on
+	  both gateways will be identical and look similar to:</para>
+
+	<programlisting>path    pre_shared_key  "/usr/local/etc/racoon/psk.txt"; #location of pre-shared key file
+log     debug;	#log verbosity setting: set to 'notify' when testing and debugging is complete
+
+padding	# options are not to be changed
+{
+        maximum_length  20;
+        randomize       off;
+        strict_check    off;
+        exclusive_tail  off;
+}
+
+timer	# timing options. change as needed
+{
+        counter         5;
+        interval        20 sec;
+        persend         1;
+#       natt_keepalive  15 sec;
+        phase1          30 sec;
+        phase2          15 sec;
+}
+
+listen	# address [port] that racoon will listening on
+{
+        isakmp          172.16.5.4 [500];
+        isakmp_natt     172.16.5.4 [4500];
+}
+
+remote  192.168.1.12 [500]
+{
+        exchange_mode   main,aggressive;
+        doi             ipsec_doi;
+        situation       identity_only;
+        my_identifier   address 172.16.5.4;
+        peers_identifier        address 192.168.1.12;
+        lifetime        time 8 hour;
+        passive         off;
+        proposal_check  obey;
+#       nat_traversal   off;
+        generate_policy off;
+
+                        proposal {
+                                encryption_algorithm    blowfish;
+                                hash_algorithm          md5;
+                                authentication_method   pre_shared_key;
+                                lifetime time           30 sec;
+                                dh_group                1;
+                        }
+}
+
+sainfo  (address 10.246.38.0/24 any address 10.0.0.0/24 any)	# address $network/$netmask $type address $network/$netmask $type ( $type being any or esp)
+{								# $network must be the two internal networks you are joining.
+        pfs_group       1;
+        lifetime        time    36000 sec;
+        encryption_algorithm    blowfish,3des,des;
+        authentication_algorithm        hmac_md5,hmac_sha1;
+        compression_algorithm   deflate;
+}</programlisting>
+
+	<para>For descriptions of each available option, refer to the
+	  manual page for <filename>racoon.conf</filename>.</para>
+
+	<para>The Security Policy Database (<acronym>SPD</acronym>)
+	  needs to be configured so that &os; and
+	  <application>racoon</application> are able to encrypt and
+	  decrypt network traffic between the hosts.</para>
+
+	<para>This can be achieved with a shell script, similar to the
+	  following, on the corporate gateway.  This file will be used
+	  during system initialization and should be saved as
+	  <filename>/usr/local/etc/racoon/setkey.conf</filename>.</para>
+
+	<programlisting>flush;
+spdflush;
+# To the home network
+spdadd 10.246.38.0/24 10.0.0.0/24 any -P out ipsec esp/tunnel/172.16.5.4-192.168.1.12/use;
+spdadd 10.0.0.0/24 10.246.38.0/24 any -P in ipsec esp/tunnel/192.168.1.12-172.16.5.4/use;</programlisting>
+
+	<para>Once in place, <application>racoon</application> may be
+	  started on both gateways using the following command:</para>
+
+	<screen>&prompt.root; <userinput>/usr/local/sbin/racoon -F -f /usr/local/etc/racoon/racoon.conf -l /var/log/racoon.log</userinput></screen>
+
+	<para>The output should be similar to the following:</para>
+
+	<programlisting>corp-net# /usr/local/sbin/racoon -F -f /usr/local/etc/racoon/racoon.conf
+Foreground mode.
+2006-01-30 01:35:47: INFO: begin Identity Protection mode.
+2006-01-30 01:35:48: INFO: received Vendor ID: KAME/racoon
+2006-01-30 01:35:55: INFO: received Vendor ID: KAME/racoon
+2006-01-30 01:36:04: INFO: ISAKMP-SA established 172.16.5.4[500]-192.168.1.12[500] spi:623b9b3bd2492452:7deab82d54ff704a
+2006-01-30 01:36:05: INFO: initiate new phase 2 negotiation: 172.16.5.4[0]192.168.1.12[0]
+2006-01-30 01:36:09: INFO: IPsec-SA established: ESP/Tunnel 192.168.1.12[0]-&gt;172.16.5.4[0] spi=28496098(0x1b2d0e2)
+2006-01-30 01:36:09: INFO: IPsec-SA established: ESP/Tunnel 172.16.5.4[0]-&gt;192.168.1.12[0] spi=47784998(0x2d92426)
+2006-01-30 01:36:13: INFO: respond new phase 2 negotiation: 172.16.5.4[0]192.168.1.12[0]
+2006-01-30 01:36:18: INFO: IPsec-SA established: ESP/Tunnel 192.168.1.12[0]-&gt;172.16.5.4[0] spi=124397467(0x76a279b)
+2006-01-30 01:36:18: INFO: IPsec-SA established: ESP/Tunnel 172.16.5.4[0]-&gt;192.168.1.12[0] spi=175852902(0xa7b4d66)</programlisting>
+
+	<para>To ensure the tunnel is working properly, switch to
+	  another console and use &man.tcpdump.1; to view network
+	  traffic using the following command.  Replace
+	  <literal>em0</literal> with the network interface card as
+	  required:</para>
+
+	<screen>&prompt.root; <userinput>tcpdump -i em0 host 172.16.5.4 and dst 192.168.1.12</userinput></screen>
+
+	<para>Data similar to the following should appear on the
+	  console.  If not, there is an issue and debugging the
+	  returned data will be required.</para>
+
+	<programlisting>01:47:32.021683 IP corporatenetwork.com &gt; 192.168.1.12.privatenetwork.com: ESP(spi=0x02acbf9f,seq=0xa)
+01:47:33.022442 IP corporatenetwork.com &gt; 192.168.1.12.privatenetwork.com: ESP(spi=0x02acbf9f,seq=0xb)
+01:47:34.024218 IP corporatenetwork.com &gt; 192.168.1.12.privatenetwork.com: ESP(spi=0x02acbf9f,seq=0xc)</programlisting>
+
+	<para>At this point, both networks should be available and
+	  seem to be part of the same network.  Most likely both
+	  networks are protected by a firewall.  To allow traffic to
+	  flow between them, rules need to be added to pass packets.
+	  For the &man.ipfw.8; firewall, add the following lines to
+	  the firewall configuration file:</para>
+
+	<programlisting>ipfw add 00201 allow log esp from any to any
+ipfw add 00202 allow log ah from any to any
+ipfw add 00203 allow log ipencap from any to any
+ipfw add 00204 allow log udp from any 500 to any</programlisting>
+
+	<note>
+	  <para>The rule numbers may need to be altered depending on
+	    the current host configuration.</para>
+	</note>
+
+	<para>For users of &man.pf.4; or &man.ipf.8;, the following
+	  rules should do the trick:</para>
+
+	<programlisting>pass in quick proto esp from any to any
+pass in quick proto ah from any to any
+pass in quick proto ipencap from any to any
+pass in quick proto udp from any port = 500 to any port = 500
+pass in quick on gif0 from any to any
+pass out quick proto esp from any to any
+pass out quick proto ah from any to any
+pass out quick proto ipencap from any to any
+pass out quick proto udp from any port = 500 to any port = 500
+pass out quick on gif0 from any to any</programlisting>
+
+	<para>Finally, to allow the machine to start support for the
+	  <acronym>VPN</acronym> during system initialization, add the
+	  following lines to <filename>/etc/rc.conf</filename>:</para>
+
+	<programlisting>ipsec_enable="YES"
+ipsec_program="/usr/local/sbin/setkey"
+ipsec_file="/usr/local/etc/racoon/setkey.conf" # allows setting up spd policies on boot
+racoon_enable="yes"</programlisting>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="openssh">
+    <info><title>OpenSSH</title>
+      <authorgroup>
+	<author><personname><firstname>Chern</firstname><surname>Lee</surname></personname><contrib>Contributed by </contrib></author>
+	<!-- 21 April 2001 -->
+      </authorgroup>
+    </info>
+
+    
+
+    <indexterm><primary>OpenSSH</primary></indexterm>
+    <indexterm>
+      <primary>security</primary>
+      <secondary>OpenSSH</secondary>
+    </indexterm>
+
+    <para><application>OpenSSH</application> is a set of network
+      connectivity tools used to access remote machines securely.
+      Additionally, TCP/IP connections can be tunneled/forwarded
+      securely through <acronym>SSH</acronym> connections.
+      <application>OpenSSH</application> encrypts all traffic to
+      effectively eliminate eavesdropping, connection hijacking, and
+      other network-level attacks.</para>
+
+    <para><application>OpenSSH</application> is maintained by the
+      OpenBSD project and is installed by default in &os;.  It is
+      compatible with both <acronym>SSH</acronym> version 1 and 2
+      protocols.</para>
+
+    <sect2>
+      <title>Advantages of Using
+	<application>OpenSSH</application></title>
+
+      <para>When data is sent over the network in an unencrypted form,
+	network sniffers anywhere in between the client and server
+	can steal user/password information or data transferred
+	during the session.  <application>OpenSSH</application> offers
+	a variety of authentication and encryption methods to prevent
+	this from happening.</para>
+    </sect2>
+
+    <sect2>
+      <title>Enabling the SSH Server</title>
+
+      <indexterm>
+	<primary>OpenSSH</primary>
+	<secondary>enabling</secondary>
+      </indexterm>
+
+      <para>To see if &man.sshd.8; is enabled, check
+	<filename>/etc/rc.conf</filename> for this line:</para>
+
+      <programlisting>sshd_enable="YES"</programlisting>
+
+      <para>This will start &man.sshd.8;, the daemon program for
+	<application>OpenSSH</application>, the next time the system
+	initializes.  Alternatively, it is possible to use
+	&man.service.8; to start <application>OpenSSH</application>
+	now:</para>
+
+      <screen>&prompt.root; <userinput>service sshd start</userinput></screen>
+    </sect2>
+
+    <sect2>
+      <title>The SSH Client</title>
+
+      <indexterm>
+	<primary>OpenSSH</primary>
+	<secondary>client</secondary>
+      </indexterm>
+
+      <para>To use &man.ssh.1; to connect to a system running
+	&man.sshd.8;, specify the username and host to log
+	into:</para>
+
+      <screen>&prompt.root; <userinput>ssh user@example.com</userinput>
+Host key not found from the list of known hosts.
+Are you sure you want to continue connecting (yes/no)? <userinput>yes</userinput>
+Host 'example.com' added to the list of known hosts.
+user@example.com's password: <userinput>*******</userinput></screen>
+
+      <para><acronym>SSH</acronym> utilizes a key fingerprint system
+	to verify the authenticity of the server when the client
+	connects.  The user is prompted to type
+	<literal>yes</literal> when connecting for the first time.
+	Future attempts to login are verified against the saved
+	fingerprint key and the &man.ssh.1; client will display an
+	alert if the saved fingerprint differs from the received
+	fingerprint on future login attempts.  The fingerprints are
+	saved in <filename>~/.ssh/known_hosts</filename>.</para>
+
+      <para>By default, recent versions of &man.sshd.8; only accept
+	<acronym>SSH</acronym> v2 connections.  The client will use
+	version 2 if possible and will fall back to version 1.  The
+	client can also be forced to use one or the other by passing
+	it the <option>-1</option> or <option>-2</option> for version
+	1 or version 2, respectively.  The version 1 compatibility is
+	maintained in the client for backwards compatibility with
+	older versions.</para>
+    </sect2>
+
+    <sect2>
+      <title>Secure Copy</title>
+
+      <indexterm>
+	<primary>OpenSSH</primary>
+	<secondary>secure copy</secondary>
+      </indexterm>
+      <indexterm>
+	<primary>&man.scp.1;</primary>
+      </indexterm>
+
+      <para>Use &man.scp.1; to copy a file to or from a remote machine
+	in a secure fashion.</para>
+
+      <screen>&prompt.root; <userinput> scp user@example.com:/COPYRIGHT COPYRIGHT</userinput>
+user@example.com's password: <userinput>*******</userinput>
+COPYRIGHT            100% |*****************************|  4735
+00:00
+&prompt.root;</screen>
+
+      <para>Since the fingerprint was already saved for this host in
+	the previous example, it is verified when using &man.scp.1;
+	here.</para>
+
+      <para>The arguments passed to &man.scp.1; are similar to
+	&man.cp.1;, with the file or files to copy in the first
+	argument, and the destination in the second.  Since the file
+	is fetched over the network, through an
+	<acronym>SSH</acronym>, connection, one or more of the file
+	arguments takes the form
+	<option>user@host:&lt;path_to_remote_file&gt;</option>.</para>
+    </sect2>
+
+    <sect2>
+      <title>Configuration</title>
+
+      <indexterm>
+	<primary>OpenSSH</primary>
+	<secondary>configuration</secondary>
+      </indexterm>
+
+      <para>The system-wide configuration files for both the
+	<application>OpenSSH</application> daemon and client reside
+	in <filename>/etc/ssh</filename>.</para>
+
+      <para><filename>ssh_config</filename> configures the client
+	settings, while <filename>sshd_config</filename> configures
+	the daemon.  Each file has its own manual page which describes
+	the available configuration options.</para>
+    </sect2>
+
+    <sect2 xml:id="security-ssh-keygen">
+      <title>&man.ssh-keygen.1;</title>
+
+      <para>Instead of using passwords, &man.ssh-keygen.1; can be used
+	to generate <acronym>DSA</acronym> or <acronym>RSA</acronym>
+	keys to authenticate a user:</para>
+
+      <screen>&prompt.user; <userinput>ssh-keygen -t dsa</userinput>
+Generating public/private dsa key pair.
+Enter file in which to save the key (/home/user/.ssh/id_dsa):
+Created directory '/home/user/.ssh'.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/user/.ssh/id_dsa.
+Your public key has been saved in /home/user/.ssh/id_dsa.pub.
+The key fingerprint is:
+bb:48:db:f2:93:57:80:b6:aa:bc:f5:d5:ba:8f:79:17 user@host.example.com</screen>
+
+      <para>&man.ssh-keygen.1; will create a public and private key
+	pair for use in authentication.  The private key is stored
+	in <filename>~/.ssh/id_dsa</filename> or
+	<filename>~/.ssh/id_rsa</filename>, whereas the public key
+	is stored in <filename>~/.ssh/id_dsa.pub</filename> or
+	<filename>~/.ssh/id_rsa.pub</filename>, respectively for the
+	<acronym>DSA</acronym> and <acronym>RSA</acronym> key types.
+	The public key must be placed in
+	<filename>~/.ssh/authorized_keys</filename> on the
+	remote machine for both <acronym>RSA</acronym> or
+	<acronym>DSA</acronym> keys in order for the setup to
+	work.</para>
+
+      <para>This setup allows connections to the remote machine based
+	upon <acronym>SSH</acronym> keys instead of passwords.</para>
+
+      <warning>
+	<para>Many users believe that keys are secure by design and
+	  will use a key without a passphrase.  This is
+	  <emphasis>dangerous</emphasis> behavior and the method
+	  an administrator may use to verify keys have a passphrase
+	  is to view the key manually.  If the private key file
+	  contains the word <literal>ENCRYPTED</literal> the key
+	  owner is using a passphrase.  While it may still be a weak
+	  passphrase, at least if the system is compromised, access
+	  to other sites will still require some level of password
+	  guessing.  In addition, to better secure end users, the
+	  <literal>from</literal> may be placed in the public key
+	  file.  For example, adding
+	  <literal>from="192.168.10.5</literal> in the front of
+	  <literal>ssh-rsa</literal> or <literal>rsa-dsa</literal>
+	  prefix will only allow that specific user to login from
+	  that host <acronym>IP</acronym>.</para>
+      </warning>
+
+      <para>If a passphrase is used in &man.ssh-keygen.1;, the user
+	will be prompted for the passphrase each time in order to use
+	the private key.  &man.ssh-agent.1; can alleviate the strain
+	of repeatedly entering long passphrases, and is explored in
+	<xref linkend="security-ssh-agent"/>.</para>
+
+      <warning>
+	<para>The various options and files can be different according
+	  to the <application>OpenSSH</application> version.  To avoid
+	  problems, consult &man.ssh-keygen.1;.</para>
+      </warning>
+    </sect2>
+
+    <sect2 xml:id="security-ssh-agent">
+      <title>Using SSH Agent to Cache Keys</title>
+
+      <para>To load <acronym>SSH</acronym> keys into memory for use,
+	without needing to type the passphrase each time, use
+	&man.ssh-agent.1; and &man.ssh-add.1;.</para>
+
+      <para>Authentication is handled by &man.ssh-agent.1;, using the
+	private key(s) that are loaded into it.  Then,
+	&man.ssh-agent.1; should be used to launch another
+	application.  At the most basic level, it could spawn a shell
+	or a window manager.</para>
+
+      <para>To use &man.ssh-agent.1; in a shell, start it with a shell
+	as an argument.  Next, add the identity by running
+	&man.ssh-add.1; and providing it the passphrase for the
+	private key.  Once these steps have been completed, the user
+	will be able to &man.ssh.1; to any host that has the
+	corresponding public key installed.  For example:</para>
+
+      <screen>&prompt.user; ssh-agent <replaceable>csh</replaceable>
+&prompt.user; ssh-add
+Enter passphrase for /home/user/.ssh/id_dsa:
+Identity added: /home/user/.ssh/id_dsa (/home/user/.ssh/id_dsa)
+&prompt.user;</screen>
+
+      <para>To use &man.ssh-agent.1; in
+	<application>&xorg;</application>, a call to &man.ssh-agent.1;
+	needs to be placed in <filename>~/.xinitrc</filename>.  This
+	provides the &man.ssh-agent.1; services to all programs
+	launched in <application>&xorg;</application>.  An example
+	<filename>~/.xinitrc</filename> might look like
+	this:</para>
+
+      <programlisting>exec ssh-agent <replaceable>startxfce4</replaceable></programlisting>
+
+      <para>This launches &man.ssh-agent.1;, which in turn launches
+	<application>XFCE</application>, every time
+	<application>&xorg;</application> starts.  Once
+	<application>&xorg;</application> has been restarted so that
+	the changes can take effect, run &man.ssh-add.1; to load all
+	of the <acronym>SSH</acronym> keys.</para>
+    </sect2>
+
+    <sect2 xml:id="security-ssh-tunneling">
+      <title><acronym>SSH</acronym> Tunneling</title>
+
+      <indexterm>
+	<primary>OpenSSH</primary>
+	<secondary>tunneling</secondary>
+      </indexterm>
+
+      <para><application>OpenSSH</application> has the ability to
+	create a tunnel to encapsulate another protocol in an
+	encrypted session.</para>
+
+      <para>The following command tells &man.ssh.1; to create a
+	tunnel for &man.telnet.1;:</para>
+
+      <screen>&prompt.user; <userinput>ssh -2 -N -f -L 5023:localhost:23 user@foo.example.com</userinput>
+&prompt.user;</screen>
+
+      <para>This example uses the following options:</para>
+
+      <variablelist>
+	<varlistentry>
+	  <term><option>-2</option></term>
+
+	  <listitem>
+	    <para>Forces &man.ssh.1; to use version 2 to connect to
+	      the server.</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><option>-N</option></term>
+
+	  <listitem>
+	    <para>Indicates no command, or tunnel only.  If omitted,
+	      &man.ssh.1; initiates a normal session.</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><option>-f</option></term>
+
+	  <listitem>
+	    <para>Forces &man.ssh.1; to run in the background.</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><option>-L</option></term>
+
+	  <listitem>
+	    <para>Indicates a local tunnel in
+	      <replaceable>localport:remotehost:remoteport</replaceable>
+	      format.</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term><option>user@foo.example.com</option></term>
+
+	  <listitem>
+	    <para>The login name to use on the specified remote
+	      <acronym>SSH</acronym> server.</para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+
+      <para>An <acronym>SSH</acronym> tunnel works by creating a
+	listen socket on <systemitem>localhost</systemitem> on the specified
+	port.  It then forwards any connections received on the local
+	host/port via the <acronym>SSH</acronym> connection to the
+	specified remote host and port.</para>
+
+      <para>In the example, port <replaceable>5023</replaceable> on
+	<systemitem>localhost</systemitem> is forwarded to port
+	<replaceable>23</replaceable> on <systemitem>localhost</systemitem>
+	of the remote machine.  Since <replaceable>23</replaceable>
+	is used by &man.telnet.1;, this creates an encrypted
+	&man.telnet.1; session through an
+	<acronym>SSH</acronym> tunnel.</para>
+
+      <para>This can be used to wrap any number of insecure TCP
+	protocols such as SMTP, POP3, and FTP.</para>
+
+      <example>
+	<title>Using &man.ssh.1; to Create a Secure Tunnel
+	  for SMTP</title>
+
+	<screen>&prompt.user; <userinput>ssh -2 -N -f -L 5025:localhost:25 user@mailserver.example.com</userinput>
+user@mailserver.example.com's password: <userinput>*****</userinput>
+&prompt.user; <userinput>telnet localhost 5025</userinput>
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+220 mailserver.example.com ESMTP</screen>
+
+	<para>This can be used in conjunction with &man.ssh-keygen.1;
+	  and additional user accounts to create a more seamless
+	  <acronym>SSH</acronym> tunneling environment.  Keys can be
+	  used in place of typing a password, and the tunnels can be
+	  run as a separate user.</para>
+      </example>
+
+      <sect3>
+	<title>Practical <acronym>SSH</acronym> Tunneling
+	  Examples</title>
+
+	<sect4>
+	  <title>Secure Access of a POP3 Server</title>
+
+	  <para>In this example, there is an <acronym>SSH</acronym>
+	    server that accepts connections from the outside.  On the
+	    same network resides a mail server running a POP3 server.
+	    To check email in a secure manner, create an
+	    <acronym>SSH</acronym> connection to the
+	    <acronym>SSH</acronym> server, and tunnel through to the
+	    mail server.</para>
+
+	  <screen>&prompt.user; <userinput>ssh -2 -N -f -L 2110:mail.example.com:110 user@ssh-server.example.com</userinput>
+user@ssh-server.example.com's password: <userinput>******</userinput></screen>
+
+	  <para>Once the tunnel is up and running, point the email
+	    client to send POP3 requests to <systemitem>localhost</systemitem>
+	    on port 2110.  This connection will be forwarded securely
+	    across the tunnel to
+	    <systemitem>mail.example.com</systemitem>.</para>
+	</sect4>
+
+	<sect4>
+	  <title>Bypassing a Draconian Firewall</title>
+
+	  <para>Some network administrators impose firewall rules
+	    which filter both incoming and outgoing connections.  For
+	    example, it might limit access from remote machines to
+	    ports 22 and 80 to only allow &man.ssh.1; and web surfing.
+	    This prevents access to any other service which uses a
+	    port other than 22 or 80.</para>
+
+	  <para>The solution is to create an <acronym>SSH</acronym>
+	    connection to a machine outside of the network's firewall
+	    and use it to tunnel to the desired service.</para>
+
+	  <screen>&prompt.user; <userinput>ssh -2 -N -f -L 8888:music.example.com:8000 user@unfirewalled-system.example.org</userinput>
+user@unfirewalled-system.example.org's password: <userinput>*******</userinput></screen>
+
+	  <para>In this example, a streaming Ogg Vorbis client can now
+	    be pointed to <systemitem>localhost</systemitem> port 8888, which
+	    will be forwarded over to
+	    <systemitem>music.example.com</systemitem> on port 8000,
+	    successfully bypassing the firewall.</para>
+	</sect4>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>The <varname>AllowUsers</varname> Option</title>
+
+      <para>It is often a good idea to limit which users can log in
+	and from where using <literal>AllowUsers</literal>.  For
+	example, to only allow <systemitem class="username">root</systemitem> to log in
+	from <systemitem class="ipaddress">192.168.1.32</systemitem>, add this
+	line to <filename>/etc/ssh/sshd_config</filename>:</para>
+
+      <programlisting>AllowUsers root@192.168.1.32</programlisting>
+
+      <para>To allow <systemitem class="username">admin</systemitem> to log in from
+	anywhere, list that username by itself:</para>
+
+      <programlisting>AllowUsers admin</programlisting>
+
+      <para>Multiple users should be listed on the same line, like
+	so:</para>
+
+      <programlisting>AllowUsers root@192.168.1.32 admin</programlisting>
+
+      <note>
+	<para>It is important to list each user that needs to log into
+	  this machine; otherwise, they will be locked out.</para>
+      </note>
+
+      <para>After making changes to
+	<filename>/etc/ssh/sshd_config</filename>, tell &man.sshd.8;
+	to reload its configuration file by running:</para>
+
+      <screen>&prompt.root; <userinput>service sshd reload</userinput></screen>
+    </sect2>
+
+    <sect2>
+      <title>Further Reading</title>
+
+      <para>The <link xlink:href="http://www.openssh.com/">OpenSSH</link>
+	website.</para>
+
+      <para>&man.ssh.1;, &man.scp.1;, &man.ssh-keygen.1;,
+	&man.ssh-agent.1;, &man.ssh-add.1;, and &man.ssh.config.5; for
+	client options.</para>
+
+      <para>&man.sshd.8;, &man.sftp-server.8;, and &man.sshd.config.5;
+	for server options.</para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="fs-acl">
+    <info><title>Filesystem Access Control Lists
+      (<acronym>ACL</acronym>)s</title>
+      <authorgroup>
+	<author><personname><firstname>Tom</firstname><surname>Rhodes</surname></personname><contrib>Contributed by </contrib></author>
+      </authorgroup>
+    </info>
+
+    
+
+    <indexterm>
+      <primary>ACL</primary>
+    </indexterm>
+
+    <para>Filesystem Access Control Lists (<acronym>ACL</acronym>s)
+      extend the standard &unix; permission model in a &posix;.1e
+      compatible way.  This permits an administrator to make use of
+      and take advantage of a more sophisticated security
+      model.</para>
+
+    <para>The &os; <filename>GENERIC</filename> kernel provides
+      <acronym>ACL</acronym> support for <acronym>UFS</acronym> file
+      systems.  Users who prefer to compile a custom kernel must
+      include the following option in their custom kernel
+      configuration file:</para>
+
+    <programlisting>options UFS_ACL</programlisting>
+
+    <para>If this option is not compiled in, a warning message will be
+      displayed when attempting to mount a filesystem supporting
+      <acronym>ACL</acronym>s.  <acronym>ACL</acronym>s rely on
+      extended attributes being enabled on the filesystem.  Extended
+      attributes are natively supported in
+      <acronym>UFS2</acronym>.</para>
+
+    <note>
+      <para>A higher level of administrative overhead is required to
+	configure extended attributes on <acronym>UFS1</acronym>
+	than on <acronym>UFS2</acronym>.  The performance of
+	extended attributes on <acronym>UFS2</acronym> is also
+	substantially higher.  As a result, <acronym>UFS2</acronym>
+	is recommended for use with <acronym>ACL</acronym>s.</para>
+    </note>
+
+    <para><acronym>ACL</acronym>s are enabled by the mount-time
+      administrative flag, <option>acls</option>, which may be added
+      to <filename>/etc/fstab</filename>.  The mount-time flag can
+      also be automatically set in a persistent manner using
+      &man.tunefs.8; to modify a superblock <acronym>ACL</acronym>s
+      flag in the filesystem header.  In general, it is preferred
+      to use the superblock flag for several reasons:</para>
+
+    <itemizedlist>
+      <listitem>
+	<para>The mount-time <acronym>ACL</acronym>s flag cannot be
+	  changed by a remount using <option>mount -u</option>.  It
+	  requires a complete &man.umount.8; and fresh &man.mount.8;.
+	  This means that <acronym>ACL</acronym>s cannot be enabled on
+	  the root filesystem after boot.  It also means that the
+	  disposition of a filesystem cannot be changed once it is in
+	  use.</para>
+      </listitem>
+
+      <listitem>
+	<para>Setting the superblock flag will cause the filesystem
+	  to always be mounted with <acronym>ACL</acronym>s enabled,
+	  even if there is not an <filename>fstab</filename> entry
+	  or if the devices re-order.  This prevents accidental
+	  mounting of the filesystem without <acronym>ACL</acronym>s
+	  enabled, which can result in the security problem of
+	  <acronym>ACL</acronym>s being improperly enforced.</para>
+      </listitem>
+    </itemizedlist>
+
+    <note>
+      <para>It is desirable to discourage accidental mounting without
+	<acronym>ACL</acronym>s enabled, because nasty things can
+	happen if <acronym>ACL</acronym>s are enabled, then disabled,
+	then re-enabled without flushing the extended attributes.  In
+	general, once <acronym>ACL</acronym>s are enabled on a
+	filesystem, they should not be disabled, as the resulting file
+	protections may not be compatible with those intended by the
+	users of the system, and re-enabling <acronym>ACL</acronym>s
+	may re-attach the previous <acronym>ACL</acronym>s to files
+	that have since had their permissions changed, resulting in
+	unpredictable behavior.</para>
+    </note>
+
+    <para>Filesystems with <acronym>ACL</acronym>s enabled will
+      show a <literal>+</literal> (plus) sign in their permission
+      settings when viewed.  For example:</para>
+
+    <programlisting>drwx------  2 robert  robert  512 Dec 27 11:54 private
+drwxrwx---+ 2 robert  robert  512 Dec 23 10:57 directory1
+drwxrwx---+ 2 robert  robert  512 Dec 22 10:20 directory2
+drwxrwx---+ 2 robert  robert  512 Dec 27 11:57 directory3
+drwxr-xr-x  2 robert  robert  512 Nov 10 11:54 public_html</programlisting>
+
+    <para>In this example,
+      <filename>directory1</filename>,
+      <filename>directory2</filename>, and
+      <filename>directory3</filename>
+      are all taking advantage of <acronym>ACL</acronym>s, whereas
+      <filename>public_html</filename>
+      is not.</para>
+
+    <sect2>
+      <title>Making Use of <acronym>ACL</acronym>s</title>
+
+      <para>Filesystem <acronym>ACL</acronym>s can be viewed using
+	&man.getfacl.1;.  For instance, to view the
+	<acronym>ACL</acronym> settings on
+	<filename>test</filename>:</para>
+
+      <screen>&prompt.user; <userinput>getfacl test</userinput>
+	#file:test
+	#owner:1001
+	#group:1001
+	user::rw-
+	group::r--
+	other::r--</screen>
+
+      <para>To change the <acronym>ACL</acronym> settings on this
+	file, use &man.setfacl.1;:</para>
+
+      <screen>&prompt.user; <userinput>setfacl -k test</userinput></screen>
+
+      <para>To remove all of the currently defined
+	<acronym>ACL</acronym>s from a file or filesystem, one can use
+	<option>-k</option>.  However, the preferred method is to use
+	<option>-b</option> as it leaves the basic fields required
+	for <acronym>ACL</acronym>s to work.</para>
+
+      <screen>&prompt.user; <userinput>setfacl -m u:trhodes:rwx,group:web:r--,o::--- test</userinput></screen>
+
+      <para>In this example, <option>-m</option> is used to modify the
+	default <acronym>ACL</acronym> entries.  Since there were no
+	pre-defined entries, as they were removed by the previous
+	command, it restores the default options and assign the
+	options listed.  If a user or group is added which does not
+	exist on the system, an <errorname>Invalid
+	  argument</errorname> error will be displayed.</para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="security-portaudit">
+    <info><title>Monitoring Third Party Security Issues</title>
+      <authorgroup>
+	<author><personname><firstname>Tom</firstname><surname>Rhodes</surname></personname><contrib>Contributed by </contrib></author>
+      </authorgroup>
+    </info>
+
+    
+
+    <indexterm>
+      <primary>portaudit</primary>
+    </indexterm>
+
+    <para>In recent years, the security world has made many
+      improvements to how vulnerability assessment is handled.  The
+      threat of system intrusion increases as third party utilities
+      are installed and configured for virtually any operating
+      system available today.</para>
+
+    <para>Vulnerability assessment is a key factor in security.
+      While &os; releases advisories for the base system, doing so
+      for every third party utility is beyond the &os; Project's
+      capability.  There is a way to mitigate third party
+      vulnerabilities and warn administrators of known security
+      issues.  A &os; add on utility known as
+      <application>portaudit</application> exists solely for this
+      purpose.</para>
+
+    <para>The
+      <package>ports-mgmt/portaudit</package>
+      port polls a database, which is updated and maintained by the
+      &os; Security Team and ports developers, for known security
+      issues.</para>
+
+    <para>To install <application>portaudit</application> from the
+      Ports Collection:</para>
+
+    <screen>&prompt.root; <userinput>cd /usr/ports/ports-mgmt/portaudit &amp;&amp; make install clean</userinput></screen>
+
+    <para>During the installation, the configuration files for
+      &man.periodic.8; will be updated, permitting
+      <application>portaudit</application> output in the daily
+      security runs.  Ensure that the daily security run emails, which
+      are sent to <systemitem class="username">root</systemitem>'s email account, are
+      being read.  No other configuration is required.</para>
+
+    <para>After installation, an administrator can update the
+      database and view known vulnerabilities in installed packages
+      by invoking the following command:</para>
+
+    <screen>&prompt.root; <userinput>portaudit -Fda</userinput></screen>
+
+    <note>
+      <para>The database is automatically updated during the
+	&man.periodic.8; run.  The above command is optional and can
+	be used to manually update the database now.</para>
+    </note>
+
+    <para>To audit the third party utilities installed as part of
+      the Ports Collection at anytime, an administrator can run the
+      following command:</para>
+
+    <screen>&prompt.root; <userinput>portaudit -a</userinput></screen>
+
+    <para><application>portaudit</application> will display messages
+      for any installed vulnerable packages:</para>
+
+    <programlisting>Affected package: cups-base-1.1.22.0_1
+Type of problem: cups-base -- HPGL buffer overflow vulnerability.
+Reference: &lt;http://www.FreeBSD.org/ports/portaudit/40a3bca2-6809-11d9-a9e7-0001020eed82.html&gt;
+
+1 problem(s) in your installed packages found.
+
+You are advised to update or deinstall the affected package(s) immediately.</programlisting>
+
+    <para>By pointing a web browser to the displayed
+      <acronym>URL</acronym>, an administrator may obtain more
+      information about the vulnerability.  This will include the
+      versions affected, by &os; port version, along with other web
+      sites which may contain security advisories.</para>
+
+    <para><application>portaudit</application> is a powerful utility
+      and is extremely useful when coupled with the
+      <application>portmaster</application> port.</para>
+  </sect1>
+
+  <sect1 xml:id="security-advisories">
+    <info><title>&os; Security Advisories</title>
+      <authorgroup>
+	<author><personname><firstname>Tom</firstname><surname>Rhodes</surname></personname><contrib>Contributed by </contrib></author>
+      </authorgroup>
+    </info>
+
+    
+
+    <indexterm>
+      <primary>&os; Security Advisories</primary>
+    </indexterm>
+
+    <para>Like many production quality operating systems, &os;
+      publishes <quote>Security Advisories</quote>.  These
+      advisories are usually mailed to the security lists and noted
+      in the Errata only after the appropriate releases have been
+      patched.  This section explains what an advisory is, how to
+      understand it, and what measures to take in order to patch a
+      system.</para>
+
+    <sect2>
+      <title>What Does an Advisory Look Like?</title>
+
+      <para>&os; security advisories use the format seen in this
+	example:</para>
+
+      <programlisting>=============================================================================
+FreeBSD-SA-XX:XX.UTIL                                       Security Advisory
+                                                          The FreeBSD Project
+
+Topic:          denial of service due to some problem <co xml:id="co-topic"/>
+
+Category:       core <co xml:id="co-category"/>
+Module:         sys <co xml:id="co-module"/>
+Announced:      2003-09-23 <co xml:id="co-announce"/>
+Credits:        Person <co xml:id="co-credit"/>
+Affects:        All releases of &os; <co xml:id="co-affects"/>
+                &os; 4-STABLE prior to the correction date
+Corrected:      2003-09-23 16:42:59 UTC (RELENG_4, 4.9-PRERELEASE)
+                2003-09-23 20:08:42 UTC (RELENG_5_1, 5.1-RELEASE-p6)
+                2003-09-23 20:07:06 UTC (RELENG_5_0, 5.0-RELEASE-p15)
+                2003-09-23 16:44:58 UTC (RELENG_4_8, 4.8-RELEASE-p8)
+                2003-09-23 16:47:34 UTC (RELENG_4_7, 4.7-RELEASE-p18)
+                2003-09-23 16:49:46 UTC (RELENG_4_6, 4.6-RELEASE-p21)
+                2003-09-23 16:51:24 UTC (RELENG_4_5, 4.5-RELEASE-p33)
+                2003-09-23 16:52:45 UTC (RELENG_4_4, 4.4-RELEASE-p43)
+                2003-09-23 16:54:39 UTC (RELENG_4_3, 4.3-RELEASE-p39) <co xml:id="co-corrected"/>
+<acronym>CVE</acronym> Name:       CVE-XXXX-XXXX <co xml:id="co-cve"/>
+
+For general information regarding FreeBSD Security Advisories,
+including descriptions of the fields above, security branches, and the
+following sections, please visit
+http://www.FreeBSD.org/security/.
+
+I.   Background <co xml:id="co-backround"/>
+
+
+II.  Problem Description <co xml:id="co-descript"/>
+
+
+III. Impact <co xml:id="co-impact"/>
+
+
+IV.  Workaround <co xml:id="co-workaround"/>
+
+
+V.   Solution <co xml:id="co-solution"/>
+
+
+VI.  Correction details <co xml:id="co-details"/>
+
+
+VII. References <co xml:id="co-ref"/></programlisting>
+
+      <calloutlist>
+	<callout arearefs="co-topic">
+	  <para>The <literal>Topic</literal> field specifies the
+	    problem.  It provides an introduction to the security
+	    advisory and notes the utility affected by the
+	    vulnerability.</para>
+	</callout>
+
+	<callout arearefs="co-category">
+	  <para>The <literal>Category</literal> refers to the
+	    affected part of the system which may be one of
+	    <literal>core</literal>, <literal>contrib</literal>, or
+	    <literal>ports</literal>.  The <literal>core</literal>
+	    category means that the vulnerability affects a core
+	    component of the &os; operating system.  The
+	    <literal>contrib</literal> category means that the
+	    vulnerability affects software contributed to the &os;
+	    Project, such as <application>Sendmail</application>.
+	    The <literal>ports</literal> category indicates that the
+	    vulnerability affects add on software available through
+	    the Ports Collection.</para>
+	</callout>
+
+	<callout arearefs="co-module">
+	  <para>The <literal>Module</literal> field refers to the
+	    component location.  In this example, the
+	    <literal>sys</literal> module is affected; therefore, this
+	    vulnerability affects a component used within the
+	    kernel.</para>
+	</callout>
+
+	<callout arearefs="co-announce">
+	  <para>The <literal>Announced</literal> field reflects the
+	    date the security advisory was published, or announced
+	    to the world.  This means that the security team has
+	    verified that the problem exists and that a patch has
+	    been committed to the &os; source code repository.</para>
+	</callout>
+
+	<callout arearefs="co-credit">
+	  <para>The <literal>Credits</literal> field gives credit to
+	    the individual or organization who noticed the
+	    vulnerability and reported it.</para>
+	</callout>
+
+	<callout arearefs="co-affects">
+	  <para>The <literal>Affects</literal> field explains which
+	    releases of &os; are affected by this vulnerability.
+	    For the kernel, a quick look over the output from
+	    &man.ident.1; on the affected files will help in
+	    determining the revision.  For ports, the version number
+	    is listed after the port name in <filename>/var/db/pkg</filename>.  If the
+	    system does not sync with the &os; Subversion repository
+	    and is not rebuilt daily, chances are that it is
+	    affected.</para>
+	</callout>
+
+	<callout arearefs="co-corrected">
+	  <para>The <literal>Corrected</literal> field indicates the
+	    date, time, time offset, and release that was
+	    corrected.</para>
+	</callout>
+
+	<callout arearefs="co-cve">
+	  <para>Reserved for the identification information used to
+	    look up vulnerabilities in the <link xlink:href="http://cve.mitre.org">Common Vulnerabilities
+	      and Exposures</link> database.</para>
+	</callout>
+
+	<callout arearefs="co-backround">
+	  <para>The <literal>Background</literal> field gives
+	    information about the affected utility.  Most of the time
+	    this is why the utility exists in &os;, what it is used
+	    for, and a bit of information on how the utility came to
+	    be.</para>
+	</callout>
+
+	<callout arearefs="co-descript">
+	  <para>The <literal>Problem Description</literal> field
+	    explains the security hole in depth.  This can include
+	    information on flawed code, or even how the utility
+	    could be maliciously used to open a security hole.</para>
+	</callout>
+
+	<callout arearefs="co-impact">
+	  <para>The <literal>Impact</literal> field describes what
+	    type of impact the problem could have on a system.  For
+	    example, this could be anything from a denial of service
+	    attack, to extra privileges available to users, or even
+	    giving the attacker superuser access.</para>
+	</callout>
+
+	<callout arearefs="co-workaround">
+	  <para>The <literal>Workaround</literal> field offers a
+	    workaround to system administrators who cannot
+	    upgrade the system due to time constraints, network
+	    availability, or other reasons.  Security should not be
+	    taken lightly, and an affected system should either be
+	    patched or the workaround implemented.</para>
+	</callout>
+
+	<callout arearefs="co-solution">
+	  <para>The <literal>Solution</literal> field offers
+	    instructions for patching the affected system.  This is a
+	    step by step tested and verified method for getting a
+	    system patched and working securely.</para>
+	</callout>
+
+	<callout arearefs="co-details">
+	  <para>The <literal>Correction Details</literal> field
+	    displays the Subversion branch or release name with the
+	    periods changed to underscore characters.  It also shows
+	    the revision number of the affected files within each
+	    branch.</para>
+	</callout>
+
+	<callout arearefs="co-ref">
+	  <para>The <literal>References</literal> field usually
+	    offers sources of other information.  This can include
+	    web <acronym>URL</acronym>s, books, mailing lists, and
+	    newsgroups.</para>
+	</callout>
+      </calloutlist>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="security-accounting">
+    <info><title>Process Accounting</title>
+      <authorgroup>
+	<author><personname><firstname>Tom</firstname><surname>Rhodes</surname></personname><contrib>Contributed by </contrib></author>
+      </authorgroup>
+    </info>
+
+    
+
+    <indexterm>
+      <primary>Process Accounting</primary>
+    </indexterm>
+
+    <para>Process accounting is a security method in which an
+      administrator may keep track of system resources used and
+      their allocation among users, provide for system monitoring,
+      and minimally track a user's commands.</para>
+
+    <para>This indeed has both positive and negative points.  One
+      of the positives is that an intrusion may be narrowed down to
+      the point of entry.  A negative is the amount of logs
+      generated by process accounting, and the disk space they may
+      require.  This section walks an administrator through the
+      basics of process accounting.</para>
+
+    <sect2>
+      <title>Enabling and Utilizing Process Accounting</title>
+
+      <para>Before using process accounting, it must be enabled using
+	the following commands:</para>
+
+      <screen>&prompt.root; <userinput>touch /var/account/acct</userinput>
+&prompt.root; <userinput>chmod 600 /var/account/acct</userinput>
+&prompt.root; <userinput>accton /var/account/acct</userinput>
+&prompt.root; <userinput>echo 'accounting_enable="YES"' &gt;&gt; /etc/rc.conf</userinput></screen>
+
+      <para>Once enabled, accounting will begin to track information
+	such as <acronym>CPU</acronym> statistics and executed
+	commands.  All accounting logs are in a non-human readable
+	format which can be viewed using &man.sa.8;.  If issued
+	without any options, &man.sa.8; prints information relating to
+	the number of per-user calls, the total elapsed time in
+	minutes, total <acronym>CPU</acronym> and user time in
+	minutes, and the average number of I/O operations.</para>
+
+      <para>To view information about commands being issued, use
+	&man.lastcomm.1;.  This command displays the commands issued
+	by users on specific &man.ttys.5;.  For example, this command
+	prints out all known usage of &man.ls.1; by
+	<systemitem class="username">trhodes</systemitem> on the <literal>ttyp1</literal>
+	terminal:</para>
+
+      <screen>&prompt.root; <userinput>lastcomm ls trhodes ttyp1</userinput></screen>
+
+      <para>Many other useful options exist and are explained in
+	&man.lastcomm.1;, &man.acct.5;, and &man.sa.8;.</para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="security-resourcelimits">
+    <info><title>Resource Limits</title>
+      <authorgroup>
+	<author><personname><firstname>Tom</firstname><surname>Rhodes</surname></personname><contrib>Contributed by </contrib></author>
+      </authorgroup>
+    </info>
+
+    
+
+    <indexterm>
+      <primary>Resource limits</primary>
+    </indexterm>
+
+    <para>For years, &os; has used a resource limits
+      database controlled through a flat file,
+      <filename>/etc/login.conf</filename>.  While it has
+      been discussed previously and is still supported, it
+      is not the most optimal method of controlling resources.
+      The flat file requires users to be divided into various
+      group labels known as classes, which require changes not
+      only to this flat file but also the password database.
+      Potentially a single, more constrained user would require
+      an additional label to be added, the resource database
+      rebuilt using <command>cap_mkdb</command>, and edits made to
+      <filename>/etc/master.passwd</filename>.  In
+      addition, the password database must be rebuilt using
+      <command>pwd_mkdb</command>.  This multi-step process could be
+      very time consuming depending on how many users must be
+      singled out.</para>
+
+    <para>A new command in &os;, &man.rctl.8;, allows for a more
+      fine grained method of controlling resources limits for
+      users.  This command will support much more than users,
+      it will also set resource constraints on processes, jails,
+      and the original login class.  These advanced features
+      provide administrators and users with methods to control
+      resources through the command line and set rules on
+      system initialization using a configuration
+      file.</para>
+
+    <para>To enable this feature, add these lines to
+      <filename>GENERIC</filename>, or the custom kernel
+      configuration file, and rebuild.:</para>
+
+    <programlisting>options         RACCT
+options         RCTL</programlisting>
+
+    <para>The entire system will need rebuilt.  See
+      <xref linkend="kernelconfig"/>, which will provide instructions
+      for the process.  Once this is complete,
+      <command>rctl</command> may be used to set rules for the
+      system.</para>
+
+    <para>Rule syntax is simple, controlled through the use of
+      a <emphasis>subject</emphasis>, a
+      <emphasis>subject-id</emphasis>, <emphasis>resource</emphasis>,
+      and <emphasis>action</emphasis>.  Take the following example
+      rule:</para>
+
+    <programlisting>user:trhodes:<literal>maxproc</literal>:<literal>deny</literal>=10/user</programlisting>
+
+    <para>This rule shows a basic premise of a rule, here the subject
+      is <literal>user</literal> and the subject-id is
+      <literal>trhodes</literal>.  The maxproc is, of course, max
+      number of processes, which is considered the resource.  The
+      action here is set to <literal>deny</literal>, which blocks any
+      new processes from being created.  In the previous example, the
+      user, <literal>trhodes</literal> will be constrained to
+      <literal>10</literal> (ten) processes and no greater.  Other
+      actions are available and could be log to the console, pass a
+      notification to &man.devd.8;, or send a sigterm to the
+      process.</para>
+
+    <para>Some care must be taken while adding rules.  The one above
+      will unfortunately block my user from doing the most simple
+      tasks after I have logged in and executed a
+      <command>screen</command> session.  When a resource limit has
+      been hit, an error will be printed, as in this example:</para>
+
+    <screen>&prompt.user; <userinput>man test</userinput>
+    /usr/bin/man: Cannot fork: Resource temporarily unavailable
+eval: Cannot fork: Resource temporarily unavailable</screen>
+
+    <para>For another example, &man.rctl.8; can be used to prevent
+      a jail from exceeding a memory limit.  This rule could be
+      written as:</para>
+
+    <screen>&prompt.root; <userinput>rctl -a jail:httpd:memoryuse:deny=2G/jail</userinput></screen>
+
+    <para>Rules may also persist across reboots if they have been
+      added to <filename>/etc/rctl.conf</filename>.  The format is a
+      rule, without the preceding command.  For example, the previous
+      rule could be added like the following:</para>
+
+    <programlisting># Block jail from using more than 2G memory:
+jail:httpd:memoryuse:deny=2G/jail</programlisting>
+
+    <para>To remove a rule, just ask <command>rctl</command> to
+      remove it from the list:</para>
+
+    <screen>&prompt.root; <userinput>rctl -r user:trhodes:maxproc:deny=10/user</userinput></screen>
+
+    <para>The manual page shows a method for removing all rules;
+      however, if removing all rules for a single user is required,
+      this command may be issued:</para>
+
+    <screen>&prompt.root; <userinput>rctl -r user:trhodes</userinput></screen>
+
+    <para>Many other resources exist which can be used to exert
+      additional control over various <literal>subjects</literal>.
+      See &man.rctl.8; to learn about them.</para>
+  </sect1>
+</chapter>

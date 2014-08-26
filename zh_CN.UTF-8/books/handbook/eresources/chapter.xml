@@ -1,0 +1,1933 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     The FreeBSD Documentation Project
+     The FreeBSD Simplified Chinese Project
+
+     Original Revision: r43258
+     $FreeBSD$
+-->
+<appendix xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="eresources">
+  <title>互联网上的资源</title>
+
+  <para>随着 &os; 的迅猛发展， 目前的印刷、 平面媒体明显跟不上它的发展速度！
+      如果它们不是您唯一的信息获取通道， 那么通过电子方式获取最新信息的最好方式。
+      由于 &os; 是一个由志愿者建立的社区， 用户群本身发挥着 <quote>技术支持部门</quote> 的功能，
+      这通常是通过邮件列表、 网上论坛、 新闻组等技术方式实现的。</para>
+
+  <para>以下列出了尽量多的联系  &os; 用户社区的方式。 如果您发现有其他的资源没有被包括在这儿，
+      请告诉 &a.doc; ， 以便将它们加入到这里。</para>
+
+  <sect1 xml:id="eresources-mail">
+    <title>邮件列表</title>
+
+    <para>邮件列表通常是提问或是发起 &os; 某一方面的专项技术讨论最直接的途径。
+        有很多针对 &os; 的不同主题的邮件列表。
+        你可以把问题发送到合适的邮件列表里， 这通常能快速获得准确的答复。</para>
+
+    <para>本文的末尾会给出了各个不同的邮件列表的使用规则。
+        在订阅其中任何一个邮件列表之前， 请先阅读 <emphasis> 使用章程</emphasis> 。
+        多数情况下订阅这些邮件列表的用户每天都可能会收到上百封 &os; 相关的电子邮件。
+        设立邮件列表的使用章程有助于维护讨论质量。
+        否则邮件列表作为有效通讯手段将会是十分失败的。</para>
+
+    <note>
+        <para><emphasis>如果你想要尝试发送一封邮件到 &os; 邮件列表，
+                您可以把邮件发往 &a.test.name; 邮件列表。</emphasis>
+            请不要向其他的邮件列表发送测试邮件。</para>
+    </note>
+
+    <para>如果您不清楚该把问题发到哪个邮件列表会比较合适， 请参阅
+        <link xlink:href="&url.articles.freebsd-questions;">如何从 &os;
+            问题邮件列表中更好的获取答案</link> 。</para>
+
+    <para>在邮件列表中提问之前， 请先了解如何更好的利用邮件列表，
+        通过阅读 <link xlink:href="&url.articles.mailing-list-faq;">邮件列表常见问题集 (FAQ)</link>
+        文档， 避免经常重复性的讨论。</para>
+
+    <para>邮件列表的全部日志可以在 <link xlink:href="&url.base;/search/index.html">&os;
+            的万维网服务器</link> 上找到。 在邮件列表上提问之前， 请先搜寻是否有已存的问题，
+        这是一个很好的想法。 请注意， 由于所有发往 &os; 邮件列表的邮件都将会永久存档。
+        对于涉及到隐私保护的话题， 可以考虑使用一个临时性的，
+        仅用于发布公共信息的辅助电子邮件地址。</para>
+
+    <sect2 xml:id="eresources-summary">
+      <title>邮件列表一览表</title>
+
+      <para><emphasis>通用性邮件列表：</emphasis> 以下的列表都是通用性的， 可自由（鼓励）加入的：</para>
+
+      <informaltable frame="none" pgwide="1">
+	<tgroup cols="2">
+	  <thead>
+	    <row>
+	      <entry>列表名称</entry>
+	      <entry>用途</entry>
+	    </row>
+	  </thead>
+
+	  <tbody>
+	    <row>
+	      <entry>&a.advocacy.name;</entry>
+	      <entry>&os; 倡议者</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.announce.name;</entry>
+	      <entry>重要的事件和里程碑（主持）</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.arch.name;</entry>
+	      <entry>架构和设计的讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.bugbusters.name;</entry>
+	      <entry>与 &os; 问题报告数据库和有关工具维护相关的讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.bugs.name;</entry>
+          <entry>Bug 报告</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.chat.name;</entry>
+	      <entry>与技术无关的  &os; 讨论区</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.chromium.name;</entry>
+	      <entry>Chromium &os; 版相关的讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.current.name;</entry>
+	      <entry>讨论使用 &os.current; 有关的一些问题</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.isp.name;</entry>
+	      <entry>&os; 上互联网服务供应商（ISP） 相关讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.jobs.name;</entry>
+	      <entry>&os; 相关工作机会</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.questions.name;</entry>
+	      <entry>用户问题与技术支持</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.security-notifications.name;</entry>
+	      <entry>安全通知</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.stable.name;</entry>
+	      <entry>讨论使用 &os.stable; 有关的一些问题</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.test.name;</entry>
+	      <entry>第一次发送邮件到邮件列表可以先向这里发送测试邮件</entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </informaltable>
+
+      <para><emphasis>技术性的邮件列表：</emphasis> 以下的邮件列表是用来讨论技术性问题的。
+          在加入订阅及讨论之前请务必认真阅读每个列表主题， 因为他们讨论的内容都是有严格限制的。</para>
+
+      <informaltable frame="none" pgwide="1">
+	<tgroup cols="2">
+	  <thead>
+	    <row>
+	      <entry>列表名称</entry>
+	      <entry>用途</entry>
+	    </row>
+	  </thead>
+
+	  <tbody>
+	    <row>
+	      <entry>&a.acpi.name;</entry>
+	      <entry>ACPI 和电源管理开发</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.afs.name;</entry>
+	      <entry>移植 AFS 到 &os;</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.aic7xxx.name;</entry>
+	      <entry>开发 &adaptec; AIC 7xxx 驱动</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.amd64.name;</entry>
+	      <entry>移植 &os; 到 AMD64 架构</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.apache.name;</entry>
+	      <entry>讨论 <application>Apache</application> 相关的 ports 讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.arm.name;</entry>
+	      <entry>移植 &os; 到 &arm; 架构</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.atm.name;</entry>
+	      <entry>在 &os; 上使用 ATM 网络</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.bluetooth.name;</entry>
+	      <entry>&os; 上使用 &bluetooth; 技术</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.cluster.name;</entry>
+	      <entry>&os; 集群环境相关</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.cvsweb.name;</entry>
+	      <entry>CVSweb 维护</entry>
+      </row>
+
+	    <row>
+	      <entry>&a.database.name;</entry>
+	      <entry>讨论 &os; 下开发和使用数据库</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.desktop.name;</entry>
+	      <entry>&os; 桌面方面的使用与改进</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.doc.name;</entry>
+	      <entry>撰写 &os; 相关文档</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.drivers.name;</entry>
+	      <entry>&os; 驱动设备开发</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.dtrace.name;</entry>
+	      <entry>DTrace 在 &os; 上的使用</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.eclipse.name;</entry>
+	      <entry>&os; 上的 Eclipse IDE 相关</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.embedded.name;</entry>
+          <entry>嵌入式应用上的 &os;</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.eol.name;</entry>
+	      <entry>与 &os; 相关， 但已不由 &os; 项目维护的软件</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.emulation.name;</entry>
+	      <entry>模拟其它操作系统， 如： Linux/&ms-dos;/&windows;</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.firewire.name;</entry>
+	      <entry>&os; 的 &firewire; (iLink, IEEE 1394) 技术讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.fortran.name;</entry>
+	      <entry>&os; 上的 Fortran 语言</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.fs.name;</entry>
+	      <entry>文件系统</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.gecko.name;</entry>
+	      <entry><application>Gecko 渲染引擎</application> 问题</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.geom.name;</entry>
+	      <entry>GEOM 框架讨论和实现</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.gnome.name;</entry>
+	      <entry>移植 <application>GNOME</application> 和 <application>GNOME</application> 应用</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.hackers.name;</entry>
+	      <entry>通用技术讨论</entry>
+
+	    </row>
+
+	    <row>
+	      <entry>&a.hardware.name;</entry>
+	      <entry>&os; 对通用硬件的讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.i18n.name;</entry>
+	      <entry>&os; 的国际化</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.ia32.name;</entry>
+	      <entry>&os; 在 IA-32 (&intel; x86) 平台上的使用</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.ia64.name;</entry>
+	      <entry>移植 &os; 到 &intel; 未来 IA64 平台架构</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.infiniband.name;</entry>
+	      <entry>&os; 上使用 Infiniband</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.ipfw.name;</entry>
+	      <entry>有关 IP 防火墙代码再设计的技术性讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.isdn.name;</entry>
+	      <entry>ISDN 开发人员</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.jail.name;</entry>
+	      <entry>有关 &man.jail.8; 机制的讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.java.name;</entry>
+	      <entry>&java; 开发及移植  &jdk; 到 &os; 上</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.lfs.name;</entry>
+          <entry>移植 LFS 到 &os;</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.mips.name;</entry>
+	      <entry>移植 &os; 到 &mips; 架构</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.mobile.name;</entry>
+	      <entry>讨论移动计算</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.mono.name;</entry>
+	      <entry>&os; 上的 Mono 和 C# 应用</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.multimedia.name;</entry>
+	      <entry>多媒体应用</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.newbus.name;</entry>
+	      <entry>新技术总线架构技术讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.net.name;</entry>
+          <entry>网络子系统和 TCP/IP 源代码的讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.numerics.name;</entry>
+	      <entry>高质量实施 libm 函数的讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.office.name;</entry>
+	      <entry>&os; 上的办公套件</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.performance.name;</entry>
+	      <entry>高性能、 负载下安装后的性能调整问题</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.perl.name;</entry>
+	      <entry>与 perl 相关的 ports 的维护</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.pf.name;</entry>
+	      <entry>讨论和有关包过滤防火墙（PF）的问题</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.pkg-fallout.name;</entry>
+	      <entry>二进制包构建服务器日志</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.platforms.name;</entry>
+	      <entry>关于向非 &intel; 架构的平台上移植的讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.ports.name;</entry>
+	      <entry>Ports Collection 相关</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.ports-announce.name;</entry>
+	      <entry>与 Ports Collection 相关的新闻和说明</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.ports-bugs.name;</entry>
+          <entry>ports bugs/PRs 讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.ppc.name;</entry>
+	      <entry>移植 &os; 到 &powerpc; 架构</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.proliant.name;</entry>
+	      <entry>   关于 &os; 在 HP ProLiant 服务器平台上的技术讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.python.name;</entry>
+	      <entry>有关 &os; 上的 Python 问题</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.rc.name;</entry>
+	      <entry>有关 <filename>rc.d</filename> 系统及其开发讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.realtime.name;</entry>
+	      <entry>&os; 实时扩展的开发</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.ruby.name;</entry>
+	      <entry>有关 &os; 上的 Ruby 讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.scsi.name;</entry>
+	      <entry>SCSI 子系统</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.security.name;</entry>
+	      <entry>影响 &os; 安全的问题讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.small.name;</entry>
+	      <entry>在嵌入式系统上使用  &os; (已过时， 请使用 &a.embedded.name; 代替)Using &os;</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.snapshots.name;</entry>
+	      <entry>&os; 开发版快照发布</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.sparc.name;</entry>
+	      <entry>移植 &os; 到 &sparc; 架构</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.standards.name;</entry>
+	      <entry>&os; 的 C99 标准与 &posix; 标准相关的讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.sysinstall.name;</entry>
+	      <entry>&man.sysinstall.8; 的开发</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.tcltk.name;</entry>
+	      <entry>&os; 上的 Tcl/Tk 讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.testing.name;</entry>
+	      <entry>&os; 测试</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.tex.name;</entry>
+
+	      <entry>移植 <application>TeX</application> 及其应用到 &os;</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.threads.name;</entry>
+	      <entry>&os; 线程</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.tilera.name;</entry>
+	      <entry>移植 &os; 到 Tilera 系列处理器上</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.tokenring.name;</entry>
+	      <entry>在 &os; 中支持 Token Ring</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.toolchain.name;</entry>
+	      <entry>在 &os; 中集成的编译工具链</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.usb.name;</entry>
+	      <entry>有关 &os; 的 USB 支持的讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.virtualization.name;</entry>
+	      <entry>讨论各种 &os; 支持的虚拟化技术</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.vuxml.name;</entry>
+	      <entry>有关 VuXML 的问题讨论</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.x11.name;</entry>
+	      <entry>维护和支持在 &os; 上运行的 X11</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.xen.name;</entry>
+	      <entry>讨论 &os; 上的 &xen; &mdash; 实现和使用</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.xfce.name;</entry>
+	      <entry>讨论 &os; 上的 <application>XFCE</application> &mdash; 移植和维护</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.zope.name;</entry>
+	      <entry>讨论 &os; 上的 <application>Zope</application> &mdash; 移植和维护</entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </informaltable>
+
+      <para><emphasis>限制订阅的列表：</emphasis> 以下邮件列表要求订阅者有更专业的技能 （甚至是必须），
+          并不太适合普通用户。 您最好先在某些技术讨论区参与一段时间后再订阅这些限制列表，
+          也样也能更好的了解在这些列表发言所需的何种礼仪。</para>
+
+      <informaltable frame="none" pgwide="1">
+	<tgroup cols="2">
+	  <thead>
+	    <row>
+	      <entry>列表名称</entry>
+
+	      <entry>用途</entry>
+	    </row>
+	  </thead>
+
+	  <tbody>
+	    <row>
+	      <entry>&a.hubs.name;</entry>
+	      <entry>镜像站运行相关（基础服务支持）</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.usergroups.name;</entry>
+	      <entry>用户组的协调工作</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.wip-status.name;</entry>
+	      <entry>&os; 项目进展情况</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.wireless.name;</entry>
+	      <entry>讨论 802.11 协议栈， 工具及设备驱动程序开发</entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </informaltable>
+
+      <para><emphasis>摘要列表：</emphasis> 以上所有邮件列表都可以使用摘要列表模式。
+          一旦订阅完成邮件列表， 就可以通过帐号选项部分更改为摘要模式。</para>
+
+      <para><emphasis>SVN 列表：</emphasis> 以下邮件列表是开放给所有希望了解源代码树任何变更记录的用户。
+          它们是 <emphasis>只读</emphasis> 性质的邮件列表， 您不能发邮件给它们。</para>
+
+      <informaltable frame="none" pgwide="1">
+	<tgroup cols="3">
+	  <thead>
+	    <row>
+	      <entry>列表名称</entry>
+	      <entry>所属源码位于</entry>
+	      <entry>描述</entry>
+	    </row>
+	  </thead>
+
+	  <tbody>
+	    <row>
+	      <entry>&a.svn-doc-all.name;</entry>
+	      <entry><filename>/usr/doc</filename></entry>
+          <entry>记录文档 Subversion 存储库的所有变更日志（不包括 <filename>user</filename> 、
+              <filename>projects</filename> 和 <filename>translations</filename> 部分）</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-doc-head.name;</entry>
+	      <entry><filename>/usr/doc</filename></entry>
+          <entry>记录文档 Subversion 存储库 <quote>head</quote> 分支的所有变更日志</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-doc-projects.name;</entry>
+	      <entry><filename>/usr/doc/projects</filename></entry>
+          <entry>记录文档 Subversion 存储库 <filename>projects</filename> 部分的所有变更日志</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-doc-svnadmin.name;</entry>
+	      <entry><filename>/usr/doc</filename></entry>
+          <entry>记录文档 Subversion 存储库的管理脚本， 钩子 （hooks）和其他配置数据的变更日志</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-ports-all.name;</entry>
+	      <entry><filename>/usr/ports</filename></entry>
+          <entry>记录 ports Subversion 存储库的所有变更日志</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-ports-head.name;</entry>
+	      <entry><filename>/usr/ports</filename></entry>
+          <entry>记录 ports Subversion 存储库的 <quote>head</quote> 分支的所有变更日志</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-ports-svnadmin.name;</entry>
+	      <entry><filename>/usr/ports</filename></entry>
+          <entry>记录 ports Subversion 存储库的管理脚本， 钩子 （hooks）和其他配置数据的变更日志</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-src-all.name;</entry>
+	      <entry><filename>/usr/src</filename></entry>
+          <entry>记录系统源代码（src） Subversion 存储库的所有变更日志（不包括 <filename>user</filename>
+              和 <filename>projects</filename> 部分）</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-src-head.name;</entry>
+	      <entry><filename>/usr/src</filename></entry>
+          <entry>记录系统源代码 Subversion 存储库的 <quote>head</quote> 分支的所有变更日志
+              （ &os;-CURRENT 分支）</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-src-projects.name;</entry>
+	      <entry><filename>/usr/projects</filename></entry>
+          <entry>记录系统源代码 Subversion 存储库的 <filename>projects</filename> 部分的所有变更日志</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-src-release.name;</entry>
+	      <entry><filename>/usr/src</filename></entry>
+          <entry>记录系统源代码 Subversion 存储库的 <filename>releases</filename> 部分的所有变更日志</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-src-releng.name;</entry>
+	      <entry><filename>/usr/src</filename></entry>
+          <entry>记录系统源代码 Subversion 存储库的 <filename>releng</filename> 部分的所有变更日志
+              (安全&nbsp;/ 正式发行版分支）</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-src-stable.name;</entry>
+	      <entry><filename>/usr/src</filename></entry>
+          <entry>记录系统源代码 Subversion 存储库的所有 stable 分支的所有变更日志</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-src-stable-6.name;</entry>
+	      <entry><filename>/usr/src</filename></entry>
+          <entry>记录系统源代码 Subversion 存储库的 <filename>stable/6</filename> 分支的所有变更日志</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-src-stable-7.name;</entry>
+	      <entry><filename>/usr/src</filename></entry>
+          <entry>记录系统源代码 Subversion 存储库的 <filename>stable/7</filename> 分支的所有变更日志</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-src-stable-8.name;</entry>
+	      <entry><filename>/usr/src</filename></entry>
+          <entry>记录系统源代码 Subversion 存储库的 <filename>stable/8</filename> 分支的所有变更日志</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-src-stable-9.name;</entry>
+	      <entry><filename>/usr/src</filename></entry>
+          <entry>记录系统源代码 Subversion 存储库的 <filename>stable/9</filename> 分支的所有变更日志</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-src-stable-10.name;</entry>
+	      <entry><filename>/usr/src</filename></entry>
+          <entry>记录系统源代码 Subversion 存储库的 <filename>stable/10</filename> 分支的所有变更日志</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-src-stable-other.name;</entry>
+	      <entry><filename>/usr/src</filename></entry>
+          <entry>记录系统源代码 Subversion 存储库的其他早期 <filename>stable</filename> 分支的变更日志</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-src-svnadmin.name;</entry>
+	      <entry><filename>/usr/src</filename></entry>
+          <entry>记录系统源代码 Subversion 存储库的管理脚本， 钩子 （hooks）和其他配置数据的变更日志</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-src-user.name;</entry>
+	      <entry><filename>/usr/src</filename></entry>
+          <entry>记录系统源代码 Subversion 存储库 <filename>user</filename> 实验性的所有变更日志</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.svn-src-vendor.name;</entry>
+	      <entry><filename>/usr/src</filename></entry>
+          <entry>记录系统源代码 Subversion 存储库其他项目功能引入（vendor work area）的所有变更日志</entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </informaltable>
+    </sect2>
+
+    <sect2 xml:id="eresources-subscribe">
+      <title>如何订阅</title>
+
+      <para>订阅某个邮件列表， 您需要点击列表名称 &a.mailman.lists.link; 。
+          在之后所显示的页面将会指示订阅所需必要操作。</para>
+
+      <para>要发送一个邮件到指定邮件列表， 只需发送邮件到
+          <email><replaceable>listname</replaceable>@FreeBSD.org</email> 。
+          之后它将会被传送给订阅列表的分布在全球的订阅者那。</para>
+
+      <para>要取消订阅， 可以点击列表中的任何一封电子邮件底部的 URL 。
+          也可以发送电子邮件至
+          <email><replaceable>listname</replaceable>-unsubscribe@FreeBSD.org</email> 退订。</para>
+
+      <para>技术性邮件列表应仅讨论技术问题。
+          如果您只对重要信息感兴趣， 建议您订阅 &a.announce; ， 它的通信量很小。</para>
+    </sect2>
+
+    <sect2 xml:id="eresources-charters">
+      <title>邮件列表章程</title>
+
+      <para><emphasis>全部</emphasis> 的 &os; 邮件列表的基本规则都是相同的。
+          如果违反这些规则， &os; 邮件管理员 （Postmaster）
+          <email>postmaster@FreeBSD.org</email> 将会警告两次， 如果第三次还是违反，
+          邮件管理员会将他移出 &os; 邮件列表。 并屏蔽所有来自此发件人的电子邮件。
+          很遗憾我们必须遵守这些规则， 但当今互联网环境十分恶劣， 以上规则约束作用也是相当脆弱的。</para>
+
+      <para>具体规则：</para>
+
+      <itemizedlist>
+	<listitem>
+        <para>任何发表的主题都应该符合被发表的邮件列表的基本主题。
+            例如， 主题是有关技术性问题的， 那么应该仅发表技术相关信息，
+            如果持续的喋喋不休讨论不相关内容， 或是讨论有损主题价值的内容，
+            这将是不可容忍的。 无特定主题的自由式讨论我们免费提供 &a.chat; 。</para>
+	</listitem>
+
+	<listitem>
+        <para>不要将同一个主题发送给超过 2 个邮件列表，
+            除非有清晰明确的需求， 因为对于多数邮件列表， 都有相当多的订阅用户，
+            除了那些相当深奥的问题 （如 <quote>-stable &amp; -scsi</quote> ），
+            实在没有必要同时发送给多个邮件列表。
+            如果您收到的邮件 <literal>Cc</literal> 行有多个用户，
+            那么您再次发送之前， 应整理 <literal>Cc</literal> 行。
+            <emphasis>无论谁是最初发表者，都会导致您自己的交叉发送。</emphasis></para>
+	</listitem>
+
+	<listitem>
+        <para>人身攻击和亵渎（包括争吵的情况下）是不容许的， 包括用户和开发者。
+            严重违反网络礼仪， 像未经同意摘编或重新张贴私人邮件这种情况。
+            <emphasis>然而</emphasis> ，也有非常少的情况下，这样的内容会符合列表规章，
+            因此， 它会在最初给予警告（或禁止）。</para>
+	</listitem>
+
+	<listitem>
+        <para>严禁非 &os; 的相关产品或服务的广告业务，一旦确认是垃圾广告， 将立即取缔。</para>
+	</listitem>
+      </itemizedlist>
+
+      <para><emphasis>各自的列表规章：</emphasis></para>
+
+      <variablelist>
+
+	<varlistentry>
+	  <term>&a.acpi.name;</term>
+
+	  <listitem>
+	    <para><emphasis>ACPI 和电源管理开发</emphasis></para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.afs.name;</term>
+
+	  <listitem>
+	    <para><emphasis>Andrew 文件系统</emphasis></para>
+
+        <para>这个列表是用来讨论从 CMU/Transarc 移植和使用 AFS 。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.announce.name;</term>
+
+	  <listitem>
+          <para><emphasis>重要事件/里程碑</emphasis></para>
+
+          <para>这是个发布 &os; 的重大事件的邮件列表。
+              这包括快照和其他发行公告， 新的 &os; 功能的公告
+              也可能用于指派志愿者等等， 这是一个流量较低， 较严谨的邮件列表。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.arch.name;</term>
+
+	  <listitem>
+	    <para><emphasis>架构和设计讨论</emphasis></para>
+
+        <para>此列表是用于讨论 &os; 的架构的。 本质上应保证内容的纯技术性。 例如主题是：</para>
+
+	    <itemizedlist>
+	      <listitem>
+              <para>如何重新构建系统使其同时运行。</para>
+	      </listitem>
+
+	      <listitem>
+              <para>需要什么才能修复 VFS 来使 Heidemann 层工作。</para>
+	      </listitem>
+
+	      <listitem>
+              <para>我们怎么改变设备驱动程序接口以便能够在多种总线和体系结构上使用同样的驱动程序。</para>
+	      </listitem>
+
+	      <listitem>
+		<para>如何写一个网络驱动。</para>
+	      </listitem>
+	    </itemizedlist>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.bluetooth.name;</term>
+
+	  <listitem>
+	    <para><emphasis>&os; 上的 &bluetooth;</emphasis></para>
+
+        <para>这是一个 &os; 的 &bluetooth; 用户聚集的讨论区，
+            这里欢迎关于设计问题、 实现细节、 补丁、 问题报告、
+            开发进度报告， 功能需求以及其他与 &bluetooth; 相关的讨论。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.bugbusters.name;</term>
+
+	  <listitem>
+	    <para><emphasis>协调问题报告与处理工作</emphasis></para>
+
+        <para>这个列表的目的是作为一个调整和讨论论坛来服务于 Bug 列表的成员，
+            Bugbuster 列表成员和其他任何的对 PR 数据库真正的有兴趣的成员。
+            这个列表不是为了讨论关于 Bug 细节， 补丁或 PRs 。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.bugs.name;</term>
+
+	  <listitem>
+	    <para><emphasis>Bug 报告</emphasis></para>
+
+        <para>这是个报告 &os; 的 Bug 的邮件列表。
+            如果可能， Bug 应使用的 &man.send-pr.1; 工具或
+            <link xlink:href="&url.base;/send-pr.html">WEB 接口</link> 来提交。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.chat.name;</term>
+
+	  <listitem>
+	    <para><emphasis>与 &os; 社区相关的非技术项目</emphasis></para>
+
+        <para>这个列表超出了其他有关非技术、 社会信息的内容。
+            包括谈论 Jordan 看起来是否像一个机敏的侦探，
+            是否句首的字母要大写， 谁喝了很多咖啡，
+            哪儿的啤酒酿造的最好， 谁在他们的地下室里酿造了啤酒等等。
+            对于偶然宣布重大的事件 （例如： 将要举行的聚会， 婚礼， 生日， 新工作等等）
+            也能使用这种技术列表， 除上述列举之外任何事情都可以发布在 -chat 列表上。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.chromium.name;</term>
+
+	  <listitem>
+	    <para><emphasis>&os; 上的 Chromium</emphasis></para>
+
+        <para>这是个讨论 &os; 上的 Chromium 相关问题的邮件列表。
+            这是一个讨论开发和安装 Chromium 的技术类列表。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.core.name;</term>
+
+	  <listitem>
+	    <para><emphasis>&os; 核心团队</emphasis></para>
+
+        <para>这是一个仅限核心成员使用的内部邮件列表。
+            只有当一个与 &os; 相关的严重的事件需要裁决或严格审核时，
+            才能发送消息到这个邮件列表。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.current.name;</term>
+
+	  <listitem>
+	    <para><emphasis>有关 &os.current; 的使用讨论</emphasis></para>
+
+        <para>这是一个针对 &os.current; 用户的邮件列表。
+            它包括一些可能影响用户的新特性的警告， 使用 -CURRENT 的一些指导。
+            任何运行 <quote>CURRENT</quote> 的用户必须订阅这个列表，
+        这是一个纯技术性的邮件列表， 其讨论内容严格限制为技术。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.cvsweb.name;</term>
+
+	  <listitem>
+	    <para><emphasis>&os; CVSweb 项目</emphasis></para>
+
+        <para>有关 &os;-CVSweb 的使用， 开发和维护的技术性讨论。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.desktop.name;</term>
+
+	  <listitem>
+	    <para><emphasis>&os; 桌面的使用与改进</emphasis></para>
+
+        <para>这是一个 &os; 桌面方向讨论的，
+            主要针对桌面 port 开发者 （ desktop porters ）
+            和用户讨论问题和改善 &os; 桌面支持的地方。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.doc.name;</term>
+
+	  <listitem>
+	    <para><emphasis>文档项目</emphasis></para>
+
+        <para>这个邮件列表是与 &os; 相关创建的文档的出版和项目的讨论。
+            这个邮件列表的成员都会提交到 <quote>The &os; Documentation Project</quote> 。
+            它是一个开放的列表， 可以自由地加入与贡献！</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.drivers.name;</term>
+
+	  <listitem>
+	    <para><emphasis>撰写 &os; 设备驱动</emphasis></para>
+
+        <para>这是有关 &os; 设备驱动的技术讨论邮件列表。
+            它主要是用于设备驱动程序编写者咨询有关如何使用 &os; 内核提供的 API
+            来编写设备驱动程序的地方。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.dtrace.name;</term>
+
+	  <listitem>
+          <para><emphasis>&os; 上使用 DTrace 进行工作</emphasis></para>
+
+          <para>DTrace 是 &os; 的一个组件， 它提供了调试内核及运行在用户空间层程序的框架。
+              这个邮件列表是代码开发者以及使用者讨论的存档。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.eclipse.name;</term>
+
+	  <listitem>
+          <para><emphasis>&os; 用户使用 Eclipse IDE 、 工具、 富客户端应用程序和 ports 。</emphasis></para>
+
+          <para>这个邮件列表的目的， 是为在 &os; 平台上选择、 安装、 使用、
+              开发和维护 Eclipse IDE、 工具、 富客户应用的用户， 提供互助式支持，
+              以及为将 Eclipse IDE 和插件移植到 &os; 环境中提供帮助。</para>
+
+          <para>另一个目的是建立一个 Eclipse 社区和 &os; 社区之间的交流通道， 以达到互惠互利。</para>
+
+          <para>尽管这个列表主要关注的是 Eclipse 用户的诉求， 它也为使用 Eclipse 框架开发
+              &os; 专用的应用提供了论坛。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.embedded.name;</term>
+
+	  <listitem>
+	    <para><emphasis>在嵌入式应用中使用 &os;</emphasis></para>
+
+        <para>这个列表讨论关于在嵌入式系统中如何使用 &os; 的话题。
+            这是一个纯技术性的邮件列表， 其讨论内容严格限制为技术。 
+            针对这一邮件列表， 我们将嵌入式系统定义为那些不作为桌面系统、
+            只完成某些单一任务的计算设备。 这些实例包括但不仅限于各种电话手机、 网络设备
+            （例如路由器， 交换机和 PBX ）、 遥测设备、 掌上电脑、 POS 机等等系统中。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.emulation.name;</term>
+
+	  <listitem>
+	    <para><emphasis>拟其他操作系统， 例如 Linux/&ms-dos;/&windows;</emphasis></para>
+
+        <para>这是讨论 &os; 上的运行为其他操作系统编写的程序的技术讨论区。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.eol.name;</term>
+
+	  <listitem>
+          <para><emphasis>与 &os; 有关， 但已不再由 &os; 项目所维护的软件的互助支持。</emphasis></para>
+
+          <para>这个邮件列表主要用于那些有兴趣提供或使用针对已不再为 &os; 项目官方所支持
+              (例如， 以安全更新或补丁的形式) 的 &os; 相关软件的用户或公司讨论。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.firewire.name;</term>
+
+	  <listitem>
+	    <para><emphasis>&firewire; (iLink, IEEE
+		1394)</emphasis></para>
+
+	    <para>这个邮件列表是关于 &os; 子系统 &firewire; (aka IEEE 1394 aka iLink)的设计和执行。
+            相关特定的主题包括标准， 总线设计和他们的协议， 适配器板/卡/芯片设置，
+            及他们的正确的代码的结构和实施。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.fortran.name;</term>
+
+	  <listitem>
+	    <para><emphasis>&os; 上的 Fortran</emphasis></para>
+
+        <para>这是邮件列表讨论 &os; Fortran 语言相关的 ports ：
+            如： 编译器， 库， 从笔记本电脑到高性能计算集群的科学和工程应用。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.fs.name;</term>
+
+	  <listitem>
+	    <para><emphasis>文件系统</emphasis></para>
+
+        <para>有关 &os; 文件系统的讨论。
+            这是一个纯技术性的邮件列表， 其讨论内容严格限制为技术。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.gecko.name;</term>
+
+	  <listitem>
+	    <para><emphasis>Gecko 渲染引擎</emphasis></para>
+
+        <para>这是一个有关在 &os; 上使用 <application>Gecko</application> 应用的论坛。</para>
+
+        <para>围绕 &os; 上 Gecko Ports 应用程序的讨论， 以及它们的安装， 开发和支持。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.geom.name;</term>
+
+	  <listitem>
+	    <para><emphasis>GEOM</emphasis></para>
+
+        <para>讨论具体的 GEOM 和相关实现。
+            这是一个纯技术性的邮件列表， 其讨论内容严格限制为技术。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.gnome.name;</term>
+
+	  <listitem>
+	    <para><emphasis>GNOME</emphasis></para>
+
+        <para>讨论关于 &os; 系统上的 <application>GNOME</application> 桌面环境。
+            这是一个纯技术性的邮件列表， 其讨论内容严格限制为技术。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.infiniband.name;</term>
+
+	  <listitem>
+	    <para><emphasis>&os; 上的 Infiniband</emphasis></para>
+
+        <para>讨论 &os; 上的 Infiniband、 OFED 和 OpenSM 的问题。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.ipfw.name;</term>
+
+	  <listitem>
+	    <para><emphasis>IP 防火墙</emphasis></para>
+
+        <para>这是有关 &os; 重新设计 IP 防火墙代码的技术讨论论坛。
+            这是一个纯技术性的邮件列表， 其讨论内容严格限制为技术。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.ia64.name;</term>
+
+	  <listitem>
+	    <para><emphasis>移植 &os; 到 IA64</emphasis></para>
+
+        <para>这是一个技术性邮件列表， 致力于移植 &os; 到 &intel; IA64 架构，
+            讨论一些相关的问题与解决方案。 同时也欢迎对这些问题感兴趣的个人讨论者。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.isdn.name;</term>
+
+	  <listitem>
+	    <para><emphasis>ISDN 通信</emphasis></para>
+
+        <para>这是一个 &os; 支持 ISDN 系统开发的邮件列表。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.java.name;</term>
+
+	  <listitem>
+	    <para><emphasis>&java; 开发</emphasis></para>
+
+        <para>这是邮件列表的讨论的 &java; 相关应用程序在 &os; 上的开发、 移植和维护 &jdk; 。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry xml:id="eresources-charters-jobs">
+	  <term>&a.jobs.name;</term>
+
+	  <listitem>
+	    <para><emphasis>提供和寻求工作机会</emphasis></para>
+
+        <para>这是专门发布有关 &os; 相关工作机会或寻求 &os; 相关就业机会的论坛，
+            这 <emphasis>不是</emphasis> 对一般性雇佣问题的邮件列表，
+            对这个问题已经有了足够多的论坛。</para>
+
+        <para>注意的是这个列表， 像其他的
+            <systemitem class="fqdomainname">FreeBSD.org</systemitem>
+            邮件列表一样是会分发到全世界的订阅者的。
+            因此，您需要明确关于位置和地域问题， 确定之间是容易联系和可合作的。</para>
+
+        <para>电子邮件应使用开放格式 &mdash; 最好使用纯文本格式，
+            但基于可移植文档格式（ <acronym>PDF</acronym> ）， HTML 和其他开放格式也是可以接受的。
+            封闭格式， 如 &microsoft; Word （ <filename>.doc</filename> ）
+            将会被邮件列表服务器直接拒绝。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.kde.name;</term>
+
+	  <listitem>
+	    <para><emphasis>KDE</emphasis></para>
+
+        <para>讨论 &os; 系统上的 <application>KDE</application> 。
+            这是一个纯技术性的邮件列表， 其讨论内容严格限制为技术。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.hackers.name;</term>
+
+	  <listitem>
+	    <para><emphasis>技术讨论</emphasis></para>
+
+        <para>这是有关 &os; 技术讨论的论坛。
+            主要是技术性的邮件。 他是针对个别的工作在 &os; 上的用户提出问题和讨论相关的解决方案，
+            也欢迎对这些问题感兴趣的个人讨论者。 这是一个纯技术性的邮件列表。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.hardware.name;</term>
+
+	  <listitem>
+	    <para><emphasis>&os; 硬件的普通讨论</emphasis></para>
+
+        <para>有关 &os; 运行的硬件类型的普通讨论， 包括是否该买的一些问题和建议。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.hubs.name;</term>
+
+	  <listitem>
+	    <para><emphasis>镜像站</emphasis></para>
+
+        <para>有关运行 &os; 镜像站的公告和讨论。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.isp.name;</term>
+
+	  <listitem>
+	    <para><emphasis>互联网服务供应商相关问题</emphasis></para>
+
+        <para>这个邮件列表是讨论有关使用 &os; 的互联网服务提供商（ISP）的主题。
+            这是一个纯技术性的邮件列表， 其讨论内容严格限制为技术。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.mono.name;</term>
+
+	  <listitem>
+	    <para><emphasis>在 &os; 上的 Mono 和 C# 应用</emphasis></para>
+
+        <para>这是一个讨论 &os; 上的 Mono 开发框架的邮件列表。
+            这是一个纯技术性的邮件列表。 它是为将 Mono 或 C# 应用移植到 &os; ，
+            以及提出问题及讨论其他解决方案的人准备的。
+            此外， 也欢迎有兴趣参与讨论的其他人。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.office.name;</term>
+
+	  <listitem>
+	    <para><emphasis>&os; 上的 Office 应用程序</emphasis></para>
+
+        <para>有关 Office 办公套件应用， 它们的安装、 开发和 &os; 支持的讨论中心。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.ops-announce.name;</term>
+
+	  <listitem>
+	    <para><emphasis>基础服务公告</emphasis></para>
+
+        <para>这是邮件列表是为 FreeBSD.org 相关的基础服务项目感兴趣的人设立，
+            有关问题及改变。</para>
+
+        <para>这个列表是一个严格的公告列表： 没有任何的回复， 请求， 讨论或意见。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.performance.name;</term>
+
+	  <listitem>
+	    <para><emphasis>讨论有关调整及加速 &os;</emphasis></para>
+
+        <para>这个邮件列表提供了一个为黑客， 管理员和有关的团体去讨论与 &os;
+            性能相关的主题的空间。 可以在这里进行讨论的包括在任意高负载下，
+            或者是有限制的条件下安装 &os; 。
+            非常鼓励自愿地为了改进 &os; 性能的相关团体去订阅这个列表。
+            这是个高技术含量的列表理论上说适合有丰富经验的 &os; 用户， 黑客，
+            或对 &os; 的速度、 性能 、 升级感兴趣的管理员。
+            这不是一个问答式的列表， 关于这些应该去读相关文档，
+            但他是一个可以投稿的地方， 或者了解关于待解决的与性能相关的主题。</para>
+
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.pf.name;</term>
+
+	  <listitem>
+          <para><emphasis>讨论有关包过滤防火墙系统（ PF ）的问题</emphasis></para>
+
+          <para>关于 &os; 环境下包过滤防火墙系统（ PF ） 的讨论。
+              这里欢迎技术讨论， 以及一般的应用问题。 此外，
+              这里也是讨论 ALTQ QoS 框架的合适场所。</para>
+
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.pkg.name;</term>
+
+	  <listitem>
+          <para><emphasis>二进制包管理和打包工具的讨论</emphasis></para>
+
+          <para>讨论通过使用二进制包管理工具安装的软件， 包括二进制包管理开发包和格式，
+              它们的发展， 并在 &os; 的支持， 包仓库管理， &os; 第三方包的各个方面。</para>
+
+          <para>注意如果不能从 ports 正确生成预编译包的情况应该视为 ports 问题，
+              所以不适合在这里讨论。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.pkg-fallout.name;</term>
+
+	  <listitem>
+          <para><emphasis>从预编译包构建失败日志</emphasis></para>
+
+          <para>预编译包构建集群的所有预编译包构建失败的日志</para>
+
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.platforms.name;</term>
+
+	  <listitem>
+	    <para><emphasis>移植到非 &intel; 平台</emphasis></para>
+
+        <para>&os; 的跨平台问题， 关于非 &intel; 平台 &os; 移植版本的讨论和建议。
+            这是一个纯技术性的邮件列表， 其讨论内容严格限制为技术。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.ports.name;</term>
+
+	  <listitem>
+	    <para><emphasis>讨论 <quote>ports</quote></emphasis></para>
+
+        <para>关于 &os; 的 <quote>ports collection</quote> (<filename>/usr/ports</filename>)
+            的讨论,  ports 的基础构造和调整过的 ports 结构。
+            这是一个纯技术性的邮件列表， 其讨论内容严格限制为技术。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.ports-announce.name;</term>
+
+	  <listitem>
+          <para><emphasis>有关 &os;&nbsp;<quote>Ports
+                      Collection</quote> 的重要新闻和声明</emphasis></para>
+
+          <para>针对开发者， ports 开发者， 用户的 <quote>Ports Collection</quote>
+              (<filename>/usr/ports</filename>) 重要新闻，包括
+              包括建设/基础设施的变更， 新的功能， 关键性升级的说明，
+              并发布项目信息。 这是一个低流量邮件列表， 主要用于公告。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.ports-bugs.name;</term>
+
+	  <listitem>
+	    <para><emphasis>讨论 <quote>ports</quote> BUG</emphasis></para>
+
+        <para>讨论有关 &os; 的 <quote>ports collection</quote>
+            (<filename>/usr/ports</filename>) 的问题报告 ports 的建议， 或者 ports 的修正。
+            这是一个纯技术性的邮件列表， 其讨论内容严格限制为技术。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.proliant.name;</term>
+
+	  <listitem>
+          <para><emphasis>有关 &os; 在 HP ProLiant 服务器平台上的技术讨论</emphasis></para>
+
+          <para>这个邮件列表用来讨论在 HP ProLiant 服务器上使用 &os; 的问题，
+              包括讨论 ProLiant 专用的驱动、 管理软件、 配置工具， 以及 BIOS 更新等。
+              同样， 这里也是讨论 hpasmd、 hpasmcli ， 以及 hpacucli 模块的主要场所。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.python.name;</term>
+
+	  <listitem>
+	    <para><emphasis>&os; 上的 Python</emphasis></para>
+
+        <para>这是一个讨论关于如何在 &os; 上改善 Python 支持的邮件列表。
+            这是一个纯技术的邮件列表。 它是为那些移植 Python 、 其第三方模块，
+            以及 <application>Zope</application> 相关软件到 &os; 上的人准备的。
+            这里也欢迎参与技术讨论的人。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.questions.name;</term>
+
+	  <listitem>
+	    <para><emphasis>用户问题</emphasis></para>
+
+        <para>这是一个有关 &os; 问题的邮件列表。
+            您不应当发送 <quote>how to</quote>  问题给技术列表，
+            除非您认为这个问题是非常可爱的技术问题。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.ruby.name;</term>
+
+	  <listitem>
+	    <para><emphasis>有关 &os; 上 Ruby 的讨论</emphasis></para>
+
+        <para>这是一个讨论有 Ruby 在 &os; 上支持的邮件列表。
+            这是一个纯技术性的邮件列表。 它是为那些移植 Ruby、
+            第三方库以及各种框架准备的。</para>
+
+	    <para>这里也欢迎参与技术讨论的人。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.scsi.name;</term>
+
+	  <listitem>
+	    <para><emphasis>SCSI 子系统</emphasis></para>
+
+        <para>这是一个讨论 &os; 的 SCSI 子系统的邮件列表。
+            这是一个纯技术性的邮件列表， 其讨论内容严格限制为技术。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.security.name;</term>
+
+	  <listitem>
+	    <para><emphasis>安全问题</emphasis></para>
+
+        <para>&os; 的计算机安全问题 （DES,Kerberos,已知的安全漏洞和修复等）。
+            这是一个纯技术性的邮件列表， 其讨论内容严格限制为技术。
+            注意： 这不是一个问和答的列表， 但是同时给出问题和答案到 FAQ 也是受欢迎的。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.security-notifications.name;</term>
+
+	  <listitem>
+	    <para><emphasis>安全通知</emphasis></para>
+
+        <para>&os; 安全问题和修复的通知。 这不是一个讨论列表，
+            讨论的列表应当是 &os; 安全问题。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.small.name;</term>
+
+	  <listitem>
+	    <para><emphasis>在嵌入式应用中使 &os;</emphasis></para>
+
+        <para>这个列表讨论了与极小的和嵌入的 &os; 安装的讨论主题。
+            这是一个纯技术性的邮件列表， 其讨论内容严格限制为技术。</para>
+
+	    <note>
+	      <para>此列表已过时， 已经被 &a.embedded.name; 取代了。</para>
+	    </note>
+
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.snapshots.name;</term>
+
+	  <listitem>
+	    <para><emphasis>&os; 开发版快照公告</emphasis></para>
+
+        <para>此列表在当有可用的 head 和 stable 分支最新分支快照版本发布时会传送通知。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.stable.name;</term>
+
+	  <listitem>
+	    <para><emphasis>讨论有关使用 &os.stable; 的问题</emphasis></para>
+
+        <para>这是一个 &os.stable; 用户的邮件列表。
+            它包含 -STABLE 的新特性可能会影响用户的警告。
+            任何运行 <quote>STABLE</quote> 版本的用户都应当订阅这个列表。
+            这是一个纯技术性的邮件列表， 其讨论内容严格限制为技术。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.standards.name;</term>
+
+	  <listitem>
+	    <para><emphasis>C99 &amp; POSIX 标准</emphasis></para>
+
+        <para>这是有关 &os; 遵循 C99 和 POSIX 标准的技术讨论论坛。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.testing.name;</term>
+
+	  <listitem>
+	    <para><emphasis>在 &os; 上测试</emphasis></para>
+
+        <para>技术邮件列表讨论在 &os; 进行测试工作， 包括：
+            ATF/Kyua、 测试基础服务、 port 测试， 和测试其他操作系统（如 NetBSD ），
+            等等。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.tex.name;</term>
+
+	  <listitem>
+	    <para><emphasis>移植 <application>TeX</application> 及其应用到 &os;</emphasis></para>
+
+        <para>这是一个技术性的邮件列表讨论 &os; 上的 TeX 及其应用。
+            它是个人积极努力将 TeX 移植到 &os; 上，
+            提出问题和讨论替代解决方案。 这里也欢迎参与技术讨论的人。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.toolchain.name;</term>
+
+	  <listitem>
+	    <para><emphasis>维护 &os; 中集成的编译工具链</emphasis></para>
+
+        <para>这是有关维护 &os; 中集成的编译工具链的论坛。
+            这里有包含 Clang 和 GCC， 以及其他类似汇编器、
+            连接器和调试器等软件的讨论。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.usb.name;</term>
+
+	  <listitem>
+	    <para><emphasis>讨论 &os; 的 USB 支持</emphasis></para>
+
+        <para>这个邮件列表是有关 &os; 上的 USB 支持的技术性讨论。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.usergroups.name;</term>
+
+	  <listitem>
+	    <para><emphasis>用户组调整列表</emphasis></para>
+
+        <para>这个邮件列表为协调从各地的使用群体到彼此相互讨论问题和从核心团队中指定个人。
+            这个邮件列表应被限制到大纲和协调用户组计划的范围之内。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.virtualization.name;</term>
+
+	  <listitem>
+	    <para><emphasis>讨论各种 &os; 支持的虚拟化技术</emphasis></para>
+
+        <para>讨论 &os; 所支持的各种虚拟化技术的邮件列表。 在注重实现基本功能，
+            加入新特性的同时， 也为用户提供了一个寻求帮助和讨论他们的使用经验的场所。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.wip-status.name;</term>
+
+	  <listitem>
+	    <para><emphasis>&os; 项目进度状态</emphasis></para>
+
+        <para>这个邮件列表是用来发布 &os; 相关项目的创建和工作进度的。
+            发至这个列表的消息将会先被审核。 通常建议把消息用 "To:"
+            发给一个更合适的 &os; 列表， 而只仅仅 "BCC:" 给这个列表。
+            这样你的工作进度就能在合适的列表上讨论，
+            因为这个列表是不允许讨论问题的。</para>
+
+	    <para>参考存档中合适的消息作为例子。</para>
+
+        <para>可能每隔几个月， 会从这个列表中的消息中提取出一个评论性的消息摘要发到
+            &os; 网站做为状态报告的一部分
+	      <footnote><para><uri xlink:href="http://www.freebsd.org/news/status/">http://www.freebsd.org/news/status/</uri></para></footnote>
+	      您也能从那里找到更多的例子和以往的报告。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.wireless.name;</term>
+
+	  <listitem>
+	    <para><emphasis>讨论 802.11 栈， 工具驱动开发</emphasis></para>
+
+        <para>FreeBSD-wireless 邮件列表集中讨论 802.11 栈 (sys/net80211)，
+            驱动程序和工具的开发。 包括缺陷， 新功能和维护。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.xen.name;</term>
+
+	  <listitem>
+          <para><emphasis>讨论有关 &os; 上的 &xen; 的移植 &mdash; 实现和使用</emphasis></para>
+
+          <para>这个邮件列表集中讨论 &os; 的 &xen; 移植。 预期的流量会很小，
+              所以这个列表旨在同时为设计与实现细节的技术讨论和管理部属问题提供一个讨论的场所。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.xfce.name;</term>
+
+	  <listitem>
+	    <para><emphasis>XFCE</emphasis></para>
+
+        <para>这是讨论有关向 &os; 移植 <application>XFCE</application> 的论坛。
+            这是一个技术性的邮件列表。 其成员是目前正活跃地进行
+            <application>XFCE</application> &os; 移植的开发人员，
+            主要用于提出问题或讨论其他解决方法。 此外，
+            也欢迎希望关注相关技术讨论的其他人士。</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.zope.name;</term>
+
+	  <listitem>
+	    <para><emphasis>Zope</emphasis></para>
+
+        <para>这是讨论关于向 &os; 移植 <application>Zope</application> 的论坛。
+            这是一个技术性的邮件列表。 其成员是目前正活跃地进行
+            <application>Zope</application> &os; 移植的开发人员，
+            主要用于提出问题或讨论其他解决方法。 此外，
+            也欢迎希望关注相关技术讨论的其他人士。</para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+    <sect2 xml:id="eresources-mailfiltering">
+      <title>邮件列表过滤</title>
+
+      <para>&os; 邮件列表使用多种方法来避免垃圾邮件， 病毒和其他有害电子邮件的发布。
+          在本节中介绍的过滤方式并不是用于保护邮件列表的所有方法。</para>
+
+      <para>只有某些类型的附件是被邮件列表允许的。
+          电子邮件分发到邮件列表之前所有没在下列表中的附件 MIME
+          类型都会被直接清除。</para>
+
+      <itemizedlist>
+	<listitem>
+	  <para>application/octet-stream</para>
+	</listitem>
+
+	<listitem>
+	  <para>application/pdf</para>
+	</listitem>
+
+	<listitem>
+	  <para>application/pgp-signature</para>
+	</listitem>
+
+	<listitem>
+	  <para>application/x-pkcs7-signature</para>
+	</listitem>
+
+	<listitem>
+	  <para>message/rfc822</para>
+	</listitem>
+
+	<listitem>
+	  <para>multipart/alternative</para>
+	</listitem>
+
+	<listitem>
+	  <para>multipart/related</para>
+	</listitem>
+
+	<listitem>
+	  <para>multipart/signed</para>
+	</listitem>
+
+	<listitem>
+	  <para>text/html</para>
+	</listitem>
+
+	<listitem>
+	  <para>text/plain</para>
+	</listitem>
+
+	<listitem>
+	  <para>text/x-diff</para>
+	</listitem>
+
+	<listitem>
+	  <para>text/x-patch</para>
+	</listitem>
+      </itemizedlist>
+
+      <note>
+          <para>某些邮件列表可以允许其他一些 MIME 类型的附件，
+              但以上所列类型应适用于大多数的邮件列表。</para>
+      </note>
+
+      <para>如果电子邮件包含了 HTML 和纯文本两种形式， 那么，
+          HTML 版本将被删除。 如果电子邮件中只包含的 HTML 版本，
+          它将会被转换为纯文本格式。</para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="eresources-news">
+    <title>新闻组</title>
+
+    <para>除了两个 &os; 相关的新闻组外， 还有很多与 &os; 或 &os; 用户相关的其他新闻组。</para>
+
+    <sect2>
+      <title>BSD 相关新闻组</title>
+
+      <itemizedlist>
+	<listitem>
+	  <para><link xlink:href="news:comp.unix.bsd.freebsd.announce">comp.unix.bsd.freebsd.announce</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:comp.unix.bsd.freebsd.misc">comp.unix.bsd.freebsd.misc</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:de.comp.os.unix.bsd">de.comp.os.unix.bsd</link>
+	    （德语）</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:fr.comp.os.bsd">fr.comp.os.bsd</link>
+	    （法语）</para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:it.comp.os.freebsd">it.comp.os.freebsd</link>
+	    （意大利语）</para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>其他 &unix; 相关新闻组</title>
+
+      <itemizedlist>
+	<listitem>
+	  <para><link xlink:href="news:comp.unix">comp.unix</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:comp.unix.questions">comp.unix.questions</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:comp.unix.admin">comp.unix.admin</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:comp.unix.programmer">comp.unix.programmer</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:comp.unix.shell">comp.unix.shell</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:comp.unix.user-friendly">comp.unix.user-friendly</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:comp.security.unix">comp.security.unix</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:comp.sources.unix">comp.sources.unix</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:comp.unix.advocacy">comp.unix.advocacy</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:comp.unix.misc">comp.unix.misc</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:comp.unix.bsd">comp.unix.bsd</link></para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2>
+      <title>X Window 系统</title>
+
+      <itemizedlist>
+	<listitem>
+	  <para><link xlink:href="news:comp.windows.x.i386unix">comp.windows.x.i386unix</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:comp.windows.x">comp.windows.x</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:comp.windows.x.apps">comp.windows.x.apps</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:comp.windows.x.announce">comp.windows.x.announce</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:comp.windows.x.intrinsics">comp.windows.x.intrinsics</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:comp.windows.x.motif">comp.windows.x.motif</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:comp.windows.x.pex">comp.windows.x.pex</link></para>
+	</listitem>
+
+	<listitem>
+	  <para><link xlink:href="news:comp.emulators.ms-windows.wine">comp.emulators.ms-windows.wine</link></para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="eresources-web">
+    <title>万维网服务</title>
+
+    <sect2 xml:id="eresources-web-social">
+      <title>论坛， 博客和社交网络</title>
+
+      <itemizedlist>
+	<listitem><para><link xlink:href="http://forums.freebsd.org/">&os; 论坛</link>
+            提供基于 Web 的论坛用于讨论 &os; 的技术问题和技术讨论。</para></listitem>
+
+	<listitem><para><link xlink:href="http://planet.freebsdish.org/">Planet &os;</link>
+            提供了众多由 &os; 开发者博客摘要的集合。
+            很多的开发者都在上面发表有关他们工作相关的简要笔记，
+            新补丁和工作进度。</para></listitem>
+
+    <listitem><para><link xlink:href="http://www.youtube.com/bsdconferences">YouTube BSDConferences 频道</link>
+            提供了一组世界各地 BSD 峰会的高质量视频。
+            这个是一个不错的观看重要开发者展示最新 &os; 有关成果的方法。</para></listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect2 xml:id="eresources-web-mirrors">
+      <title>官方镜像</title>
+
+      &chap.eresources.www.index.inc;
+
+      &chap.mirrors.lastmod.inc;
+
+      &chap.eresources.www.inc;
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="eresources-email">
+    <title>电子邮件地址</title>
+
+    <para>以下用户组提供了与 &os; 相关的邮件地址。如果它被滥用的话，
+        那么列表的管理员将有权收回的使用权。</para>
+
+    <informaltable frame="none" pgwide="1">
+      <tgroup cols="4">
+	<thead>
+	  <row>
+	    <entry>域名</entry>
+	    <entry>用途</entry>
+	    <entry>用户组</entry>
+	    <entry>管理员</entry>
+	  </row>
+	</thead>
+
+	<tbody>
+	  <row>
+	    <entry>ukug.uk.FreeBSD.org</entry>
+	    <entry>仅转发</entry>
+	    <entry><email>ukfreebsd@uk.FreeBSD.org</email></entry>
+	    <entry>Lee Johnston
+	      <email>lee@uk.FreeBSD.org</email></entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </informaltable>
+  </sect1>
+</appendix>

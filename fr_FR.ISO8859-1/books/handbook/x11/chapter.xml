@@ -1,0 +1,1868 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!--
+     The FreeBSD Documentation Project
+     The FreeBSD French Documentation Project
+
+     $FreeBSD$
+     Original revision: 1.189
+-->
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="x11">
+  <info><title>Le système X Window</title>
+    <authorgroup>
+      <author><personname><firstname>Ken</firstname><surname>Tom</surname></personname><contrib>Mis &agrave; jour pour le serveur X11 d'X.Org par </contrib></author>
+      <author><personname><firstname>Marc</firstname><surname>Fonvieille</surname></personname></author>
+    </authorgroup>
+  </info>
+
+  
+  &trans.a.fonvieille;
+
+  <sect1 xml:id="x11-synopsis">
+    <title>Synopsis</title>
+
+    <para>FreeBSD utilise X11 pour fournir aux
+      utilisateurs une interface graphique puissante.
+      X11 est une version libre du système X Window qui est
+      implémentée dans <application>&xorg;</application>
+      et <application>&xfree86;</application> (et d'autres logiciels
+      qui ne seront pas abordés ici).  Les versions de &os;
+      jusqu'&agrave; &os;&nbsp;5.2.1-RELEASE
+      utilisent par défaut <application>&xfree86;</application>,
+      le serveur X11 publié par le projet &xfree86;.  Depuis
+      &os;&nbsp;5.3-RELEASE, la version officielle par défaut
+      d'X11 a été remplacée par
+      <application>&xorg;</application>, le serveur X11 de la fondation
+      X.Org qui est disponible sous une license semblable &agrave;
+      celle de &os;.  Des serveurs X commerciaux pour &os; sont
+      également disponibles.</para>
+
+    <para>Ce chapitre couvrira l'installation et la configuration d'X11
+      avec en insistant sur <application>&xorg;</application> version &xorg.version;.  Pour
+      des informations sur la configuration
+      d'<application>&xfree86;</application> (c'est &agrave; dire sur
+      d'anciennes versions de &os; où
+      <application>&xfree86;</application> était la distribution
+      X11 par défaut) ou d'anciennes versions de <application>&xorg;</application>, il est toujours possible de consulter les
+      versions archivées de ce manuel &agrave; l'adresse <uri xlink:href="http://docs.FreeBSD.org/doc/">http://docs.FreeBSD.org/doc/</uri>.</para>
+
+    <para>Pour plus d'informations sur le matériel vidéo
+      supporté par X11, consultez le site d'<link xlink:href="http://www.x.org/">&xorg;</link>.</para>
+
+    <para>Après la lecture de ce chapitre, vous connaîtrez:</para>
+    <itemizedlist>
+      <listitem>
+	<para>Les divers composants du système X Window et comment ils
+	  fonctionnent ensemble.</para>
+      </listitem>
+
+      <listitem><para>Comment installer et configurer
+	X11.</para></listitem>
+
+      <listitem><para>Comment installer et utiliser différents
+	gestionnaires de fenêtres.</para></listitem>
+
+      <listitem><para>Comment utiliser les polices de caractères
+	&truetype; sous X11.</para></listitem>
+
+      <listitem><para>Comment configurer votre système pour
+	l'utilisation de procédures de connexions graphiques
+	(<application>XDM</application>).</para></listitem>
+    </itemizedlist>
+
+    <para>Avant de lire ce chapitre, vous devrez:</para>
+
+    <itemizedlist>
+      <listitem><para>Savoir comment installer des logiciels tiers
+	(<xref linkend="ports"/>).</para></listitem>
+    </itemizedlist>
+  </sect1>
+
+  <sect1 xml:id="x-understanding">
+    <title>Comprendre X</title>
+
+    <para>Utiliser X pour la première fois peut être en
+      quelque sorte un choc pour quelqu'un de familier avec d'autres
+      environnements graphiques, tels que &microsoft.windows; ou
+      &macos;.</para>
+
+    <para>Alors qu'il n'est pas nécessaire de comprendre tout le détail
+      des divers composants de X ni comment ils interagissent entre eux,
+      une certaine connaissance des bases permet de tirer
+      profit des points forts d'X.</para>
+
+    <sect2>
+      <title>Pourquoi X?</title>
+
+      <para>X n'est pas le premier système de fenêtrage
+	écrit pour &unix;, mais c'est le plus populaire d'entre eux.  L'équipe
+	originelle de développement d'X avait travaillé
+	sur un autre système de fenêtrage avant d'écrire X.
+	Le nom de ce système était
+	<quote>W</quote> (pour <quote>Window</quote> - fenêtre).  X était
+	juste la lettre suivante dans l'alphabet romain.</para>
+
+      <para>X peut être appelé &ldquo;X&rdquo;,
+	&ldquo;Système X Window&rdquo;, <quote>X11</quote>, et sous d'autres
+	noms.  Il se peut que vous puissiez trouver que nommer
+	X11 <quote>X Windows</quote> peut être offensant pour
+	certaines personnes; consultez &man.X.7; pour un peu plus
+	d'éclairements sur la question.</para>
+    </sect2>
+
+    <sect2>
+      <title>Le modèle client/serveur d'X</title>
+
+      <para>X a été conçu dès le départ
+	autour de la notion de réseau, et adopte un modèle
+	<quote>client-serveur</quote>.</para>
+
+      <para>Dans le modèle X, le &ldquo;serveur X&rdquo; tourne sur
+	l'ordinateur sur lequel sont branchés le clavier, le moniteur,
+	et la souris.  Le serveur est responsable de tâches telles que la gestion de
+	l'affichage, des entrées en provenance du clavier et de la
+	souris, et d'autres périphériques
+	d'entrée ou de sortie (une <quote>tablette</quote> peut
+	être utilisée comme périphérique
+	d'entrée et un vidéo-projecteur peut être
+	un périphérique de sortie alternatif).
+	Chaque application X (comme <application>XTerm</application>, ou
+	<application>&netscape;</application>) est un
+	&ldquo;client&rdquo;.  Un client envoie des messages au serveur
+	comme &ldquo;Dessines une fenêtre aux coordonnées
+	suivantes&rdquo;, et le serveur envoie au client des messages du
+	type &ldquo;L'utilisateur vient de cliquer sur le bouton
+	OK&rdquo;.</para>
+
+      <para>Chez soi
+	ou dans un petit bureau, le serveur X et les clients X
+	tourneront presque toujours sur le même ordinateur.  Cependant, il est
+	parfaitement possible de faire tourner le serveur X sur un
+	ordinateur de bureau moins puissant, et les applications X (les
+	clients) sur, par exemple, la machine puissante et chère du
+	service.  Dans ce scénario la communication entre le client X et
+	le serveur se fera par l'intermédiaire du réseau.</para>
+
+      <para>Cela jette le trouble chez certaines personnes, parce que la
+	technologie X est exactement le contraire de ce &agrave; quoi ils
+	s'attendent.  Ils s'attendent &agrave; ce que le
+	&ldquo;serveur X&rdquo; soit la grosse machine puissante au fond
+	du couloir, et le &ldquo;client X&rdquo; la machine sur leur
+	bureau.</para>
+
+      <para>Il est important de se souvenir que le serveur X est la machine avec le
+	moniteur et le clavier, et les clients X sont les programmes qui
+	affichent les fenêtres.</para>
+
+      <para>Il n'y a rien dans le protocole qui force les machines
+	clientes et serveurs d'utiliser le même système
+	d'exploitation, ou même de tourner sur le même type
+	d'ordinateur.  Il est certainement possible de faire fonctionner
+	un serveur X sur &microsoft.windows; ou &macos; d'Apple, et il
+	existe diverses applications gratuites et commerciales qui font
+	exactement cela.</para>
+    </sect2>
+
+    <sect2>
+      <title>Le gestionnaire de fenêtres</title>
+
+      <para>La philosophie de conception d'X est comme celle d'&unix;,
+	&ldquo;des outils, pas de contraintes&rdquo;.  Cela signifie
+	qu'X n'essaye pas de dicter comment une tâche doit être
+	accomplie.  A la place, les outils sont fournis &agrave;
+	l'utilisateur, et c'est &agrave; lui de décider comment
+	utiliser ces outils.</para>
+
+      <para>Cette philosophie va jusqu'&agrave; pousser X &agrave; ne pas
+	contrôler l'aspect des fenêtres &agrave; l'écran,
+	comment les déplacer avec la souris, quelles combinaisons
+	de touches devraient être utilisées pour passer
+	de l'une &agrave; l'autre (i.e.,
+	<keycombo action="simul">
+	  <keycap>Alt</keycap>
+	  <keycap>Tab</keycap>
+	</keycombo>, dans le cas de &microsoft.windows;), comment
+	devraient être les barres de titre de chaque fenêtres,
+	qu'elles aient ou pas des boutons de fermetures, etc...</para>
+
+      <para>Au lieu de cela, X délègue cette
+	responsabilité &agrave; une application appelée
+	un &ldquo;Window Manager&rdquo; - gestionnaire de fenêtres.
+	Il existe des douzaines de gestionnaires de fenêtres
+	disponibles pour X: <application>AfterStep</application>,
+	<application>Blackbox</application>, <application>ctwm</application>,
+	<application>Enlightenment</application>,
+	<application>fvwm</application>, <application>Sawfish</application>,
+	<application>twm</application>,
+	<application>Window Maker</application>, et bien plus.  Chacun
+	de ces gestionnaires de fenêtres fournit une apparence et une
+	prise en main différente; certains d'entre eux supportent les
+	&ldquo;bureaux virtuels&rdquo;; d'autres permettent de
+	personnaliser les combinaisons de touches de gestion du bureau;
+	certains ont un bouton &ldquo;Démarrer&rdquo; ou quelque chose
+	d'identique; certains possèdent un système de
+	&ldquo;thèmes&rdquo;, permettant un changement complet
+	d'apparence et de prise en main en sélectionnant un nouveau
+	thème.  Ces gestionnaires de fenêtres, et bien plus, sont
+	disponibles dans la catégorie <filename>x11-wm</filename> du
+	catalogue des logiciels portés.</para>
+
+      <para>De plus, les environnements de travail
+	<application>KDE</application> et <application>GNOME</application>
+	ont leur propre gestionnaire de fenêtres qui s'intègre
+	avec l'environnement.</para>
+
+      <para>Chaque gestionnaire de fenêtres possède
+	également
+	un mécanisme de configuration propre; certains demandent un
+	fichier de configuration écrit &agrave; la main, d'autres
+	disposent d'outils graphiques pour la plupart des tâches
+	de configuration; et au moins un
+	(<application>Sawfish</application>) utilise un fichier de
+	configuration écrit dans un dialecte du langage LISP.</para>
+
+      <note>
+	<title>Politique de focus</title>
+
+	<para>Une autre fonction dont est responsable le gestionnaire de
+	  fenêtre est la &ldquo;politique de focus&rdquo; de la
+	  souris.  Chaque système de fenêtrage a besoin de
+	  méthodes de choix de la fenêtre qui doit recevoir
+	  les frappes au clavier, et devrait également indiquer
+	  visiblement quelle fenêtre est active.</para>
+
+	<para>Une politique de focus commune est appelée
+	  &ldquo;click-to-focus&rdquo; (cliquer pour obtenir le focus).
+	  C'est le mode utilisé sous &microsoft.windows;, dans lequel une
+	  fenêtre devient active quand elle reçoit un clic de la
+	  souris.</para>
+
+	<para>X ne supporte aucune politique de focus particulière.
+	  Au lieu de cela, le gestionnaire de fenêtres contrôle
+	  quelle fenêtre a le focus &agrave; n'importe quel moment.
+	  Différents gestionnaires de fenêtres supporteront
+	  différentes méthodes de focus.  Tous supportent le
+	  clic pour obtenir le focus, une grande majorité supporte
+	  d'autres méthodes.</para>
+
+	<para>Les politiques de focus les plus populaires sont:</para>
+
+	<variablelist>
+	  <varlistentry>
+	    <term>&ldquo;focus-follows-mouse&rdquo; - le focus suit la
+	      souris</term>
+
+	    <listitem>
+	      <para>La fenêtre qui est sous le pointeur de la souris
+		est la fenêtre qui a le focus.  Ce n'est pas
+		nécessairement la fenêtre qui est au-dessus des
+		autres.  Le focus est modifié en pointant une autre
+		fenêtre, l&agrave; il n'y pas besoin de cliquer sur
+		la fenêtre.</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term>&ldquo;sloppy-focus&rdquo; - focus relâché</term>
+
+	    <listitem>
+	      <para>Cette politique est version dérivée du
+		&ldquo;focus-follows-mouse&rdquo;.  Avec
+		&ldquo;focus-follows-mouse&rdquo;, si la souris est
+		déplacée sur la fenêtre racine
+		(ou fond de l'écran) alors aucune fenêtre
+		n'a le focus, et les frappes au clavier sont tout simplement
+		perdues.  Avec le focus relâché, le focus n'est
+		modifié que si le pointeur passe sur une nouvelle
+		fenêtre, et non pas quand il quitte la
+		fenêtre actuelle.</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term>&ldquo;click-to-focus&rdquo; - cliquer pour obtenir le
+	      focus</term>
+
+	    <listitem>
+	      <para>La fenêtre active est sélectionnée
+		par clic de la souris.  La fenêtre peut être
+		ramenée au premier plan.  Toutes les frappes au
+		clavier seront désormais dirigées vers cette
+		fenêtre, même si le curseur est
+		déplacé vers une autre fenêtre.</para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+
+	<para>De nombreux gestionnaires de fenêtres supportent d'autres
+	  politiques, comme des variations de celles-ci.  Assurez-vous
+	  de consulter la documentation du gestionnaire de
+	  fenêtres.</para>
+      </note>
+    </sect2>
+
+    <sect2>
+      <title>&ldquo;Widgets&rdquo; - Eléments graphiques</title>
+
+      <para>L'approche d'X d'offrir uniquement des outils s'étend aux
+	éléments graphiques que l'on voit &agrave; l'écran
+	dans chaque application.</para>
+
+      <para>&ldquo;Widget&rdquo; est un terme pour désigner tous les
+	éléments de l'interface utilisateur qui peuvent
+	être cliqués ou manipulés d'une façon
+	ou d'une autre; boutons, boîtes &agrave; cocher, boutons radio,
+	icônes, listes, etc...  &microsoft.windows; appelle ces derniers des
+	&ldquo;contrôles&rdquo;.</para>
+
+      <para>&microsoft.windows; et &macos; d'Apple ont tous deux une
+	politique très rigide au niveaux des
+	éléments graphiques.  Les développeurs
+	d'applications sont supposés s'assurer que leurs applications
+	partagent une apparence et une prise en main commune.  Avec X,
+	on n'a pas considéré comme sensible d'exiger un style
+	graphique particulier, ou ensemble d'éléments
+	graphiques &agrave; respecter.</para>
+
+      <para>En conséquence, ne vous attendez pas &agrave; ce que les
+	applications X aient une apparence et une prise en main
+	communes.  Il a plusieurs ensembles populaires d'éléments
+	graphiques et leurs variations, dont l'ensemble d'éléments
+	original Athena du MIT, <application>&motif;</application>
+	(d'après lequel fût modelé l'ensemble
+	d'éléments graphiques de &microsoft.windows;, tous les
+	bords biseautés et trois nuances de gris),
+	<application>OpenLook</application>, et d'autres.</para>
+
+      <para>La plupart des nouvelles applications X, aujourd'hui
+	utiliseront un ensemble d'éléments graphiques &agrave;
+	l'apparence
+	moderne, soit Qt, utilisé par <application>KDE</application>,
+	soit GTK+, utilisé par le projet
+	<application>GNOME</application>.  A cet égard, il y a une
+	certaine convergence dans l'apparence et la prise en main de
+	l'environnement de travail &unix;, qui facilite certainement les
+	choses pour l'utilisateur débutant.</para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="x-install">
+    <title>Installer X11</title>
+
+    <para><application>&xorg;</application> est l'implémentation
+      par défaut d'X11 sous &os;.
+      <application>&xorg;</application> est le serveur X de
+      l'implémentation open source du système X Window
+      publiée par la fondation X.Org.
+      <application>&xorg;</application> est basée sur le code
+      de <application>&xfree86;&nbsp;4.4RC2</application> et d'X11R6.6.
+      la version d'<application>&xorg;</application> actuellement disponible dans le catalogue des logiciels
+      portés de &os; est la &xorg.version;.</para>
+
+    <para>Pour compiler et installer
+      <application>&xorg;</application> &agrave; partir du catalogue des
+      logiciels portés:</para>
+
+    <screen>&prompt.root; <userinput>cd /usr/ports/x11/xorg</userinput>
+&prompt.root; <userinput>make install clean</userinput></screen>
+
+    <note>
+      <para>Pour compiler <application>&xorg;</application> dans son
+	intégralité, assurez-vous de disposer d'au moins
+	4&nbsp;Go d'espace libre.</para>
+    </note>
+
+    <para>D'autre part, X11 peut être directement
+      installée &agrave; partir de paquetages.  Une version
+      pré-compilée &agrave; utiliser avec l'outil
+      &man.pkg.add.1; est également disponible pour X11.  Quand
+      la fonction de récupération &agrave; distance de
+      &man.pkg.add.1; est utilisée, le numéro de version
+      doit être retiré.  &man.pkg.add.1;
+      téléchargera automatiquement la toute
+      dernière version de l'application.</para>
+
+    <para>Donc pour récupérer et installer la version
+      pré-compilée d'<application>&xorg;</application>,
+      tapez simplement:</para>
+
+    <screen>&prompt.root; <userinput>pkg_add -r xorg</userinput></screen>
+
+    <note>
+      <para>Les exemples ci-dessus installeront la distribution
+	complète d'X11 comprenant
+	les serveurs, les clients, les polices de caractères,
+	etc.  Des paquetages et des logiciels portés
+	séparés pour les différentes parties
+	d'X11 sont également
+	disponibles.</para>
+    </note>
+
+    <para>Le reste de ce chapitre expliquera comment configurer
+      X11, et comment installer un environnement
+      de travail productif.</para>
+  </sect1>
+
+  <sect1 xml:id="x-config">
+    <info><title>Configuration d'X11</title>
+      <authorgroup>
+        <author><personname><firstname>Christopher</firstname><surname>Shumway</surname></personname><contrib>Contribution de </contrib></author>
+      </authorgroup>
+    </info>
+    
+
+
+    <indexterm><primary>&xorg;</primary></indexterm>
+    <indexterm><primary>X11</primary></indexterm>
+
+    <sect2>
+      <title>Avant de commencer</title>
+
+      <para>Avant de configurer X11,
+	les informations sur le système cible sont
+	nécessaires:</para>
+
+      <itemizedlist>
+	<listitem><para>Caractéristiques du moniteur</para></listitem>
+	<listitem><para>Circuit graphique présent sur la carte
+	  vidéo</para></listitem>
+	<listitem><para>Quantité de mémoire présente
+	  sur la carte vidéo</para></listitem>
+      </itemizedlist>
+
+      <indexterm><primary>fréquence de balayage
+	horizontale</primary></indexterm>
+      <indexterm><primary>fréquence de synchronisation
+	verticale</primary></indexterm>
+
+      <para>Les caractéristiques du moniteur sont utilisées par
+	X11 pour déterminer la
+	résolution
+	et le taux de rafraîchissement &agrave; utiliser.  Ces
+	caractéristiques sont généralement obtenues sur la
+	documentation fournie avec le moniteur ou sur le site web du
+	constructeur.  Il y a deux intervalles de nombres nécessaires,
+	les fréquences de balayage horizontale et les fréquences
+	de synchronisation verticale.</para>
+
+      <para>La circuit graphique présent sur la carte vidéo
+	définit quel pilote de périphérique
+	X11 utilise pour communiquer avec
+	le matériel graphique.  Avec la plupart des circuits, cela peut
+	être détecté automatiquement, mais il
+	est toujours utile de connaître le type dans le cas où
+	la détection automatique ne fonctionnerait pas
+	correctement.</para>
+
+      <para>La quantité de mémoire graphique sur la carte
+	vidéo détermine la résolution et la profondeur de
+	couleurs qui pourront être utilisées.  C'est important
+	de le savoir afin que l'utilisateur soit au courant des limitations du
+	système.</para>
+
+    </sect2>
+
+    <sect2>
+      <title>Configurer X11</title>
+
+      <para>Avec la version 7.3, <application>&xorg;</application>
+	peut, la plupart du temps, fonctionner sans aucun fichier de
+	configuration en tapant simplement &agrave; l'invite:</para>
+
+      <screen>&prompt.user; <userinput>startx</userinput></screen>
+
+      <para>Si cela ne fonctionne pas, ou si la configuration par
+	défaut n'est pas satisfaisante, X11 peut être
+	configuré manuellement.  La configuration d'X11
+	est un processus en plusieurs étapes.  La première
+	étape est de générer un fichier de configuration.
+	En tant que super
+	utilisateur, lancez simplement:</para>
+
+      <screen>&prompt.root; <userinput>Xorg -configure</userinput></screen>
+
+      <para>Cela générera, dans le répertoire
+	<filename>/root</filename>,
+	un squelette de fichier de
+	configuration pour X11 appelé
+	<filename>xorg.conf.new</filename> (que vous utilisiez
+	&man.su.1; ou ouvrez directement une session, cela affecte la
+	variable d'environnement <envar>$HOME</envar> du
+	super-utilisateur, et donc le répertoire utilisé
+	pour écrire ce fichier).
+	Le programme X11 tentera de
+	sonder le matériel graphique présent sur le
+	système et écrira un fichier de configuration pour
+	charger les pilotes de périphériques corrects pour
+	le matériel détecté sur le système
+	cible.</para>
+
+      <para>L'étape suivante est de tester la configuration existante
+	pour vérifier que <application>&xorg;</application> peut
+	fonctionner avec le matériel graphique présent sur
+	le système cible.  Pour effectuer ce test, lancez:</para>
+
+      <screen>&prompt.root; <userinput>Xorg -config xorg.conf.new</userinput></screen>
+
+      <para>Si une grille grise et noire et un curseur de souris en
+	forme de X apparaissent, la configuration fonctionne
+	correctement.  Pour quitter le test,  appuyez simplement sur les
+	touches
+	<keycombo action="simul">
+	  <keycap>Ctrl</keycap>
+	  <keycap>Alt</keycap>
+	  <keycap>Backspace</keycap>
+	</keycombo> simultanément.</para>
+
+      <note>
+	<para>Si la souris ne fonctionne pas, vous devrez, avant toute
+	  autre chose, la configurer.
+	  Consultez la <xref linkend="mouse"/>
+	  dans le chapitre sur l'installation de
+	  &os;.</para>
+      </note>
+
+      <indexterm><primary>optimisation de la configuration
+	d'X11</primary></indexterm>
+
+      <para>Ensuite, optimisez le fichier de configuration
+	<filename>xorg.conf.new</filename>
+	selon vos goûts.  Ouvrez le
+	fichier dans un éditeur de texte comme &man.emacs.1; ou
+	&man.ee.1;.  Tout d'abord, ajoutez les fréquences pour le
+	moniteur du système cible.  Celles-ci sont
+	généralement exprimées sous la forme de
+	fréquences de
+	synchronisation horizontale et verticale.  Ces valeurs sont
+	ajoutées dans le fichier <filename>xorg.conf.new</filename>
+	dans la section <literal>"Monitor"</literal>:</para>
+
+      <programlisting>Section "Monitor"
+        Identifier   "Monitor0"
+        VendorName   "Monitor Vendor"
+        ModelName    "Monitor Model"
+        HorizSync    30-107
+        VertRefresh  48-120
+EndSection</programlisting>
+
+      <para>Les termes <literal>HorizSync</literal> et
+	<literal>VertRefresh</literal> peuvent être
+	absents du fichier de configuration.  Si c'est le cas,
+	ils doivent être ajoutés, avec les fréquences
+	horizontales correctes placées après le terme
+	<literal>HorizSync</literal> et les fréquences verticales
+	après le terme <literal>VertRefresh</literal>.  Dans l'exemple
+	ci-dessus les fréquences du moniteur ont été
+	entrées.</para>
+
+      <para>X autorise l'utilisation des caractéristiques DMPS (Energy
+	Star) avec les moniteurs qui en sont capables.  Le programme
+	&man.xset.1; contrôle les délais et peut forcer
+	la mise en
+	veille, l'arrêt, ou les modes d'extinction.  Si vous souhaitez
+	activer les fonctions DMPS de votre moniteur, vous devez ajouter
+	la ligne suivante dans la section concernant le moniteur:</para>
+
+      <programlisting>
+        Option       "DPMS"</programlisting>
+
+      <indexterm>
+	<primary><command>xorg.conf</command></primary>
+      </indexterm>
+
+      <para>Pendant que le fichier de configuration
+	<filename>xorg.conf.new</filename>
+	est toujours ouvert dans un
+	éditeur, sélectionnez la résolution par
+	défaut et la profondeur de couleurs désirée.
+	Cela est défini dans la section
+	<literal>"Screen"</literal>:</para>
+
+      <programlisting>Section "Screen"
+        Identifier "Screen0"
+        Device     "Card0"
+        Monitor    "Monitor0"
+        DefaultDepth 24
+        SubSection "Display"
+                Viewport  0 0
+                Depth     24
+                Modes     "1024x768"
+        EndSubSection
+EndSection</programlisting>
+
+      <para>Le terme <literal>DefaultDepth</literal> indique la
+	profondeur de couleurs utilisée par défaut.  Cette
+	valeur peut être outrepassée avec l'option
+	<option>-depth</option> en ligne de la commande &man.Xorg.1;.
+	Le terme
+	<literal>Modes</literal> indique la résolution &agrave; utiliser
+	pour la profondeur de couleurs donnée.
+	Notez que seuls les modes standard VESA sont supportés
+	comme définis par le matériel graphique du
+	système cible.  Dans l'exemple
+	ci-dessus, la profondeur de couleurs par défaut est de vingt
+	quatre bits par pixel.  A cette profondeur de couleurs, la
+	résolution acceptée est de 1024 par 768.</para>
+
+      <para>Pour fonctionner &agrave; une résolution de mille
+	vingt quatre pixels par sept cent soixante huit pixels &agrave; vingt
+	quatre bits par pixel, ajoutez le terme
+	<varname>DefaultDepth</varname> avec la valeur vingt quatre, et
+	ajoutez &agrave; la sous-section <literal>"Display"</literal> avec la
+	valeur <varname>Depth</varname> désirée le terme
+	<varname>Modes</varname> avec la résolution souhaitée par
+	l'utilisateur.  Notez que seuls les modes standard VESA sont
+	supportés comme définis par le matériel
+	graphique du système cible.</para>
+
+      <para>Enfin, sauvez le fichier de configuration et testez-le en
+	utilisant la procédure de test donnée ci-dessus.
+      </para>
+
+      <note>
+	<para>Un des outils disponibles pour vous aider en cas
+	  de problèmes sont les fichiers journaux d'X11, qui
+	  contiennent des informations sur chaque périphérique auquel
+	  le serveur X11 s'attache.  Les noms des fichiers journaux
+	  d'<application>&xorg;</application> suivent la forme
+	  <filename>/var/log/Xorg.0.log</filename>.  Le nom exact du
+	  fichier peut aller de <filename>Xorg.0.log</filename> &agrave;
+	  <filename>Xorg.8.log</filename> et ainsi de suite.</para>
+      </note>
+
+      <para>Si tout se passe bien, le fichier de configuration doit
+	être
+	installé &agrave; un emplacement commun où
+	&man.Xorg.1; pourra le trouver.  C'est typiquement soit
+	<filename>/etc/X11/xorg.conf</filename> ou
+	<filename>/usr/local/etc/X11/xorg.conf</filename>.</para>
+
+      <screen>&prompt.root; <userinput>cp xorg.conf.new /etc/X11/xorg.conf</userinput></screen>
+
+      <para>La configuration de X11 est maintenant achevée.
+	<application>&xorg;</application> peut être maintenant
+	lancé avec l'utilitaire &man.startx.1;.
+	Le serveur X11 peut également
+	être lancé
+	&agrave; l'aide de &man.xdm.1;.</para>
+
+      <note>
+	<para>Il existe également un outil de configuration
+	  graphique, &man.xorgcfg.1;, qui est fourni avec
+	  la distribution X11.  Il permet de
+	  définir intéractivement votre configuration en
+	  sélectionnant les pilotes de
+	  périphériques et les paramètres
+	  adéquats.  Ce programme peut être invoqué
+	  &agrave; partir de la console, en tapant la commande
+	  <command>xorgcfg -textmode</command>.
+	  Pour plus de détails, consultez la
+	  page de manuel d'&man.xorgcfg.1;.</para>
+
+      <para>Alternativement, il existe également un outil
+	appelé &man.xorgconfig.1;.
+	Ce programme est un
+	utilitaire en mode console moins convivial, mais qui peut
+	fonctionner dans les situations où les autres ont
+	échoué.</para>
+      </note>
+
+    </sect2>
+
+    <sect2>
+      <title>Sujets avancés de configuration</title>
+
+      <sect3>
+	<title>Configuration avec les circuits graphiques &intel;
+	  i810</title>
+
+        <indexterm><primary>circuits graphiques Intel i810</primary></indexterm>
+
+	<para>La configuration avec les circuits intégrés
+	  graphiques &intel; i810 nécessite
+	  <filename>agpgart</filename> l'interface de programmation AGP
+	  pour X11 afin de piloter la carte.  Consultez la page de
+	  manuel du pilote &man.agp.4; pour plus d'information.</para>
+
+	<para>Cela permettra la configuration de ce matériel comme
+	  n'importe quelle autre carte graphique.  Notez que sur les
+	  systèmes sans le pilote &man.agp.4; compilé dans
+	  le noyau, tenter de charger le module &agrave; l'aide
+	  de &man.kldload.8; ne fonctionnera pas.  Ce pilote doit
+	  être dans le noyau au démarrage soit compilé dans le
+	  noyau soit en utilisant
+	  <filename>/boot/loader.conf</filename>.</para>
+      </sect3>
+
+      <sect3>
+	<title>Utilisation d'un écran large
+	  (<emphasis>Widescreen</emphasis>)</title>
+
+	<indexterm><primary>configuration des écrans
+	  larges</primary></indexterm>
+
+	<para>Cette section nécessite une maîtrise des
+	  configurations avancées.  Si les tentatives
+	  d'utilisation des outils de configuration standards
+	  précédents n'ont pas donné lieu
+	  &agrave; une configuration fonctionnelle, il y a cependant
+	  suffisamment d'information dans les fichiers journaux pour
+	  parvenir &agrave; faire fonctionner votre équipement.
+	  L'utilisation d'un éditeur de texte sera
+	  également nécessaire.</para>
+
+	<para>Les écrans larges actuellement disponibles
+	  (WSXGA, WSXGA+, WUXGA, WXGA, WXGA+, et.al.) supportent les
+	  formats 16:10 et 10:9 ainsi que  d'autres formats pouvant
+	  être problèmatiques.  Les résolutions
+	  d'écran courantes pour les formats 16:10 sont:</para>
+
+	<itemizedlist>
+	  <listitem><para>2560x1600</para></listitem>
+	  <listitem><para>1920x1200</para></listitem>
+	  <listitem><para>1680x1050</para></listitem>
+	  <listitem><para>1440x900</para></listitem>
+	  <listitem><para>1280x800</para></listitem>
+	</itemizedlist>
+
+	<para>Dans certains cas, la configuration nécessitera
+	  de simplement ajouter une de ces résolutions comme
+	  <literal>Mode</literal> possible dans la <literal>Section
+	  "Screen"</literal>:</para>
+
+	<programlisting>Section "Screen"
+Identifier "Screen0"
+Device     "Card0"
+Monitor    "Monitor0"
+DefaultDepth 24
+SubSection "Display"
+	Viewport  0 0
+	Depth     24
+	Modes     "1680x1050"
+EndSubSection
+EndSection</programlisting>
+
+	<para><application>&xorg;</application> est suffisamment
+	  intelligent pour obtenir auprès de l'écran les
+	  informations sur la résolution par
+	  l'intermédiaire des données I2C/DDC, de cette
+	  manière il connaît les fréquences et
+	  résolutions maximales que peut supporter le
+	  moniteur.</para>
+
+	<para>Si ces <literal>ModeLines</literal> ne sont pas
+	  présentes dans les pilotes, on pourra toujours aider
+	  <application>&xorg;</application> dans ce sens.  En
+	  examinant le contenu du fichier
+	  <filename>/var/log/Xorg.0.log</filename>, on peut en
+	  extraire suffisamment d'information pour créer
+	  manuellement une <literal>ModeLine</literal> qui
+	  fonctionnera.  Recherchez les lignes du type:</para>
+
+	<programlisting>(II) MGA(0): Supported additional Video Mode:
+(II) MGA(0): clock: 146.2 MHz   Image Size:  433 x 271 mm
+(II) MGA(0): h_active: 1680  h_sync: 1784  h_sync_end 1960 h_blank_end 2240 h_border: 0
+(II) MGA(0): v_active: 1050  v_sync: 1053  v_sync_end 1059 v_blanking: 1089 v_border: 0
+(II) MGA(0): Ranges: V min: 48  V max: 85 Hz, H min: 30  H max: 94 kHz, PixClock max 170 MHz</programlisting>
+
+	<para>Ce type de données est appelée information
+	  EDID.  La création d'une <literal>ModeLine</literal>
+	  &agrave; partir de ces informations consiste juste &agrave;
+	  placer les différentes valeurs dans le bon
+	  ordre:</para>
+
+	<programlisting>ModeLine &lt;name&gt; &lt;clock&gt; &lt;4 horiz. timings&gt; &lt;4 vert. timings&gt;</programlisting>
+
+	<para>Ainsi la ligne <literal>ModeLine</literal> de la
+	  <literal>Section "Monitor"</literal> pour cet exemple
+	  ressemblera &agrave; ceci:</para>
+
+	<programlisting>Section "Monitor"
+Identifier      "Monitor1"
+VendorName      "Bigname"
+ModelName       "BestModel"
+ModeLine        "1680x1050" 146.2 1680 1784 1960 2240 1050 1053 1059 1089
+Option          "DPMS"
+EndSection</programlisting>
+
+	<para>Ces modifications effectuées, X devrait
+	  maintenant se lancer sans problème sur votre nouvel
+	  écran large.</para>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="x-fonts">
+    <info><title>Utilisation des polices de caractères sous X11</title>
+      <authorgroup>
+        <author><personname><firstname>Murray</firstname><surname>Stokely</surname></personname><contrib>Contribution de </contrib></author>
+      </authorgroup>
+    </info>
+    
+
+    <sect2 xml:id="type1">
+    <title>Polices de caractères Type1</title>
+    <para>Les polices de caractères livrées par
+      défaut avec X11 sont loin
+      d'être idéales pour des applications de type publication.
+      Les grandes polices utilisées pour les présentations
+      présentent un aspect en escalier et peu professionnel, et
+      les petites polices sous <application>&netscape;</application> sont
+      presque complètement
+      illisibles.  Cependant, il existe de nombreuses polices
+      Type1 (&postscript;) gratuites, de hautes qualités qui peuvent
+      être aisément utilisées avec
+      X11.  Par exemple, la collection de polices de caractères
+      URW  (<package>x11-fonts/urwfonts</package>)
+      comprend une version haute qualité des polices de
+      caractères standards type1 (<trademark class="registered">Times Roman</trademark>, <trademark class="registered">Helvetica</trademark>, <trademark class="registered">Palatino</trademark>
+      et autres).  La collection Freefonts (<package>x11-fonts/freefonts</package>) comprend beaucoup
+      plus de polices de caractères, mais la plupart d'entre elles sont
+      destinées &agrave; être utilisées avec des logiciels
+      graphiques comme <application>The Gimp</application>, et ne sont pas
+      suffisamment complètes pour servir de polices
+      de caractères d'affichage.  De plus
+      X11 peut être configuré
+      pour utiliser les polices de caractères &truetype; avec un minimum
+      d'effort.  Pour plus de détails &agrave; ce sujet,
+      consultez la page de manuel &man.X.7; ou la <link linkend="truetype">section sur les polices
+      de caractères &truetype;</link>.</para>
+
+    <para>Pour installer les collections de polices de caractères
+      Type1 précédentes &agrave; partir du catalogue
+      des logiciels portés, lancez les commandes suivantes:</para>
+
+      <screen>&prompt.root; <userinput>cd /usr/ports/x11-fonts/urwfonts</userinput>
+&prompt.root; <userinput>make install clean</userinput></screen>
+
+    <para>Et de même pour la collection Freefont ou d'autres.  Pour
+      que le serveur X détecte ces polices, ajoutez une
+      ligne appropriée au fichier de configuration du serveur X
+      (<filename>/etc/X11/xorg.conf</filename>),
+      du type:</para>
+
+<programlisting>FontPath "/usr/local/lib/X11/fonts/URW/"</programlisting>
+
+      <para>Autre possibilité, en ligne de commande dans une session X
+	lancez:</para>
+
+<screen>&prompt.user; <userinput>xset fp+ /usr/local/lib/X11/fonts/URW</userinput>
+&prompt.user; <userinput>xset fp rehash</userinput></screen>
+
+      <para>Cela fonctionnera mais les effets seront perdus quand la
+	session X sera fermée, &agrave; moins de l'ajouter dans le
+	fichier de
+	démarrage (<filename>~/.xinitrc</filename> pour une session
+	<command>startx</command> classique, ou dans
+	<filename>~/.xsession</filename> quand on s'attache au système
+	par l'intermédiaire d'un gestionnaire de session graphique comme
+	<application>XDM</application>).  Une troisième méthode
+	est d'utiliser le nouveau fichier <filename>/usr/local/etc/fonts/local.conf</filename>:
+	voir la section sur l'<link linkend="antialias">anticrénelage</link>.</para>
+    </sect2>
+
+    <sect2 xml:id="truetype">
+    <title>Polices de caractères &truetype;</title>
+
+    <indexterm><primary>TrueType Fonts</primary></indexterm>
+    <indexterm><primary>fonts</primary>
+      <secondary>TrueType</secondary>
+    </indexterm>
+
+    <para><application>&xorg;</application> dispose d'un support
+      intégré pour le rendu des polices &truetype;.
+      Il y a deux différents modules qui peuvent activer cette
+      fonctionnalité.  Le module freetype est
+      utilisé dans cet exemple parce qu'il est plus compatible avec les
+      autres moteurs de rendu des polices de caractères.  Pour activer
+      le module freetype ajoutez juste la ligne suivante dans la section
+      <literal>"Module"</literal> du fichier
+      <filename>/etc/X11/xorg.conf</filename>.</para>
+
+    <programlisting>Load  "freetype"</programlisting>
+
+    <para>Maintenant créez un répertoire pour les polices
+      &truetype; (par exemple
+      <filename>/usr/local/lib/X11/fonts/TrueType</filename>) et copiez
+      toutes les polices &truetype; dans ce répertoire.  Gardez &agrave;
+      l'esprit
+      que les polices &truetype; ne peuvent être directement prises d'un
+      Macintosh; elles doivent être dans un format &unix;/&ms-dos;/Windows pour
+      être utilisées sous X11.
+      Une fois les fichiers copiés dans ce répertoire, utilisez
+      <application>ttmkfdir</application> pour créer un fichier
+      <filename>fonts.dir</filename>, de façon &agrave; ce que le moteur
+      d'affichage des polices d'X sache que de nouveaux fichiers ont
+      été
+      installés.  <application>ttmkfdir</application> est disponible
+      dans le catalogue des logiciels portés de FreeBSD sous <package>x11-fonts/ttmkfdir</package>.</para>
+
+<screen>&prompt.root; <userinput>cd /usr/local/lib/X11/fonts/TrueType</userinput>
+&prompt.root; <userinput>ttmkfdir -o fonts.dir</userinput></screen>
+
+    <para>Maintenant ajoutez le répertoire des polices &truetype; au
+      chemin des polices de caractères.  Cela est identique &agrave;
+      ce qui est décrit ci-dessus pour les polices <link linkend="type1">Type1</link>, c'est &agrave; dire, utiliser</para>
+
+    <screen>&prompt.user; <userinput>xset fp+ /usr/local/lib/X11/fonts/TrueType</userinput>
+&prompt.user; <userinput>xset fp rehash</userinput></screen>
+
+      <para>ou ajouter une ligne <literal>FontPath</literal> au fichier
+	<filename>xorg.conf</filename>.</para>
+
+      <para>Voil&agrave;.  Désormais <application>&netscape;</application>,
+	<application>Gimp</application>,
+	<application>&staroffice;</application>, et toutes les autres
+	applications X devraient maintenant reconnaître les polices de
+	caractères &truetype;.  Les polices très petites (comme
+	le texte de page web visualisé sur un écran haute
+	résolution) et les très
+	grandes polices (dans <application>&staroffice;</application>)
+	auront un rendu bien meilleur maintenant.</para>
+    </sect2>
+
+    <sect2 xml:id="antialias">
+    <info><title>Polices de caractères anticrénelage</title>
+      <authorgroup>
+	<author><personname><firstname>Joe Marcus</firstname><surname>Clarke</surname></personname><contrib>Mis &agrave; jour par </contrib></author>
+      </authorgroup>
+    </info>
+      
+
+      <indexterm><primary>polices de caractères
+	anticrénelage</primary></indexterm>
+      <indexterm><primary>polices de caractères</primary>
+	<secondary>anticrénelage</secondary></indexterm>
+
+      <para>L'anticrénelage est disponible sous
+	X11 depuis <application>&xfree86;</application> 4.0.2.
+	Cependant, la configuration des polices de caractères
+	était relativement lourde avant l'arrivée
+	d'<application>&xfree86;</application> 4.3.0.  Depuis
+	<application>&xfree86;</application> 4.3.0, toutes les polices
+	sous X11 se trouvant dans les répertoires <filename>/usr/local/lib/X11/fonts/</filename> et
+	<filename>~/.fonts/</filename> sont
+	automatiquement disponibles pour l'anticrénelage avec
+	les applications compatibles Xft.  Toutes les applications ne
+	sont pas compatibles Xft, mais de nombreuses ont
+	été dotées du support Xft.  Par exemple,
+	les applications utilisant Qt 2.3 et versions suivantes (la
+	boîte &agrave; outils pour l'environnement de travail
+	<application>KDE</application>), GTK+ 2.0 et suivantes (la
+	boîte &agrave; outils de l'environnement de travail
+	<application>GNOME</application>), et
+	<application>Mozilla</application> 1.2 et versions
+	suivantes.</para>
+
+      <para>Afin de contrôler quelles polices de
+	caractères sont anticrénelées, ou pour
+	configurer les propriétés de
+	l'anticrénelage, créez (ou éditez, s'il
+	existe déj&agrave;) le fichier
+	<filename>/usr/local/etc/fonts/local.conf</filename>.
+	Plusieurs caractéristiques avancées du
+	système de fontes Xft peuvent être
+	ajustées par l'intermédiaire de ce fichier;
+	cette section ne décrit que des possibilités
+	simples.  Pour plus de détails, consultez la page de
+	manuel &man.fonts-conf.5;.</para>
+
+      <indexterm><primary>XML</primary></indexterm>
+
+      <para>Ce fichier doit être dans le format XML.  Faites
+	attention &agrave; la casse des caractères, et
+	assurez-vous que toutes les balises sont correctement
+	fermées.  Le fichier débute avec l'entête
+	XML classique suivie par une définition DOCTYPE, puis
+	de la balise <literal>&lt;fontconfig&gt;</literal>:</para>
+
+      <programlisting>
+	&lt;?xml version="1.0"?&gt;
+	&lt;!DOCTYPE fontconfig SYSTEM "fonts.dtd"&gt;
+	&lt;fontconfig&gt;
+      </programlisting>
+
+      <para>Comme précisé précédemment,
+	l'ensemble des polices de caractères du
+	répertoire <filename>/usr/local/lib/X11/fonts/</filename> comme du
+	répertoire <filename>~/.fonts/</filename> sont disponibles pour
+	les applications compatibles Xft.  Si vous désirez
+	ajouter un autre répertoire en dehors des ces deux
+	l&agrave;, ajoutez une ligne similaire &agrave; la suivante au
+	fichier
+	<filename>/usr/local/etc/fonts/local.conf</filename>:</para>
+
+      <programlisting>&lt;dir&gt;/chemin/vers/mes/fontes&lt;/dir&gt;</programlisting>
+
+      <para>Après l'ajout de nouvelles fontes, et tout
+	particulièrement de nouveaux répertoires de polices, vous
+	devrez exécuter la commande suivante pour reconstituer le
+	cache des polices de caractères:</para>
+
+      <screen>&prompt.root; <userinput>fc-cache -f</userinput></screen>
+
+      <para>L'anticrénelage rend les bords
+	légèrement flous, ce qui rend le texte très
+	petit plus lisible et enlève l'effet
+	&ldquo;d'escalier&rdquo; des grands textes, mais peut provoquer
+	une fatigue visuelle si c'est appliqué au texte normal.
+	Pour exclure les tailles de polices inférieures &agrave; 14 points de
+	l'anticrénelage, ajoutez ces lignes:</para>
+
+      <programlisting>	 &lt;match target="font"&gt;
+	  &lt;test name="size" compare="less"&gt;
+		&lt;double&gt;14&lt;/double&gt;
+	  &lt;/test&gt;
+	  &lt;edit name="antialias" mode="assign"&gt;
+		&lt;bool&gt;false&lt;/bool&gt;
+	  &lt;/edit&gt;
+	&lt;/match&gt;
+	&lt;match target="font"&gt;
+	  &lt;test name="pixelsize" compare="less" qual="any"&gt;
+		&lt;double&gt;14&lt;/double&gt;
+	  &lt;/test&gt;
+	  &lt;edit mode="assign" name="antialias"&gt;
+		&lt;bool&gt;false&lt;/bool&gt;
+	  &lt;/edit&gt;
+	&lt;/match&gt;</programlisting>
+
+      <indexterm><primary>polices de caractères</primary>
+	<secondary>espacement</secondary></indexterm>
+
+      <para>L'espacement pour certaines polices de caractères
+	&agrave; chasse fixe peut également être
+	inapproprié avec l'anticrénelage.  Cela semble
+	être un problème avec <application>KDE</application>, en
+	particulier.  Une solution possible pour cela est de forcer
+	l'espacement pour de telles polices de caractères &agrave; 100.
+	Ajoutez les lignes suivantes:</para>
+
+      <programlisting>	 &lt;match target="pattern" name="family"&gt;
+	  &lt;test qual="any" name="family"&gt;
+	    &lt;string&gt;fixed&lt;/string&gt;
+	  &lt;/test&gt;
+	  &lt;edit name="family" mode="assign"&gt;
+	    &lt;string&gt;mono&lt;/string&gt;
+	  &lt;/edit&gt;
+	&lt;/match&gt;
+	&lt;match target="pattern" name="family"&gt;
+	  &lt;test qual="any" name="family"&gt;
+	    &lt;string&gt;console&lt;/string&gt;
+	  &lt;/test&gt;
+	  &lt;edit name="family" mode="assign"&gt;
+	    &lt;string&gt;mono&lt;/string&gt;
+	  &lt;/edit&gt;
+	&lt;/match&gt;</programlisting>
+
+      <para>(ceci ajoute un alias <literal>"mono"</literal> pour les autres
+	noms communs des polices de caractères fixes), puis
+	ajoutez:</para>
+
+      <programlisting>	 &lt;match target="pattern" name="family"&gt;
+	  &lt;test qual="any" name="family"&gt;
+	    &lt;string&gt;mono&lt;/string&gt;
+	  &lt;/test&gt;
+	  &lt;edit name="spacing" mode="assign"&gt;
+	    &lt;int&gt;100&lt;/int&gt;
+	  &lt;/edit&gt;
+	&lt;/match&gt;</programlisting>
+
+      <para>Certaines polices de caractères, comme Helvetica,
+	peuvent présenter des problèmes lors de
+	l'anticrénelage.  Généralement cela se
+	manifeste par l'impression que la fonte semble coupée
+	en deux verticalement.  Au pire cela peut provoquer des crashs
+	avec certaines application comme
+	<application>Mozilla</application>.  Pour éviter cela,
+	pensez &agrave; ajouter ce qui suit au fichier
+	<filename>local.conf</filename>:</para>
+
+      <programlisting>	 &lt;match target="pattern" name="family"&gt;
+	  &lt;test qual="any" name="family"&gt;
+	    &lt;string&gt;Helvetica&lt;/string&gt;
+	  &lt;/test&gt;
+	  &lt;edit name="family" mode="assign"&gt;
+	    &lt;string&gt;sans-serif&lt;/string&gt;
+	  &lt;/edit&gt;
+	&lt;/match&gt;</programlisting>
+
+      <para>Une fois l'édition de
+	<filename>local.conf</filename> achevée, assurez-vous
+	que le fichier se termine par la balise
+	<literal>&lt;/fontconfig&gt;</literal>.  Si ce n'est pas le
+	cas, tous vos changements seront ignorés.</para>
+
+      <para>L'ensemble de polices de caractères fourni par
+	défaut avec X11 n'est
+	pas très adapté pour l'anticrénelage.  Un
+	bien meilleur ensemble de fontes peut être trouvé
+	dans le catalogue des logiciels portés: <package>x11-fonts/bitstream-vera</package>.  Ce
+	logiciel installera un fichier
+	<filename>/usr/local/etc/fonts/local.conf</filename> si ce
+	dernier n'existe pas déj&agrave;.  Si le fichier
+	existe, le logiciel porté créera un fichier
+	nommé
+	<filename>/usr/local/etc/fonts/local.conf-vera</filename>.  Il
+	fusionnera le contenu de ce fichier dans
+	<filename>/usr/local/etc/fonts/local.conf</filename>, et les
+	polices de caractères Bitstream remplaceront
+	automatiquement les polices avec empattement (serif), sans
+	empattement (sans-serif) et &agrave; chasse fixe
+	d'X11.</para>
+
+      <para>Et enfin, les utilisateurs peuvent ajouter leurs propres
+	paramètres par l'intermédiaire de leur fichier
+	<filename>.fonts.conf</filename>.  Pour cela, chaque
+	utilisateur devrait créer un fichier
+	<filename>~/.fonts.conf</filename>.  Ce fichier doit
+	également être écrit en XML.</para>
+
+      <indexterm><primary>LCD screen</primary></indexterm>
+      <indexterm><primary>Fonts</primary>
+	<secondary>LCD screen</secondary></indexterm>
+
+      <para>Un dernier point: avec un écran LCD, un
+	échantillonnage &ldquo;sub-pixel&rdquo; peut être
+	désiré.  Fondamentalement, ceci traite les composantes
+	rouge,
+	verte et bleu séparément (horizontalement
+	séparées) pour améliorer la résolution
+	horizontale; les résultats peuvent être dramatiques.
+	Pour activer cela, ajoutez quelque part dans le fichier
+	<filename>local.conf</filename> les lignes:</para>
+
+      <programlisting>
+	 &lt;match target="font"&gt;
+	  &lt;test qual="all" name="rgba"&gt;
+	    &lt;const&gt;unknown&lt;/const&gt;
+	  &lt;/test&gt;
+	  &lt;edit name="rgba" mode="assign"&gt;
+	    &lt;const&gt;rgb&lt;/const&gt;
+	  &lt;/edit&gt;
+	&lt;/match&gt;
+      </programlisting>
+
+      <note>
+	<para>En fonction de type d'écran, le terme
+	  &ldquo;rgb&rdquo; pourra devoir être changé pour
+	  &ldquo;bgr&rdquo;, &ldquo;vrgb&rdquo; ou
+	  &ldquo;vbgr&rdquo;: expérimentez
+	  pour définir lequel fonctionne le mieux.</para>
+      </note>
+
+      <indexterm>
+	<primary>Mozilla</primary>
+	<secondary>désactiver l'anticrénelage des
+	  polices de caractères</secondary>
+      </indexterm>
+
+      <para>L'anticrénelage devrait être activé au
+	prochain lancement du serveur X.  Cependant, notez que les
+	applications doivent savoir comment l'utiliser.  A l'heure
+	actuelle, le &ldquo;toolkit&rdquo; Qt le supporte, donc
+	l'intégralité de l'environnement
+	<application>KDE</application> peut utiliser des polices
+	anticrénelées.
+	GTK+ et <application>GNOME</application> peuvent également
+	faire usage de l'anticrénelage via le système
+	<quote>Font</quote> (voir la <xref linkend="x11-wm-gnome-antialias"/> pour plus de détails).
+	Par défaut, <application>Mozilla</application> 1.2 et
+	versions suivantes utiliseront automatiquement
+	l'anticrénelage.  Pour désactiver cette
+	caractéristique, recompilez
+	<application>Mozilla</application> avec le paramètre
+	<varname>-DWITHOUT_XFT</varname>.</para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="x-xdm">
+    <info><title>Le gestionnaire de procédures de connexions graphiques
+      - &ldquo;X Display Manager&rdquo;</title>
+      <authorgroup>
+	<author><personname><firstname>Seth</firstname><surname>Kingsley</surname></personname><contrib>Contribution de </contrib></author>
+      </authorgroup>
+    </info>
+    
+    <sect2>
+      <title>Généralités</title>
+
+      <indexterm><primary>X Display Manager</primary></indexterm>
+      <para>Le gestionnaire de procédures de connexions graphiques
+	- &ldquo;X Display Manager&rdquo;
+	(<application>XDM</application>) est une partie optionnelle du
+	système X Window qui est utilisée pour la
+	gestion des procédures de connexion au système.
+	C'est utile dans plusieurs types de situations, dont les
+	&ldquo;Terminaux X&rdquo; minimaux, et les serveurs X
+	d'affichage de grands réseaux.  Comme le système
+	X Window est indépendant du type de réseau et de
+	protocole, il existe une large variété de
+	configurations possibles pour faire fonctionner des
+	clients et des serveurs X sur différentes machines
+	connectées entre elles par un réseau.
+	<application>XDM</application> fournit une interface graphique
+	pour sélectionner &agrave; quel serveur d'affichage se
+	connecter, et entrer des informations d'autorisation comme
+	l'ensemble identifiant et mot de passe.</para>
+
+      <para>Il faut voir <application>XDM</application> comme
+	fournissant les mêmes fonctionnalités &agrave;
+	l'utilisateur que l'utilitaire &man.getty.8; (voir la <xref linkend="term-config"/> pour plus de détails).
+	C'est &agrave; dire, qu'il exécute les ouvertures de session sur
+	le système sur lequel on se connecte et lance alors une session
+	au nom de l'utilisateur (généralement un gestionnaire de
+	fenêtres pour X).  <application>XDM</application> attend alors
+	que le programme se termine, signalant que l'utilisateur en a
+	terminé et devrait être déconnecté
+	du système.  A ce moment, <application>XDM</application> peut
+	afficher les écrans d'invite d'ouverture de session et de
+	sélection de serveur pour le prochain utilisateur.</para>
+    </sect2>
+
+    <sect2>
+      <title>Utiliser XDM</title>
+
+      <para>Le &ldquo;daemon&rdquo; d'<application>XDM</application> est
+	<filename>/usr/local/bin/xdm</filename>.  Ce programme peut être
+	lancé &agrave; n'importe quel moment en tant que
+	<systemitem class="username">root</systemitem> et il s'occupera de la gestion d'X sur
+	la machine locale.  Si <application>XDM</application> doit être
+	exécuté &agrave; chaque démarrage de la machine,
+	une manière pratique
+	de le faire est d'ajouter une entrée dans
+	<filename>/etc/ttys</filename>.  Pour plus d'informations sur le
+	format et l'utilisation de ce fichier, consultez la <xref linkend="term-etcttys"/>.  Il existe une ligne dans le fichier
+	<filename>/etc/ttys</filename> de défaut pour exécuter le
+	&ldquo;daemon&rdquo; <application>XDM</application> sur un
+	terminal virtuel:</para>
+
+<screen>ttyv8	"/usr/local/bin/xdm -nodaemon"	xterm	off secure</screen>
+
+	<para>Par défaut cette entrée est désactivée;
+	afin de la réactiver modifiez le cinquième champ de
+	<literal>off</literal> &agrave; <literal>on</literal> et relancez
+	&man.init.8; en utilisant les indications de la <xref linkend="term-hup"/>.  Le premier champ, le nom du terminal que
+	ce programme gérera, est <literal>ttyv8</literal>.  Cela
+	signifie que <application>XDM</application> démarrera sur le
+	neuvième terminal virtuel.</para>
+    </sect2>
+
+    <sect2>
+      <title>Configurer XDM</title>
+
+      <para>Le répertoire de configuration
+	d'<application>XDM</application> est situé dans
+	<filename>/usr/local/lib/X11/xdm</filename>.  Dans ce
+	répertoire il y a de nombreux fichiers utilisés pour
+	modifier le comportement et l'apparence
+	d'<application>XDM</application>.  Généralement les
+	fichiers suivants seront présents:</para>
+
+	<informaltable frame="none" pgwide="1">
+	  <tgroup cols="2">
+	    <thead>
+	      <row>
+		<entry>Fichier</entry>
+		<entry>Description</entry>
+	      </row>
+	    </thead>
+
+	    <tbody>
+	      <row>
+		<entry><filename>Xaccess</filename></entry>
+		<entry>Ensemble de règles d'autorisation du
+		  client.</entry>
+	      </row>
+
+	      <row>
+		<entry><filename>Xresources</filename></entry>
+		<entry>Fichier des ressources X par défaut.</entry>
+	      </row>
+
+	      <row>
+		<entry><filename>Xservers</filename></entry>
+		<entry>Liste des écrans distants et locaux &agrave;
+		  gérer.</entry>
+	      </row>
+
+	      <row>
+		<entry><filename>Xsession</filename></entry>
+		<entry>Procédure d'ouverture de session par
+		  défaut.</entry>
+	      </row>
+
+	      <row>
+		<entry><filename>Xsetup_</filename>*</entry>
+		<entry>Procédures utilisées pour exécuter
+		  des applications avant l'interface d'ouverture de
+		  session.</entry>
+	      </row>
+
+	      <row>
+		<entry><filename>xdm-config</filename></entry>
+		<entry>Configuration globale pour tous les affichages
+		  utilisants cette machine.</entry>
+	      </row>
+
+	      <row>
+		<entry><filename>xdm-errors</filename></entry>
+		<entry>Erreurs générées par le programme
+		  serveur.</entry>
+	      </row>
+
+	      <row>
+		<entry><filename>xdm-pid</filename></entry>
+		<entry>L'identifiant du processus exécutant actuellement
+		  XDM.</entry>
+	      </row>
+	    </tbody>
+	  </tgroup>
+	</informaltable>
+
+      <para>Dans ce répertoire se trouvent également quelques
+	procédures et programmes utilisés pour configurer
+	l'environnement quand <application>XDM</application> fonctionne.
+	L'objet de chacun de ces fichiers sera brièvement décrit.
+	La syntaxe exacte et l'utilisation de tous ces fichiers sont
+	décrites dans la page de manuel &man.xdm.1;.</para>
+
+      <para>La configuration par défaut est une simple
+	fenêtre rectangulaire d'ouverture de session avec le nom de
+	la machine hôte affiché en haut dans une grande police de
+	caractères et avec des invites &ldquo;Login:&rdquo; et
+	&ldquo;Password:&rdquo; en-dessous.  C'est un bon point de
+	départ pour modifier l'apparence et la prise en main des
+	écrans <application>XDM</application>.</para>
+
+      <sect3>
+	<title>Xaccess</title>
+
+	<para>Le protocole utilisé pour se connecter &agrave;
+	  des écrans contrôlés par
+	  <application>XDM</application> est
+	  appelé le &ldquo;X Display Manager Connection Protocol&rdquo;
+	  (XDMCP).  Ce fichier est un ensemble de règles pour
+	  contrôler les connexions XDMCP &agrave; partir de machines
+	  distantes.  Il est ignoré &agrave; moins que le fichier
+	  <filename>xdm-config</filename> ne soit modifié pour
+	  accepter les connexions distantes.  Par défaut, il
+	  n'autorise pas ces connexions.</para>
+      </sect3>
+
+      <sect3>
+	<title>Xresources</title>
+	<para>C'est un fichier de paramètres par défaut
+	  pour la sélection du serveur et des écrans d'ouverture
+	  de sessions.  C'est l'endroit où l'apparence du programme
+	  d'ouverture de session peut être modifié.  Le format est
+	  identique au fichier de paramètres par défaut des
+	  applications décrit dans la documentation
+	  d'<application>&xfree86;</application>.</para>
+      </sect3>
+
+      <sect3>
+	<title>Xservers</title>
+	<para>C'est une liste de choix des serveurs distants que
+	  l'écran de sélection devrait fournir.</para>
+      </sect3>
+
+      <sect3>
+	<title>Xsession</title>
+	<para>C'est la procédure par défaut &agrave;
+	  exécuter par <application>XDM</application>
+	  après qu'un utilisateur ait ouvert une session.  Normalement
+	  chaque utilisateur disposera d'une procédure de session dans
+	  <filename>~/.xsession</filename> qui sera utilisée en lieu
+	  et place du fichier par défaut.</para>
+      </sect3>
+
+      <sect3>
+	<title>Xsetup_*</title>
+	<para>Cela sera exécuté automatiquement
+	  avant d'afficher les interfaces de sélection et d'ouverture de
+	  session.  Il existe une procédure pour chaque écran
+	  utilisé,
+	  nommée <filename>Xsetup_</filename> suivie par le
+	  numéro de l'écran local (par exemple
+	  <filename>Xsetup_0</filename>).  Généralement
+	  ces procédures exécutent un ou deux programmes
+	  en tâche de fond comme <command>xconsole</command>.</para>
+      </sect3>
+
+      <sect3>
+	<title>xdm-config</title>
+	<para>Ce dernier contient les paramètres sous la forme de
+	  paramètres par défaut qui sont applicables &agrave;
+	  chaque écran que l'installation gère.</para>
+      </sect3>
+
+      <sect3>
+	<title>xdm-errors</title>
+	<para>Ce dernier contient les messages de sortie du serveur X
+	  qu'<application>XDM</application> essaye d'exécuter.
+	  Si un terminal qu'<application>XDM</application> essaye de
+	  démarrer se bloque pour quelque raison, c'est le bon endroit
+	  pour chercher les messages d'erreur.  Ces messages sont
+	  également écrits dans le fichier
+	  <filename>~/.xsession-errors</filename> de l'utilisateur &agrave;
+	  chaque session.</para>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>Exécuter un serveur d'affichage en réseau</title>
+      <para>Afin de permettre aux autres clients de se connecter au
+	serveur gérant l'affichage, vous devez éditer les
+	règles de contrôle d'accès, et activez l'auditeur
+	de demandes
+	de connexion.  Par défaut ces règles sont sur des valeurs
+	conservatrices.  Pour faire écouter &agrave;
+	<application>XDM</application> les demandes de connexion, tout
+	d'abord commentez une ligne du fichier
+	<filename>xdm-config</filename>:</para>
+
+<screen>! SECURITY: do not listen for XDMCP or Chooser requests
+! Comment out this line if you want to manage X terminals with xdm
+DisplayManager.requestPort:     0</screen>
+
+	<para>et ensuite relancez <application>XDM</application>.  Rappelez
+	vous que les commentaires dans des fichiers de paramètres
+	par défaut d'applications débutent avec
+	un caractère &ldquo;!&rdquo;, et non pas par l'habituel
+	&ldquo;#&rdquo;.  Un contrôle d'accès plus
+	strict peut être désiré &mdash;
+	consultez les lignes d'exemple dans <filename>Xaccess</filename>,
+	et référez-vous &agrave; la page de manuel
+	&man.xdm.1; pour plus d'information.</para>
+    </sect2>
+
+     <sect2>
+        <title>Remplacements pour XDM</title>
+
+        <para>Plusieurs remplacements pour le programme
+	  <application>XDM</application> de défaut existent.  L'un
+	  d'eux, <application>KDM</application> (fourni avec
+	  <application>KDE</application>) est décrit plus loin dans son
+	  propre chapitre.  <application>KDM</application> offre de
+	  nombreuses améliorations visuelles, ainsi que la fonction
+	  permettant aux utilisateurs de sélectionner leur gestionnaire
+	  de fenêtres au moment d'ouvrir la session.</para>
+     </sect2>
+  </sect1>
+
+  <sect1 xml:id="x11-wm">
+    <info><title>Environnements de travail</title>
+      <authorgroup>
+	<author><personname><firstname>Valentino</firstname><surname>Vaschetto</surname></personname><contrib>Contribution de </contrib></author>
+	<!-- June 2001 -->
+      </authorgroup>
+    </info>
+
+    
+
+    <para>Cette section décrit les différents
+      environnements de travail disponibles pour X sous FreeBSD.  Le
+      terme d'&ldquo;environnement de travail&rdquo; regroupe tout
+      depuis le simple gestionnaire de fenêtres &agrave; la suite
+      complète d'applications de bureau, comme
+      <application>KDE</application> ou
+      <application>GNOME</application>.</para>
+
+    <sect2 xml:id="x11-wm-gnome">
+      <title>GNOME</title>
+
+      <sect3 xml:id="x11-wm-gnome-about">
+        <title>A propos de GNOME</title>
+
+	<indexterm><primary>GNOME</primary></indexterm>
+        <para><application>GNOME</application> est un environnement de
+	  travail convivial qui permet aux utilisateurs d'utiliser et de
+	  configurer facilement leur ordinateur.
+	  <application>GNOME</application> comprend un panneau -
+	  &ldquo;panel&rdquo; (pour lancer des applications et afficher
+	  des états), un bureau (où les données et les
+	  applications
+	  peuvent prendre place), un ensemble d'outils standards de
+	  bureau et d'applications, et un ensemble de conventions qui
+	  rendent aisée la coopération entre application et
+	  leur cohérence.  Les utilisateurs d'autres systèmes
+	  d'exploitation ou environnement devraient se sentir en terrain
+	  de connaissance en utilisant le puissant environnement
+	  graphique que fournit <application>GNOME</application>.
+	  Plus d'information concernant
+	  <application>GNOME</application> sous FreeBSD peut être
+	  trouvé sur le site du <link xlink:href="http://www.FreeBSD.org/gnome">Projet FreeBSD
+	  GNOME</link>.  Le site contient également des FAQs
+	  très complètes sur l'installation, la
+	  configuration, et l'administration de
+	  <application>GNOME</application>.</para>
+      </sect3>
+
+      <sect3 xml:id="x11-wm-gnome-install">
+        <title>Installer GNOME</title>
+
+	<para>Ce logiciel peut  être facilement installé
+	  &agrave; partir d'une
+	  version pré-compilée ou du catalogue des logiciels
+	  portés:</para>
+
+        <para>Pour installer l'ensemble de logiciels
+	  pré-compilés <application>GNOME</application>
+	  &agrave; partir du réseau, tapez simplement:</para>
+
+        <screen>&prompt.root; <userinput>pkg_add -r gnome2</userinput></screen>
+
+        <para>Pour compiler <application>GNOME</application> &agrave; partir
+	  des sources, utilisez le logiciel porté:</para>
+
+        <screen>&prompt.root; <userinput>cd /usr/ports/x11/gnome2</userinput>
+&prompt.root; <userinput>make install clean</userinput></screen>
+
+        <para>Une fois que <application>GNOME</application> est
+	  installé, on doit signaler au serveur X d'exécuter
+	  <application>GNOME</application> &agrave; la place du gestionnaire
+	  de fenêtre par défaut.</para>
+
+        <para>La manière la plus simple de lancer
+	  <application>GNOME</application> est d'utiliser
+	  <application>GDM</application>, le gestionnaire d'affichage
+	  de <application>GNOME</application>.
+	  <application>GDM</application>, qui est installé par
+	  défaut comme élément de l'environnement
+	  de travail <application>GNOME</application> (mais qui est
+	  désactivé par défaut), peut être
+	  activé en ajoutant la ligne
+	  <literal>gdm_enable="YES"</literal> au fichier
+	  <filename>/etc/rc.conf</filename>.  Une fois que vous avez
+	  redémarré le système,
+	  <application>GNOME</application> sera lancé
+	  automatiquement dès que vous ouvrirez une session
+	  &mdash; aucune autre configuration n'est
+	  nécessaire.</para>
+
+	<para><application>GNOME</application> peut être
+	  également lancé &agrave; partir de la ligne de
+	  commande en configurant correctement un fichier
+	  appelé <filename>.xinitrc</filename>.  Si un fichier
+	  <filename>.xinitrc</filename> personnalisé est
+	  déj&agrave; en place, remplacez simplement la ligne qui lance
+	  le gestionnaire de fenêtres avec une qui exécute
+	  <application>/usr/local/bin/gnome-session</application> &agrave; la
+	  place.  S'il n'y a rien de spécial &agrave; faire dans ce
+	  fichier de configuration, alors il est suffisant de
+	  taper:</para>
+
+        <screen>&prompt.user; <userinput>echo "/usr/local/bin/gnome-session" &gt; ~/.xinitrc</userinput></screen>
+
+        <para>Ensuite, tapez <command>startx</command>, et
+	  l'environnement de travail <application>GNOME</application>
+	  sera lancé.</para>
+
+        <note><para>Si un gestionnaire d'affichage plus ancien, comme
+	  <application>XDM</application>, est utilisé, cela ne
+	  fonctionnera pas.  A la place, créez un fichier
+	  exécutable <filename>.xsession</filename> contenant la
+	  même commande.  Pour cela, éditez le fichier
+	  et remplacez la commande correspondant au gestionnaire de
+	  fenêtres actuel avec
+	  <application>/usr/local/bin/gnome-session</application>:
+	  </para></note>
+
+        <screen>&prompt.user; <userinput>echo "#!/bin/sh" &gt; ~/.xsession</userinput>
+&prompt.user; <userinput>echo "/usr/local/bin/gnome-session" &gt;&gt; ~/.xsession</userinput>
+&prompt.user; <userinput>chmod +x ~/.xsession</userinput></screen>
+
+        <para>Une autre option est de configurer le gestionnaire
+	  d'affichage pour permettre la sélection du gestionnaire de
+	  fenêtres au moment de l'ouverture de session; la section de
+	  <link linkend="x11-wm-kde-details">compléments sur KDE</link>
+	  explique comment le faire pour <application>kdm</application>, le
+	  gestionnaire d'affichage de
+	  <application>KDE</application>.</para>
+      </sect3>
+
+      <sect3 xml:id="x11-wm-gnome-antialias">
+	<title>Polices de caractères anticrénelage avec
+	  GNOME</title>
+
+	<indexterm><primary>GNOME</primary>
+	  <secondary>polices de caractères
+	    anticrénelage</secondary></indexterm>
+	<para>X11 supporte
+	  l'anticrénelage par l'intermédiaire de son extension
+	  &ldquo;RENDER&ldquo;.  GTK+ 2.0 et suivant (la boîte &agrave;
+	  outils utilisé par <application>GNOME</application>) peuvent
+	  utiliser cette fonctionnalité.  La configuration
+	  de l'anticrénelage est décrite dans la <xref linkend="antialias"/>.  Aussi, avec des logiciels &agrave;
+	  jour, l'anticrénelage est possible dans l'environnement
+	  de travail <application>GNOME</application>.  Aller dans le
+	  menu
+	  <menuchoice>
+	    <guimenu>Applications</guimenu>
+	    <guisubmenu>Desktop Preferences</guisubmenu>
+	    <guimenuitem>Font</guimenuitem>
+	  </menuchoice>, et sélectionnez soit
+	  <guibutton>Best shapes</guibutton>, soit
+	  <guibutton>Best contrast</guibutton>, ou
+	  <guibutton>Subpixel smoothing (LCDs)</guibutton>.  Pour une
+	  application GTK+ qui ne fait pas partie de l'environnement
+	  de travail <application>GNOME</application>, fixez la
+	  variable d'environement <varname>GDK_USE_XFT</varname> &agrave;
+	  <literal>1</literal> avant de lancer le programme.</para>
+      </sect3>
+    </sect2>
+
+    <sect2 xml:id="x11-wm-kde">
+      <title>KDE</title>
+
+      <indexterm><primary>KDE</primary></indexterm>
+      <sect3 xml:id="x11-wm-kde-about">
+        <title>A propos de KDE</title>
+
+        <para><application>KDE</application> est un environnement de
+	  travail moderne facile d'emploi.  Quelques unes des choses
+	  qu'apporte <application>KDE</application> aux utilisateurs
+	  sont:</para>
+
+        <itemizedlist>
+          <listitem><para>Un magnifique bureau moderne</para></listitem>
+          <listitem><para>Une utilisation réseau complètement
+	    transparente</para></listitem>
+          <listitem><para>Un système d'aide intégré
+	    utile, pour un accès cohérent &agrave; l'aide sur
+	    l'utilisation de l'environnement
+	    <application>KDE</application> et ses
+	    applications</para></listitem>
+          <listitem><para>Une apparence et une prise en main commune
+	    pour toutes les applications
+	    <application>KDE</application></para></listitem>
+          <listitem><para>Des menus, barres d'outils, combinaisons de
+	    touches, couleurs, etc., standardisées</para></listitem>
+          <listitem><para>Internationalisation: <application>KDE</application>
+	    est disponible dans plus de 40 langues</para></listitem>
+          <listitem><para>Un système centralisé de configuration
+	    de l'environnement</para></listitem>
+          <listitem><para>Un grand nombre d'applications
+	    <application>KDE</application> utiles</para></listitem>
+        </itemizedlist>
+
+	<para><application>KDE</application> est fourni avec un
+	  navigateur web appelé <application>Konqueror</application>,
+	  qui est un solide concurrent aux autres navigateurs web
+	  sous &unix;.  Plus d'information sur
+	  <application>KDE</application> peut être trouvé sur le
+	  <link xlink:href="http://www.kde.org/">site de KDE</link>.  Pour
+	  des informations et des ressources spécifiques &agrave;
+	  l'utilisation de <application>KDE</application> sous
+	  FreeBSD, consultez le site de l'<link xlink:href="http://freebsd.kde.org/">équipe
+	  KDE sur FreeBSD</link>.</para>
+
+	  <para>Il existe deux versions de
+	    <application>KDE</application> sous &os;.  La version 3
+	    est disponible depuis longtemps et présente une
+	    grande maturité.  La version 4, la
+	    génération suivante, est également
+	    disponible dans le catalogue des logiciels portés.
+	    Ces deux versions peuvent être installées de
+	    paire.</para>
+      </sect3>
+
+      <sect3 xml:id="x11-wm-kde-install">
+        <title>Installer KDE</title>
+
+	<para>Juste comme avec <application>GNOME</application> ou tout
+	  autre environnement de travail,
+	  ce logiciel peut être aisément
+	  installé &agrave;
+	  partir des logiciels pré-compilés ou du catalogue des
+	  logiciels portés:</para>
+
+        <para>Pour installer la version pré-compilée de
+	  <application>KDE3</application> &agrave; partir du réseau,
+	  tapez simplement:</para>
+
+        <screen>&prompt.root; <userinput>pkg_add -r kde</userinput></screen>
+
+	<para>Pour installer la version pré-compilée de
+	  <application>KDE4</application> &agrave; partir du réseau,
+	  tapez simplement:</para>
+
+	<screen>&prompt.root; <userinput>pkg_add -r kde4</userinput></screen>
+
+	<para>&man.pkg.add.1; récupérera automatiquement la
+	  dernière version de l'application.</para>
+
+        <para>Pour compiler <application>KDE3</application> &agrave; partir
+	  des sources, utilisez le logiciel porté:</para>
+
+        <screen>&prompt.root; <userinput>cd /usr/ports/x11/kde3</userinput>
+&prompt.root; <userinput>make install clean</userinput></screen>
+
+        <para>Pour compiler <application>KDE4</application> &agrave; partir
+	  des sources, utilisez le logiciel porté:</para>
+
+        <screen>&prompt.root; <userinput>cd /usr/ports/x11/kde4</userinput>
+&prompt.root; <userinput>make install clean</userinput></screen>
+
+        <para>Après que <application>KDE</application> ait
+	  été installé, on doit indiquer au serveur X de
+	  lancer cette application &agrave; la place du gestionnaire de
+	  fenêtres par défaut.
+	  Ceci est effectué en éditant le fichier
+	  <filename>.xinitrc</filename>:</para>
+
+	<para>Pour <application>KDE3</application>:</para>
+
+        <screen>&prompt.user; <userinput>echo "exec startkde" &gt; ~/.xinitrc</userinput></screen>
+
+	<para>Pour <application>KDE4</application>:</para>
+
+	<screen>&prompt.user; <userinput>echo "exec /usr/local/kde4/bin/startkde" &gt; ~/.xinitrc</userinput></screen>
+
+        <para>Maintenant, quand le système X Window est invoqué
+	  avec la commande <command>startx</command>,
+	  <application>KDE</application> sera l'environnement de
+	  travail utilisé.</para>
+
+	<para>Si un gestionnaire d'affichage comme
+	  <application>XDM</application> est utilisé,
+	  la configuration sera légèrement
+	  différente.  Editez le fichier <filename>.xsession</filename>
+	  &agrave; la place.  Les instructions concernant
+	  <application>kdm</application> seront données plus
+	  loin dans ce chapitre.</para>
+      </sect3>
+    </sect2>
+
+    <sect2 xml:id="x11-wm-kde-details">
+        <title>Plus de détails sur KDE</title>
+
+        <para>Maintenant que <application>KDE</application> est
+	  installé sur le système, la plupart des choses peuvent
+	  être découvertes &agrave; travers les pages d'aide, ou
+	  juste en pointant
+	  et cliquant sur les différents menus.  Les utilisateurs de
+	  &windows; ou de &mac; se sentiront presque en terrain de
+	  connaissance.</para>
+
+        <para>La meilleure référence pour
+	  <application>KDE</application> est la documentation en ligne.
+	  <application>KDE</application> est livré avec son propre
+	  navigateur internet <application>Konqueror</application>, et
+	  des douzaines d'applications utiles, et une large
+	  documentation.  Le reste de cette section traite
+	  d'éléments
+	  techniques qui sont difficiles &agrave; apprendre par une exploration
+	  au hasard.</para>
+
+      <sect3 xml:id="x11-wm-kde-kdm">
+        <title>Le gestionnaire d'affichage de KDE</title>
+
+	<indexterm><primary>KDE</primary>
+	  <secondary>gestionnaire d'affichage</secondary></indexterm>
+        <para>L'administrateur d'un système multi-utilisateurs peut
+	  désirer avoir un écran graphique d'ouverture de
+	  session pour accueillir les utilisateurs.
+	  <link linkend="x-xdm">XDM</link> peut
+	  être utilisé comme décrit plus tôt.
+	  Cependant, <application>KDE</application> inclus une alternative,
+	  <application>kdm</application>, qui est conçue pour
+	  paraître
+	  plus attractive et inclure plus d'options d'ouverture de
+	  session.  En particulier, les utilisateurs peuvent facilement
+	  (par l'intermédiaire d'un menu) sélectionner quel
+	  environnement de travail (<application>KDE</application>,
+	  <application>GNOME</application>, ou quelque chose d'autre)
+	  exécuter après l'ouverture de session.</para>
+
+	<para>Pour activer <application>kdm</application>, la ligne
+	  <literal>ttyv8</literal> du fichier
+	  <filename>/etc/ttys</filename> doit être
+	  modifiée.  La ligne doit ressembler &agrave;:</para>
+
+	<para>Pour <application>KDE3</application>:</para>
+
+	<programlisting>ttyv8 "/usr/local/bin/kdm -nodaemon" xterm on secure</programlisting>
+
+	<para>Pour <application>KDE4</application>:</para>
+
+	<programlisting>ttyv8 "/usr/local/kde4/bin/kdm -nodaemon" xterm on secure</programlisting>
+       </sect3>
+     </sect2>
+
+     <sect2 xml:id="x11-wm-xfce">
+         <title>XFce</title>
+       <sect3 xml:id="x11-wm-xfce-about">
+         <title>A propos d'XFce</title>
+
+	<para><application>XFce</application> est un environnement de
+	  travail basé sur le &ldquo;toolkit&rdquo; GTK+
+	  utilisé par <application>GNOME</application>, mais est
+	  plus léger et est destiné &agrave; ceux qui veulent
+	  un bureau simple, et efficace qui est néanmoins facile
+	  d'utilisation et de configuration.  Visuellement, il ressemble
+	  énormément &agrave; <application>CDE</application>,
+	  que l'on trouve sur les systèmes &unix; commerciaux.
+	  Quelques unes des caractéristiques
+	  d'<application>XFce</application> sont:</para>
+
+         <itemizedlist>
+           <listitem><para>Un bureau de prise en main aisée et
+	     simple</para></listitem>
+           <listitem><para>Complètement configurable &agrave; la
+	     souris, avec glisser-déposer, etc.</para></listitem>
+           <listitem><para>Une barre principale similaire &agrave;
+	     <application>CDE</application>, avec des menus, des petites
+	     applications et des lanceurs d'applications</para></listitem>
+           <listitem><para>Un gestionnaire de fenêtre
+	     intégré, un gestionnaire de fichiers, un
+	     gestionnaire du son, un module de compatibilité
+	     <application>GNOME</application>, et bien plus</para>
+	   </listitem>
+           <listitem><para>Personnalisable avec des thèmes (comme il
+	     utilise GTK+)</para></listitem>
+           <listitem><para>Rapide, léger et efficace: idéal
+	     pour les machines vieilles/lentes ou avec des limitations en
+	     mémoire</para></listitem>
+         </itemizedlist>
+
+         <para>Plus d'information sur <application>XFce</application>
+	   peut être trouvé sur le <link xlink:href="http://www.xfce.org/">site d'XFce</link>.</para>
+       </sect3>
+       <sect3 xml:id="x11-wm-xfce-install">
+         <title>Installer XFce</title>
+
+	<para>Une version pré-compilée
+	  d'<application>XFce</application> existe (au moment
+	  où ces lignes sont écrites).  Pour
+	  installer, tapez simplement:</para>
+
+        <screen>&prompt.root; <userinput>pkg_add -r xfce4</userinput></screen>
+
+        <para>Alternativement, pour compiler &agrave; partir des sources,
+	  utilisez le catalogue des logiciels portés:</para>
+
+        <screen>&prompt.root; <userinput>cd /usr/ports/x11-wm/xfce4</userinput>
+&prompt.root; <userinput>make install clean</userinput></screen>
+
+        <para>Maintenant, il faut indiquer au serveur X d'exécuter
+	  <application>XFce</application> au prochain démarrage d'X.
+	  Tapez ceci:</para>
+
+        <screen>&prompt.user; <userinput>echo "/usr/local/bin/startxfce4" &gt; ~/.xinitrc</userinput></screen>
+
+        <para>Au prochain démarrage d'X,
+	  <application>XFce</application> sera l'environnement de
+	  travail.  Comme précédemment, si un gestionnaire
+	  d'affichage comme <application>XDM</application> est utilisé,
+	  créez un fichier <filename>.xsession</filename>, comme
+	  décrit dans la section sur <link linkend="x11-wm-gnome">GNOME</link>, mais avec la commande
+	  <filename>/usr/local/bin/startxfce4</filename>; ou configurez
+	  le gestionnaire d'affichage pour permettre la sélection d'un
+	  environnement de travail au moment de la connexion, comme
+	  expliqué dans la section sur <link linkend="x11-wm-kde-kdm">kdm</link>.</para>
+
+      </sect3>
+    </sect2>
+  </sect1>
+
+</chapter>

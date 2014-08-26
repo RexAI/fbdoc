@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//FreeBSD//DTD XHTML 1.0 Transitional-Based Extension//EN"
+"http://www.FreeBSD.org/XML/share/xml/xhtml10-freebsd.dtd" [
+<!ENTITY reference "basiert auf: 1.14">
+<!ENTITY title "FreeBSD/ARM Project">
+<!ENTITY email 'freebsd-arm'>
+]>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+      <title>&title;</title>
+
+      <cvs:keyword xmlns:cvs="http://www.FreeBSD.org/XML/CVS">$FreeBSD$</cvs:keyword>
+    </head>
+
+    <body class="navinclude.developers">
+
+    <h3>Einführung</h3>
+
+    <p>Bei FreeBSD/ARM handelt es sich um eine Portierung von FreeBSD,
+      deren Ziel es ist, die ARM-Architektur sowie deren Hardware zu
+      unterstützen.  Diskussionen über den ARM-Port werden
+      auf der Mailingliste <a
+      href="http://lists.freebsd.org/mailman/listinfo/freebsd-arm">freebsd-arm</a>
+      geführt.</p>
+
+    <h3>Inhaltsverzeichnis</h3>
+
+    <ul>
+      <li><a href="#status">Status</a></li>
+      <li><a href="#hw">Hardware-Unterstützung</a></li>
+      <li><a href="#todo">Was noch getan werden muss</a></li>
+      <li><a href="#links">FreeBSD/ARM-Links</a></li>
+      <li><a href="#miniinst">Mini-Install Guide</a></li>
+      <li><a href="#list">Mailingliste FreeBSD/ARM</a></li>
+    </ul>
+
+    <h3><a name="status">Status</a></h3>
+
+    <p>FreeBSD/ARM ist offiziell eine
+      <a href="&enbase;/doc/en_US.ISO8859-1/articles/committers-guide/archs.html">
+      Tier 2</a>-Architektur, daher stellt das <a href="&enbase;">
+      FreeBSD Project</a> keine offiziellen Releases und vorkompilierten
+      Pakete bereit, da diese Plattform primär für eingebettete
+      Systeme verwendet wird.  Dennoch wird FreeBSD/ARM aktiv entwickelt
+      und gewartet und wird sehr gut unterstützt.  Dadurch bietet es
+      eine exzellente Grundlage für die Entwicklung von ARM-basierten
+      Systemen.</p>
+
+    <h3><a name="hw">Hardware-Unterstützung</a></h3>
+
+    <p>FreeBSD läuft auf i80321-basierenden Intel
+      XScale&reg;-Boards.  Dazu gehören auch die Boards IQ31244
+      sowie IQ80321.  Die Unterstützung ist allerdings noch
+      minimal,  da sie nur den Prozessor, den PCI-X-Bus,
+      em(4)-Ethernetadapter, die UART-Schnittstelle, sowie
+      Timergeräte umfasst.</p>
+
+    <p>Der i80219-XScale-Prozessor wird unterstützt, ebenso das
+      EP80219-Entwicklerboard.</p>
+
+    <p>Der IXP425-Prozessor wird unterstützt, ebenso das
+      Avila GW2348-4-Entwicklerboard.</p>
+
+    <p>Die Atmel AT91RM9200 CPU/Microcontroller-Familie wird
+       unterstützt.  Unterstützung gibt es auch für
+       die Kwikbyte KB9202-Entwicklerboard-Familie, das BWCT-Board,
+       sowie Hot-e HL200-Thin-Clients.</p>
+
+    <p>Für den Prozessor StrongARM 1100 wird ebenfalls minimale
+      Unterstützung geboten, allerdings nur innerhalb der
+      Möglichkeiten der Simics-Emulation:  Dazu gehören
+      Prozessor, UART sowie die Systemuhr.  Theoretisch ist es
+      möglich, von einem mit Simics emulierten Assabet-Board
+      zu booten.  Allerdings wurden bisher keine derartigen
+      Versuche, egal, ob erfolgreich oder nicht, gemeldet.</p>
+
+    <p>An der Unterstützung des TS-7200-Entwicklerboards von
+      Technologic Systems wird gearbeitet.  Dies gilt auch für
+      den Atmel AT91SAM926x-Prozessor, das Marvell Orion ARM SoC,
+      die Samsung S3C2XX0-Familie sowie die EP93XX-Prozessoren
+      von Cirrus Logic.</p>
+
+    <h3><a name="todo">Was noch getan werden muss</a></h3>
+
+    <ul>
+      <li>SATA-Unterstützung muss noch implementiert werden.</li>
+
+      <li>Andere Geräte, wie watchdog, i2c und bus sollen von
+        NetBSD übernommen werden.</li>
+    </ul>
+
+    <h3><a name="links">FreeBSD/ARM-Links</a></h3>
+
+    <ul>
+      <li><a href="http://tisu.mit.jyu.fi/embedded/TIE345/luentokalvot/Embedded_3_ARM.pdf">
+        Brief history of ARM</a></li>
+
+      <li><a href="http://www.netbsd.org/Ports/arm32/">NetBSD Arm/32 project</a></li>
+    </ul>
+
+    <h3><a name="miniinst">Mini-Install guide</a></h3>
+
+      <p>Olivier Houchard (cognet@FreeBSD.org) hat eine Installationsanleitung
+        für die aktuellen FreeBSD-Quellen geschrieben.  Diese ist
+        <a href="http://people.freebsd.org/~cognet/arm.html">
+        hier</a> zu finden.</p>
+
+    <h3><a name="list">Mailingliste FreeBSD/ARM</a></h3>
+
+    <p>Um diese Liste zu abonnieren, senden Sie eine E-Mail an <tt class="
+      EMAIL">&lt;<a href="mailto:freebsd-arm-subscribe@FreeBSD.org">freebsd-arm-subscribe@FreeBSD.org</a>&gt;</tt>
+      oder melden Sie sich ü die
+      <a href="http://lists.FreeBSD.org/mailman/listinfo/freebsd-arm">
+      Mailman-Webschnittstelle</a> an.</p>
+
+    <h3>Was Musiker über FreeBSD/ARM sagen</h3>
+
+    <p>Mit FreeBSD/ARM können Sie die nahezu lautlose Arbeit
+      Ihres (eingebetteten) Computers genießen.  Es gibt sogar ein
+      Musikstück, das dieses Vergnügen beschreibt &ndash;
+      "Enjoy The Silence" von Depeche Mode:</p>
+
+    <pre>All I ever wanted
+All I ever needed
+Is here in my ARMs
+Words are very unnecessary
+They can only do harm</pre>
+
+  </body>
+</html>

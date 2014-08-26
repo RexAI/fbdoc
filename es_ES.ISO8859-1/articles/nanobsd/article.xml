@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE article PUBLIC "-//FreeBSD//DTD DocBook XML V5.0-Based Extension//EN"
+	"http://www.FreeBSD.org/XML/share/xml/freebsd50.dtd">
+<!-- The FreeBSD Spanish Documentation Project
+     Original Revision: r1.3                   -->
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:lang="es">
+
+  <info><title>Introducción a NanoBSD</title>
+    
+
+    <authorgroup>
+      <author><personname><firstname>Daniel</firstname><surname>Gerzo</surname></personname></author>
+    </authorgroup>
+
+    <copyright>
+      <year>2006</year>
+      <holder>The FreeBSD Documentation Project</holder>
+    </copyright>
+
+    <legalnotice xml:id="trademarks" role="trademarks">
+      &tm-attrib.freebsd; &tm-attrib.general;
+    </legalnotice>
+
+    <pubdate>$FreeBSD$</pubdate>
+
+    <releaseinfo>$FreeBSD$</releaseinfo>
+
+    <abstract>
+      <para>Este documento trata sobre <application>NanoBSD</application>.
+	<application>NanoBSD</application> es una herramienta que permite
+        crear imágenes del sistema &os; para su uso en
+        aplicaciones empotradas y listas para cargarse en una
+        tarjeta Compact Flash (u otro medio de almacenamiento
+        masivo).</para>
+	&trans.es.german;
+    </abstract>
+  </info>
+
+  <sect1 xml:id="intro">
+    <title>Introducción a NanoBSD</title>
+
+    <indexterm><primary>NanoBSD</primary></indexterm>
+
+    <para><application>NanoBSD</application> es una herramienta
+      actualmente desarrollada por &a.phk;.  Crea una imagen del
+      sistema &os; para aplicaciones empotradas lista para su uso en
+      una tarjeta Compact Flash (u otro medio de almacenamiento
+      masivo).</para>
+
+    <para>Puede utilizarse para generar imágenes
+      instalables especiales; está diseñado pensando en una
+      instalación y mantenimiento fáciles en sistemas
+      conocidos como <quote>sistemas empotrados</quote>.  Los
+      sistemas empotrados tienen hardware y software
+      integrado en el producto, lo que significa que todas las
+      aplicaciones están preinstaladas.  Estos dispositivos
+      pueden conectarse a una red dada y comenzar a trabajar
+      (casi) inmediatamente.</para>
+
+    <para>Las características
+      de <application>NanoBSD</application> incluyen:</para>
+
+    <itemizedlist>
+      <listitem>
+	    <para>Los ports y paquetes funcionan como en &os;:
+	      Cualquier aplicación puede instalarse y usarse en
+	      una imagen de <application>NanoBSD</application> de la
+	      misma forma que en &os;.</para>
+      </listitem>
+
+      <listitem>
+	    <para>No se pierde funcionalidad: Si es posible hacer
+          algo en &os; es posible hacer lo mismo
+          en <application>NanoBSD</application>, a menos que se haya
+          eliminado explícitamente esa característica o
+          características especiales al crear la imagen
+          de <application>NanoBSD</application>.</para>
+      </listitem>
+
+      <listitem>
+	    <para>Todo está en modo de sólo lectura
+	      durante el funcionamiento del sistema: Un apagado
+	      brusco es totalmente seguro.  No es necesario ejecutar
+	      &man.fsck.8; después de que el sistema sufra
+	      un apagón.</para>
+      </listitem>
+
+      <listitem>
+	    <para>Fácil de generar y personalizar: Usando
+	      un solo script de shell y un fichero de configuración
+	      pueden generarse imágenes reducidas y personalizadas
+	      que satisfagan cualquier necesidad.</para>
+      </listitem>
+    </itemizedlist>
+  </sect1>
+
+  <sect1 xml:id="howto">
+    <title>NanoBSD <quote>Howto</quote></title>
+
+    <sect2 xml:id="design">
+      <title>El diseño de NanoBSD</title>
+
+      <para>Una vez que la imagen está en el medio puede
+	    arrancar <application>NanoBSD</application>.  El medio
+	    de almacenamiento se divide por omisión en tres
+	    partes:</para>
+
+      <itemizedlist>
+	    <listitem>
+	      <para>Dos particiones de la imagen: <literal>code#1</literal>
+	        y <literal>code#2</literal>.</para>
+	    </listitem>
+
+	    <listitem>
+	      <para>La partición que contiene los ficheros de
+	        configuración, que puede montarse bajo
+	        <filename>/cfg</filename> durante el
+	        funcionamiento del sistema.</para>
+	    </listitem>
+      </itemizedlist>
+
+      <para>Estas particiones se montan normalmente en modo de
+        sólo lectura.</para>
+
+      <para>Los directorios <filename>/etc</filename>
+        y <filename>/var</filename> son discos
+        &man.md.4; (malloc).</para>
+
+      <para>La partición de los ficheros de configuración
+        permanece bajo el
+        directorio <filename>/cfg</filename>.  Este
+        directorio contiene ficheros que usa el
+        directorio <filename>/etc</filename> y se
+        monta en modo de sólo lectura inmediatamente
+        después del arranque; por lo tanto, es necesario que
+        los ficheros que se modifiquen
+        en <filename>/etc</filename> se copien
+        en <filename>/cfg</filename> si se desea que
+        los cambios perduren después del reinicio del
+        sistema.</para>
+
+      <example>
+	    <title>Cómo hacer cambios persistentes
+	      en <filename>/etc/resolv.conf</filename></title>
+
+	    <screen>&prompt.root; <userinput>vi /etc/resolv.conf</userinput>
+[...]
+&prompt.root; <userinput>mount /cfg</userinput>
+&prompt.root; <userinput>cp /etc/resolv.conf /cfg</userinput>
+&prompt.root; <userinput>umount /cfg</userinput></screen>
+      </example>
+
+      <note>
+	    <para>La partición que contiene el
+	      directorio <filename>/cfg</filename>
+	      debería montarse únicamente en el arranque y
+	      mientras se sobreescriben los ficheros de
+	      configuración.</para>
+
+	    <para>No es buena idea montar siempre el
+          directorio <filename>/cfg</filename>,
+          especialmente si el
+          sistema <application>NanoBSD</application> se ejecuta en un
+          dispositivo de almacenamiento masivo que pueda verse
+          afectado negativamente por un número elevado de
+          escrituras en la partición (i.e. cuando el sistema de
+          ficheros sincroniza los datos con el sistema de
+          discos).</para>
+      </note>
+    </sect2>
+
+    <sect2>
+      <title>Cómo generar una imagen de NanoBSD</title>
+
+      <para>Una imagen de <application>NanoBSD</application> se genera
+	    usando el sencillo script de
+	    shell <filename>nanobsd.sh</filename>, ubicado en el
+	    directorio <filename>/usr/src/tools/tools/nanobsd</filename>.
+	    El script crea una imagen que se deberá copiar al medio
+	    de almacenamiento mediante la utilidad &man.dd.1;.</para>
+
+      <para>Los comandos necesarios para generar una imagen
+      de <application>NanoBSD</application> son:</para>
+
+      <screen>&prompt.root; <userinput>cd /usr/src/tools/tools/nanobsd</userinput> <co xml:id="nbsd-cd"/>
+&prompt.root; <userinput>sh nanobsd.sh</userinput> <co xml:id="nbsd-sh"/>
+&prompt.root; <userinput>cd /usr/obj/nanobsd.full</userinput> <co xml:id="nbsd-cd2"/>
+&prompt.root; <userinput>dd if=_.disk.full of=/dev/da0 bs=64k</userinput> <co xml:id="nbsd-dd"/></screen>
+
+      <calloutlist>
+	<callout arearefs="nbsd-cd">
+	  <para>Cambia el directorio actual por el directorio base del
+	  script de generación
+	  de <application>NanoBSD</application>.</para>
+	</callout>
+
+	<callout arearefs="nbsd-sh">
+	  <para>Comienza el proceso de generación.</para>
+	</callout>
+
+	<callout arearefs="nbsd-cd2">
+	  <para>Cambia el directorio actual por el directorio donde se
+        encuentra la imagen generada.</para>
+	</callout>
+
+	<callout arearefs="nbsd-dd">
+	  <para>Instala <application>NanoBSD</application> dentro del
+	    medio de almacenamiento.</para>
+	</callout>
+      </calloutlist>
+    </sect2>
+
+    <sect2>
+      <title>Personalización de una imagen de NanoBSD</title>
+
+      <para>Esta es probablemente la característica más
+        importante y más interesante
+        de <application>NanoBSD</application>. Tambié es donde
+        usted pasará la mayor parte del tiempo cuando esté
+        desarrollando con <application>NanoBSD</application>.</para>
+
+      <para>La invocación del siguiente comando forzará
+        al script <filename>nanobsd.sh</filename> a leer su
+        configuración desde el
+        fichero <filename>mi-configuracion.nano</filename> ubicado en el
+        directorio actual:</para>
+
+      <screen>&prompt.root; <userinput>sh nanobsd.sh -c mi-configuracion.nano</userinput></screen>
+
+      <para>La personalización se hace de dos maneras:</para>
+
+      <itemizedlist>
+	<listitem>
+	  <para>Opciones de configuración</para>
+	</listitem>
+
+	<listitem>
+	  <para>Funciones personalizadas</para>
+	</listitem>
+      </itemizedlist>
+
+      <sect3>
+	<title>Opciones de configuración</title>
+
+    <para>Por medio de ajustes de configuración es posible
+      configurar las opciones que se pasan a las
+      fases <literal>buildworld</literal>
+      e <literal>installworld</literal> del proceso de
+      generación de <application>NanoBSD</application>.
+      Mediante estas opciones puede reducirse el tamaño del
+      sistema de manera que pueda incluso encajar en algo tan
+      pequeño como un dispositivo de 64MB.  Es posible recortar &os;
+      incluso más, hasta que consista únicamente
+      en el kernel y dos o tres ficheros de
+      <quote>userland</quote>.</para>
+
+	<para>El fichero de configuración está compuesto por
+	  opciones de configuración que sobreescriben los valores
+	  por omisión.  Las directivas más importantes
+	  son:</para>
+
+	<itemizedlist>
+	  <listitem>
+	    <para><literal>NANO_NAME</literal> : Nombre de la
+          generación que estamos ejecutando (se usa
+	      para dar nombres a los directorios donde encontraremos el
+          resultado del proceso).</para>
+	  </listitem>
+
+	  <listitem>
+	    <para><literal>NANO_SRC</literal> : Ruta al código
+	      fuente que se usará para generar la imagen.</para>
+	  </listitem>
+
+	  <listitem>
+	    <para><literal>NANO_KERNEL</literal> : Nombre del fichero de
+	      configuración del kernel que se usará para
+	      generar el kernel.</para>
+	  </listitem>
+
+	  <listitem>
+	    <para><literal>CONF_BUILD</literal> : Opciones que se pasan a
+	      la fase <literal>buildworld</literal>.</para>
+	  </listitem>
+
+	  <listitem>
+	    <para><literal>CONF_INSTALL</literal> : Opciones que se pasan a
+	      la fase <literal>installworld</literal>.</para>
+	  </listitem>
+
+	  <listitem>
+	    <para><literal>CONF_WORLD</literal> : Opciones que se pasan
+	      tanto a <literal>buildworld</literal> como a
+	      <literal>installworld</literal>.</para>
+	  </listitem>
+
+	  <listitem>
+	    <para><literal>FlashDevice</literal> : Define el tipo de medio
+	      de almacenamiento que se usará.  Para más
+	      información consulte el
+	      fichero <filename>FlashDevice.sub</filename>.</para>
+	  </listitem>
+	</itemizedlist>
+      </sect3>
+
+      <sect3>
+	<title>Funciones personalizadas</title>
+
+	<para>Puede ajustar <application>NanoBSD</application>
+	  de forma muy precisa mediante el uso de funciones de
+	  shell en el fichero de configuración.  En el siguiente
+	  ejemplo vemos un modelo básico de función
+	  personalizada.</para>
+
+	<programlisting>cust_foo () (
+	echo "bar=topless" &gt; \
+	  &dollar;{NANO_WORLDDIR}/etc/foo
+)
+customize_cmd cust_foo</programlisting>
+
+    <para>A continuación vemos un ejemplo más útil
+      de función personalizada, que cambia el tamaño por
+      omisión del directorio
+      <filename>/etc</filename> de 5MB a 30MB:</para>
+
+	<programlisting>cust_etc_size () (
+	cd &dollar;{NANO_WORLDDIR}/conf
+	echo 30000 &gt; default/etc/md_size
+)
+customize_cmd cust_etc_size</programlisting>
+
+	<para>Hay unas pocas funciones de personalización
+      predefinidas listas para su uso:</para>
+
+	<itemizedlist>
+	  <listitem>
+	    <para><literal>cust_comconsole</literal> : Deshabilita
+	      &man.getty.8; en los dispositivos VGA (los nodos de
+	      dispositivo <filename>/dev/tty*</filename>) y habilita el
+	      uso del puerto serie COM1 para que sea la consola del
+	      sistema.</para>
+	  </listitem>
+
+	  <listitem>
+	    <para><literal>cust_allow_ssh_root</literal> : Permite a
+	      <systemitem class="username">root</systemitem> acceder a través de
+	      &man.sshd.8;.</para>
+
+	  </listitem>
+
+	  <listitem>
+	    <para><literal>cust_install_files</literal> : Instala ficheros
+	      de configuración desde el
+	      directorio <filename>nanobsd/files</filename>,
+          que contiene scripts útiles para la
+	      administración del sistema.</para>
+	  </listitem>
+	</itemizedlist>
+      </sect3>
+
+      <sect3>
+	<title>Cómo añadir paquetes</title>
+
+	<para>Se pueden añadir paquetes a la imagen de
+          <application>NanoBSD</application> usando una función
+          personalizada.  La siguiente función instalará
+	  todos los paquetes que se encuentren en
+          <filename>/usr/src/tools/tools/nanobsd/packages</filename>:
+        </para>
+
+	<programlisting>install_packages () (
+    mkdir -p ${NANO_WORLDDIR}/packages
+    cp /usr/src/tools/tools/nanobsd/packages/* ${NANO_WORLDDIR}/packages
+    chroot ${NANO_WORLDDIR} sh -c 'cd packages; pkg_add -v *;cd ..;'
+    rm -rf ${NANO_WORLDDIR}/packages
+)
+customize_cmd install_packages</programlisting>
+      </sect3>
+
+      <sect3>
+	<title>Ejemplo de fichero de configuración</title>
+
+	<para>El siguiente es un ejemplo completo de fichero de
+	  configuración para generar una imagen personalizada
+	  de <application>NanoBSD</application>:</para>
+
+	<programlisting>NANO_NAME=custom
+NANO_SRC=/usr/src
+NANO_KERNEL=MYKERNEL
+NANO_IMAGES=2
+
+CONF_BUILD='
+NO_KLDLOAD=YES
+NO_NETGRAPH=YES
+NO_PAM=YES
+'
+
+CONF_INSTALL='
+NO_ACPI=YES
+NO_BLUETOOTH=YES
+NO_CVS=YES
+NO_FORTRAN=YES
+NO_HTML=YES
+NO_LPR=YES
+NO_MAN=YES
+NO_SENDMAIL=YES
+NO_SHAREDOCS=YES
+NO_EXAMPLES=YES
+NO_INSTALLLIB=YES
+NO_CALENDAR=YES
+NO_MISC=YES
+NO_SHARE=YES
+'
+
+CONF_WORLD='
+NO_BIND=YES
+NO_MODULES=YES
+NO_KERBEROS=YES
+NO_GAMES=YES
+NO_RESCUE=YES
+NO_LOCALES=YES
+NO_SYSCONS=YES
+NO_INFO=YES
+'
+
+FlashDevice SanDisk 1G
+
+cust_nobeastie() (
+	touch &dollar;{NANO_WORLDDIR}/boot/loader.conf
+	echo "beastie_disable=\"YES\"" &gt;&gt; &dollar;{NANO_WORLDDIR}/boot/loader.conf
+)
+
+customize_cmd cust_comconsole
+customize_cmd cust_install_files
+customize_cmd cust_allow_ssh_root
+customize_cmd cust_nobeastie</programlisting>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>Cómo actualizar NanoBSD</title>
+
+      <para>El proceso de actualización
+        de <application>NanoBSD</application> es relativamente
+        simple:</para>
+
+      <procedure>
+	    <step>
+	      <para>Generar una nueva imagen
+	        de <application>NanoBSD</application> de la forma
+	        habitual.</para>
+	    </step>
+
+	    <step>
+	      <para>Copiar la nueva imagen sobre la partición no
+            	utilizada del sistema empotrado que está
+            	usando <application>NanoBSD</application>.</para>
+
+	      <para>La diferencia más importante entre este paso y
+                la instalación inicial
+            	de <application>NanoBSD</application> es que ahora en
+            	lugar de usar el fichero <filename>_.disk.full</filename>
+            	(que contiene una imagen de todo el disco) se instala
+            	la imagen <filename>_.disk.image</filename> (que contiene
+            	una imagen de una sola partición).</para>
+	    </step>
+
+	    <step>
+	      <para>Reiniciar y arrancar el sistema desde la
+            	partición que se acaba de instalar.</para>
+	    </step>
+
+	    <step>
+	      <para>Si todo va bien la actualización ha
+	        terminado.</para>
+	    </step>
+
+	    <step>
+	      <para>Si algo va mal reinicie desde la partición
+            	anterior (que contiene la imagen vieja, pero que
+            	funciona) para recuperar el funcionamiento del
+            	sistema lo antes posible.  Arregle los problemas
+            	de la nueva generación y repita el proceso.</para>
+	    </step>
+      </procedure>
+
+      <para>Para facilitar la instalación de una imagen
+	nueva en su sistema <application>NanoBSD</application> en
+	funcionamiento dispone de los scripts <filename>updatep1</filename>
+        y <filename>updatep2</filename>, ubicados en el directorio
+        <filename>/root</filename>.  La
+        elección de uno u otro script depende de qué
+        partición esté ejecutando el sistema,
+        la primera o la segunda.</para>
+
+      <para>Dependiendo de los servicios disponibles en
+        la máquina que va a servir la nueva imagen
+        de <application>NanoBSD</application> y del tipo de
+        transferencia de datos que prefiera uno de estos tres
+        métodos le resultará más o menos
+	    interesante:</para>
+
+      <sect3>
+	    <title>Uso de &man.ftp.1;</title>
+
+	    <para>Si la prioridad es la velocidad de la transferencia
+              use usted este ejemplo:</para>
+
+	    <screen>&prompt.root; <userinput>ftp mi-maquina
+get _.disk.image "| sh updatep1"</userinput></screen>
+      </sect3>
+
+      <sect3>
+	<title>Uso de &man.ssh.1;</title>
+
+	<para>Si la prioridad es la seguridad de la transferencia
+          seguramente ejecutará algo muy parecido a lo
+	  siguiente:</para>
+
+	<screen>&prompt.root; <userinput>ssh mi-maquina cat _.disk.image.gz | zcat | sh updatep1</userinput></screen>
+      </sect3>
+
+      <sect3>
+	<title>Uso de &man.nc.1;</title>
+
+	<para>Si la máquina remota no dispone de servicios de
+	  &man.ftp.1; ni de &man.sshd.8; puede recurrir al siguiente
+	  ejemplo:</para>
+
+	<procedure>
+	  <step>
+	    <para>Primero abra un puerto TCP de escucha en la
+	      máquina que sirve la imagen y envíela
+	      al cliente:</para>
+
+	    <screen>mi-maquina&prompt.root; <userinput>nc -l 2222 &lt; _.disk.image</userinput></screen>
+
+	    <note>
+	      <para>Asegúrese de que el puerto elegido no tenga
+                bloqueadas las conexiones entrantes desde la
+                máquina <application>NanoBSD</application> por
+	        ningún cortafuegos.</para>
+ 	    </note>
+	  </step>
+
+	  <step>
+	    <para>Conéctese a la máquina que va servir la
+	      nueva imagen y ejecute el script
+          <filename>updatep1</filename>:</para>
+
+	    <screen>&prompt.root; <userinput>nc mi-maquina 2222 | sh updatep1</userinput></screen>
+	  </step>
+	</procedure>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <index/>
+</article>

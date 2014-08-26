@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="euc-jp"?>
+<!DOCTYPE html PUBLIC "-//FreeBSD//DTD XHTML 1.0 Transitional-Based Extension//EN"
+"http://www.FreeBSD.org/XML/doc/share/xml/xhtml10-freebsd.dtd" [
+<!ENTITY title "FreeBSD ドキュメンテーションプロジェクト: Documentation Set">
+]>
+<!-- The FreeBSD Japanese Documentation Project -->
+<!-- Original revision: 1.17 -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+      <title>&title;</title>
+
+      <cvs:keyword xmlns:cvs="http://www.FreeBSD.org/XML/CVS">$FreeBSD$</cvs:keyword>
+    </head>
+
+    <body class="navinclude.docs">
+
+    <p>FreeBSD のドキュメンテーションは三つの基本的なカテゴリにわけられます。
+    </p>
+
+    <ol>
+      <li><p><a href="http://www.FreeBSD.org/cgi/man.cgi">
+          <b>マニュアル・ページ</b></a></p>
+
+	<p>これらはベース・システムの一部ですから、
+	プロジェクトは実際には関わっていません。
+	例外として、日本のチームがマニュアルページを翻訳しています。
+	  他の言語においても、
+	  ボランティアが集まってマニュアルページを翻訳するのは十分可能でしょう。
+	</p>
+
+	<p>プロジェクトがマニュアルページに関わっていないのは、
+	  マニュアルページが重要でないからではありません。
+	  その反対です。マニュアルページは FreeBSD
+	  固有のシステムと密接に結び付いています。
+	  そして大部分の場合、
+	  マニュアルページを書くのにもっとも適した人は、
+	  FreeBSD でその部分を記述した人なのです。</p></li>
+
+      <li><p><a href="../docs/books.html"><b>Books</b></a></p>
+
+	<p>プロジェクトは "書籍規模の" もしくはそうなるであろうドキュメントを
+	多く抱えています。これらには FreeBSD FAQ や FreeBSD
+	ハンドブックも含まれます。</p></li>
+
+      <li><p><a href="../docs/books.html#ARTICLES"><b>Articles</b></a></p>
+
+	<p>FreeBSD にはより短い、論文/雑誌記事くらいの情報もたくさんあります。
+	  他のプロジェクトにおけるチュートリアルや HOWTO
+	  ドキュメントと同様のものです。</p></li>
+    </ol>
+
+      <p></p><a href="docproj.html">FreeBSD
+      ドキュメンテーションプロジェクトのページ</a>
+  </body>
+</html>

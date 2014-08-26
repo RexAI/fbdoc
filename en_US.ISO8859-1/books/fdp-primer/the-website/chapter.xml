@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Copyright (c) 1998, 1999 Nik Clayton, All rights reserved.
+
+     Redistribution and use in source (SGML DocBook) and 'compiled' forms
+     (SGML HTML, PDF, PostScript, RTF and so forth) with or without
+     modification, are permitted provided that the following conditions
+     are met:
+
+      1. Redistributions of source code (SGML DocBook) must retain the above
+         copyright notice, this list of conditions and the following
+         disclaimer as the first lines of this file unmodified.
+
+      2. Redistributions in compiled form (transformed to other DTDs,
+         converted to PDF, PostScript, RTF and other formats) must reproduce
+         the above copyright notice, this list of conditions and the
+         following disclaimer in the documentation and/or other materials
+         provided with the distribution.
+
+     THIS DOCUMENTATION IS PROVIDED BY NIK CLAYTON "AS IS" AND ANY EXPRESS OR
+     IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+     OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+     DISCLAIMED. IN NO EVENT SHALL NIK CLAYTON BE LIABLE FOR ANY DIRECT,
+     INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+     (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+     SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+     HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+     STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+     ANY WAY OUT OF THE USE OF THIS DOCUMENTATION, EVEN IF ADVISED OF THE
+     POSSIBILITY OF SUCH DAMAGE.
+
+     $FreeBSD$
+-->
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="the-website">
+  <title>The Website</title>
+
+  <sect1 xml:id="the-website-build">
+    <title>Build the Web Pages</title>
+
+    <para>Having obtained the documentation and web site source files,
+      the web site can be built.  In this example, the build directory
+      is <filename>~/doc</filename>
+      and all the required files are already in place.</para>
+
+    <para>The web site is built from the
+      <filename>en_US.ISO8859-1/htdocs</filename>
+      subdirectory of the document tree directory,
+      <filename>~/doc</filename> in this example.
+      Change to the build directory and start the build by executing
+      <command>make all</command>.</para>
+
+    <screen>&prompt.user; <userinput>cd ~/doc/en_US.ISO8859-1/htdocs</userinput>
+&prompt.user; <userinput>make all</userinput></screen>
+
+    <tip>
+      <para>The web site build uses the <filename>INDEX</filename>
+	from the Ports Collection and may fail if that file or
+	<filename>/usr/ports</filename> is not
+	present.  The simplest approach is to install the <link xlink:href="&url.books.handbook;/ports.html#ports-tree">Ports
+	Collection</link>.</para>
+    </tip>
+  </sect1>
+
+  <sect1 xml:id="the-website-install">
+    <title>Install the Web Pages</title>
+
+    <para>Run <command>make install</command>, setting
+      <varname>DESTDIR</varname> to the target directory for the web
+      site files.  The files will be installed in
+      <filename>$DESTDIR/data</filename>, which is
+      expected to be the web server's document root.</para>
+
+    <para>This installation is run as the <systemitem class="username">root</systemitem>
+      user because the permissions on the web server directory will
+      not allow files to be installed by an unprivileged user.  In
+      this example, the web site files were built by user
+      <systemitem class="username">jru</systemitem> in their home directory, <filename>/usr/home/jru/doc</filename>.</para>
+
+    <screen>&prompt.root; <userinput>cd /home/jru/doc/en_US.ISO8859-1/htdocs</userinput>
+&prompt.root; <userinput>env DESTDIR=/usr/local/www make install</userinput></screen>
+
+    <para>The install process will not delete any old or outdated
+      files that existed previously in the same directory.  If a new
+      copy of the site is built and installed every day, this command
+      will find and delete all files that have not been updated in
+      three days.</para>
+
+    <screen>&prompt.root; <userinput>find /usr/local/www -ctime 3 -delete</userinput></screen>
+  </sect1>
+
+  <sect1 xml:id="the-website-env">
+    <title>Environment Variables</title>
+
+    <variablelist>
+      <varlistentry>
+	<term><varname>ENGLISH_ONLY</varname></term>
+
+	<listitem>
+	  <para>If set and not empty, only the English documents will
+	    be built or installed.  All translations will be ignored.
+	    E.g.:</para>
+
+	  <screen>&prompt.root; <userinput>make ENGLISH_ONLY=YES all install</userinput></screen>
+
+	  <para>To unset the variable and build all pages, including
+	    translations, set <varname>ENGLISH_ONLY</varname> to an
+	    empty value:</para>
+
+	  <screen>&prompt.root; <userinput>make ENGLISH_ONLY="" all install clean</userinput></screen>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><varname>WEB_ONLY</varname></term>
+
+	<listitem>
+	  <para>If set and not empty, only the <acronym>HTML</acronym>
+	    pages from the <filename>en_US.ISO8859-1/htdocs</filename>
+	    directory will be built or installed.  All other
+	    directories within
+	    <filename>en_US.ISO8859-1</filename>
+	    (Handbook, FAQ, Tutorials) will be ignored.  E.g.:</para>
+
+	  <screen>&prompt.root; <userinput>make WEB_ONLY=YES all install</userinput></screen>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><varname>WEB_LANG</varname></term>
+
+	<listitem>
+	  <para>If set, build or install only for the languages
+	    specified by this variable inside the <filename>~/doc</filename>
+	    directory.  All other languages except English will be
+	    ignored. E.g.:</para>
+
+	  <screen>&prompt.root; <userinput>make WEB_LANG="el_GR.ISO8859-7 es_ES.ISO8859-1 hu_HU.ISO8859-2 nl_NL.ISO8859-1" all install</userinput></screen>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para><varname>WEB_ONLY</varname>, <varname>WEB_LANG</varname>,
+      and <varname>ENGLISH_ONLY</varname> are &man.make.1; variables
+      and can be set in <filename>/etc/make.conf</filename>,
+      <filename>Makefile.inc</filename>, as environment variables on
+      the command line, or in dot files.</para>
+  </sect1>
+</chapter>
