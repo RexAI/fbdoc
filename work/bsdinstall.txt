@@ -21,7 +21,7 @@ https://www.freebsd.org/doc/zh_CN.UTF-8/books/handbook/bsdinstall.html
 
 2.1 概述
 自9.0-RELEASE起，FreeBSD提供了一个基于文字界面、易于使用的安装程序，名为bsdinstall。本章将介绍如何使用此程序安装FreeBSD。有关FreeBSD 8.x的安装程序sysinstall的使用，参见第3章 安装FreeBSD 8.x。
-一般来说，本章的安装说明仅针对于i386™及AMD64架构，但也会尽可能地对其他平台下的安装予以描述。由于实际的安装操作可能会与所述内容有些许出入，因此建议仅将本章作为常规的安装指导。
+一般来说，本章的安装说明仅针对于i386™及AMD64架构，但也会尽可能地对其他平台下的安装予以描述。由于实际的安装操作可能会与所述内容有些许出入，因此建议您仅将其作为常规的安装参考。
 注意：
 对于想要使用图形界面安装FreeBSD的用户，可关注PC-BSD项目提供的安装程序pc-sysinstall。此程序既可用于安装带图形界面的桌面操作系统PC-BSD，也可用于安装仅包含命令行的FreeBSD。有关pc-sysinstall的更多内容，详见PC-BSD用户手册（http://wiki.pcbsd.org/index.php/PC-BSD%C2%AE_Users_Handbook/10.1）。
 阅读完本章后，您将了解：
@@ -34,9 +34,56 @@ bsdinstall运行时需要回答的问题、问题的具体含义及如何回答�
 阅读本章之前，您应该：
 查看将要安装的FreeBSD版本所附的硬件支持列表，以确定系统硬件能够被支持。
 2.2 最低硬件需求
-----------------
-
-所需的最低配置， 随版本及硬件架构而有所不同。
+安装FreeBSD的硬件需求，随版本及硬件架构而有所不同。FreeBSD发行版所支持的硬件架构及设备会在Hardware Notes（硬件说明）中列出，其对应的文件位于发行版介质的根目录下，通常名为HARDWARE.TXT。此文件的副本也可直接从FreeBSD网站的Release Information（发行版信息）页面（http://www.FreeBSD.org/releases/index.html）获取。
+FreeBSD的安装需要至少64MB的内存及1.5GB的硬盘空间，但应注意这样安装后几乎无剩余空间可用。考虑到实际的使用情况，无图形用户界面的最小安装需要4GB的硬盘空间，带图形用户界面则至少需要8GB；此外，第三方软件还会需要更多的空间。为了满足这些软件的需求，同时能够存储更多的数据，推荐分配更多的内存及硬盘空间。
+以下为各架构的处理器需求：
+-------------------------
+amd64
+    There are two classes of processors capable of running amd64. The first
+are AMD64 processors, including the AMD Athlon™64 and AMD Opteron™ processors.
+    The second class of processors includes those using the Intel® EM64T
+architecture. Examples of these processors include all multi-core Intel® Xeon™
+processors except Sossaman, the single-core Intel® Xeon™ processors Nocona,
+Irwindale, Potomac, and Cranford, the Intel® Core™ 2 (not Core Duo) and later
+processors, all Intel® Pentium® D processors, the Intel® Pentium® 4s and
+Celeron Ds using the Cedar Mill core, and some Intel® Pentium® 4s and Celeron
+Ds using the Prescott core.
+    Both Uniprocessor (UP) and Symmetric Multi-processor (SMP) configurations
+are supported.
+i386
+    Almost all i386-compatible processors with a floating point unit are
+supported. All Intel® processors 486 or higher are supported.
+    FreeBSD will take advantage of Physical Address Extensions (PAE) support
+on CPUs that support this feature. A kernel with the PAE feature enabled will
+detect memory above 4 GB and allow it to be used by the system. This feature
+places constraints on the device drivers and other features of FreeBSD which
+may be used; refer to pae(4) for details.
+ia64
+    Currently supported processors are the Itanium® and the Itanium® 2.
+Supported chipsets include the HP zx1, Intel® 460GX, and Intel® E8870. Both
+Uniprocessor (UP) and Symmetric Multi-processor (SMP) configurations are
+supported.
+pc98
+    NEC PC-9801/9821 series with almost all i386-compatible processors,
+including 80486, Pentium®, Pentium® Pro, and Pentium® II, are all supported.
+All i386-compatible processors by AMD, Cyrix, IBM, and IDT are also supported.
+EPSON PC-386/486/586 series, which are compatible with NEC PC-9801 series, are
+supported. The NEC FC-9801/9821 and NEC SV-98 series should be supported.
+    High-resolution mode is not supported. NEC PC-98XA/XL/RL/XL^2, and NEC
+PC-H98 series are supported in normal (PC-9801 compatible) mode only. The
+SMP-related features of FreeBSD are not supported. The New Extend Standard
+Architecture (NESA) bus used in the PC-H98, SV-H98, and FC-H98 series, is not
+supported.
+powerpc
+    All New World ROM Apple® Mac® systems with built-in USB are supported. SMP
+is supported on machines with multiple CPUs.
+    A 32-bit kernel can only use the first 2 GB of RAM.
+sparc64
+    Systems supported by FreeBSD/sparc64 are listed at the FreeBSD/sparc64
+Project (http://www.freebsd.org/platforms/sparc.html).
+    SMP is supported on all systems with more than 1 processor. A dedicated
+disk is required as it is not possible to share a disk with another operating
+system at this time.
 
 以下几节对这些信息进行了总结。 根据所选的安装方式， 可能需要使用 FreeBSD 支持的 CDROM 或网络适配器， 详见 第 3.3.5 节 “准备安装介质”。
 3.2.1.1. FreeBSD/i386
