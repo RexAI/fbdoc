@@ -33,111 +33,73 @@ bsdinstall运行时需要回答的问题、问题的具体含义及如何回答�
 确认安装前如何使用FreeBSD Live CD。
 阅读本章之前，您应该：
 查看将要安装的FreeBSD版本所附的硬件支持列表，以确定系统硬件能够被支持。
+
 2.2 最低硬件需求
 安装FreeBSD的硬件需求，随版本及硬件架构而有所不同。FreeBSD发行版所支持的硬件架构及设备会在Hardware Notes（硬件说明）中列出，其对应的文件位于发行版介质的根目录下，通常名为HARDWARE.TXT。此文件的副本也可直接从FreeBSD网站的Release Information（发行版信息）页面（http://www.FreeBSD.org/releases/index.html）获取。
 FreeBSD的安装需要至少64MB的内存及1.5GB的硬盘空间，但应注意这样安装后几乎无剩余空间可用。考虑到实际的使用情况，无图形用户界面的最小安装需要4GB的硬盘空间，带图形用户界面则至少需要8GB；此外，第三方软件还会需要更多的空间。为了满足这些软件的需求，同时能够存储更多的数据，推荐分配更多的内存及硬盘空间。
 以下为各架构的处理器需求：
 amd64
-能够运行此架构的处理器有两类。第一类是AMD64处理器，包括AMD Athlon™64与AMD
-Opteron™。
+此架构支持两类处理器。第一类是AMD64处理器，包括AMD Athlon™64与AMD Opteron™。
 第二类处理器是Intel® EM64T处理器，包括除Sossaman外的所有多核Intel® Xeon™，各种单核Intel® Xeon™（包括Nocona、Irwindale、Potomac与Cranford），Intel® Core™ 2（非Core Duo）之后的处理器，所有Intel® Pentium® D，Cedar Mill核心的Intel® Pentium® 4s与Celeron Ds，以及某些Prescott核心的Intel® Pentium® 4s与Celeron Ds。
 此架构同时支持Uniprocessor（UP，单核）与Symmetric Multi-processor（SMP，对称多核）配置。
 i386
 此架构基本支持所有带浮点单元的i386兼容处理器，包括所有Intel® 486及更高级别的处理器。
 若CPU支持Physical Address Extensions（PAE，物理地址扩展），FreeBSD将会利用此特性：开启了PAE支持的内核能够侦测到4GB以上的内存并允许其被系统使用，系统能够自动调整相关设备驱动所需的参数，详见pae(4)。
-----------
 ia64
-    Currently supported processors are the Itanium® and the Itanium® 2.
-Supported chipsets include the HP zx1, Intel® 460GX, and Intel® E8870. Both
-Uniprocessor (UP) and Symmetric Multi-processor (SMP) configurations are
-supported.
+此架构当前支持的处理器包括Itanium®与Itanium® 2，支持的芯片组包括HP zx1、Intel® 460GX与Intel® E8870。此架构同时支持Uniprocessor（UP，单核）与Symmetric Multi-processor（SMP，对称多核）配置。
 pc98
-    NEC PC-9801/9821 series with almost all i386-compatible processors,
-including 80486, Pentium®, Pentium® Pro, and Pentium® II, are all supported.
-All i386-compatible processors by AMD, Cyrix, IBM, and IDT are also supported.
-EPSON PC-386/486/586 series, which are compatible with NEC PC-9801 series, are
-supported. The NEC FC-9801/9821 and NEC SV-98 series should be supported.
-    High-resolution mode is not supported. NEC PC-98XA/XL/RL/XL^2, and NEC
-PC-H98 series are supported in normal (PC-9801 compatible) mode only. The
-SMP-related features of FreeBSD are not supported. The New Extend Standard
-Architecture (NESA) bus used in the PC-H98, SV-H98, and FC-H98 series, is not
-supported.
+此架构基本支持全系列的NEC PC-9801/9821机型，其使用80486、Pentium®、Pentium® Pro、Pentium® II及各种由AMD、Cyrix、IBM、IDT生产的i386兼容处理器。此架构还支持与NEC PC-9801兼容的EPSON PC-386/486/586系列机型，而NEC FC-9801/9821与NEC SV-98系列机型也应该支持。
+此架构不支持高分辨率模式，其中NEC PC-98XA/XL/RL/XL^2与NEC PC-H98系列机型仅支持常规（PC-9801兼容）模式。此架构也不支持FreeBSD的SMP相关特性，以及PC-H98、SV-H98、FC-H98中使用的New Extend Standard Architecture（NESA）总线。
 powerpc
-    All New World ROM Apple® Mac® systems with built-in USB are supported. SMP
-is supported on machines with multiple CPUs.
-    A 32-bit kernel can only use the first 2 GB of RAM.
+此架构支持所有内建USB的New World ROM Apple® Mac®系统，同时也为多CPU机器提供SMP支持。注意，32位内核仅能使用内存空间的前2GB。
 sparc64
-    Systems supported by FreeBSD/sparc64 are listed at the FreeBSD/sparc64
-Project (http://www.freebsd.org/platforms/sparc.html).
-    SMP is supported on all systems with more than 1 processor. A dedicated
-disk is required as it is not possible to share a disk with another operating
-system at this time.
+有关FreeBSD/sparc64的系统支持，详见FreeBSD/sparc64项目（http://www.freebsd.org/platforms/sparc.html）。
+此架构为所有多处理器系统提供SMP支持。注意，此架构需要独占一块磁盘，目前还不支持与其他操作系统共享同一块磁盘。
 
-以下几节对这些信息进行了总结。 根据所选的安装方式， 可能需要使用 FreeBSD 支持的 CDROM 或网络适配器， 详见 第 3.3.5 节 “准备安装介质”。
-3.2.1.1. FreeBSD/i386
+2.3. 安装前的准备工作
+----------
 
-FreeBSD/i386 需要 486 或更快的处理器， 最小 64 MB 的内存， 以及至少 1.1 GB 的硬盘空间。
-注意:
-
-通常情况下对于老旧的计算机而言， 安装更大的内存和腾出更多的硬盘空间， 会比使用更快的处理器对性能的提升更加明显。
-3.2.1.2. FreeBSD/amd64
-
-FreeBSD/amd64 支持两种处理器。 第一种是 AMD64 处理器， 包括 AMD Athlon™64、 AMD Athlon™64-FX、 AMD Opteron™ 以及更高级别的处理器。
-
-能够使用 FreeBSD/amd64 的另一种处理器是采用了 Intel® EM64 架构的处理器。 这类处理器包括 Intel® Core™ 2 Duo、 Quad 和 Extreme 家族， 还包括 Intel® Xeon™ 3000、 5000 和 7000 系列， 以及 Intel® Core™ i3、 i5 和 i7。
-
-对于使用了 nVidia nForce3 Pro-150 的机器， 必须 在 BIOS 设置中禁用 IO APIC， 如果没有这样的选项就只能转而禁用 ACPI。 因为 Pro-150 芯片组存在 bug，而目前还没有能够规避此问题的方法。
-3.2.1.3. FreeBSD/powerpc Apple® Macintosh®
-
-支持所有内建 USB 的 New World Apple® Macintosh® 系统， 同时也为配置多 CPU 的机器提供 SMP 支持。
-
-注意 32 位的内核只能使用内存的前 2 GB，而 PowerMac G3 蓝白机上的 FireWire® 也不被支持。
-3.2.1.4. FreeBSD/sparc64
-
-有关 FreeBSD/sparc64 的系统支持， 详见 FreeBSD/sparc64 项目。
-
-FreeBSD/sparc64 需要独占一块磁盘。 目前还不支持与其他操作系统共享同一块磁盘。
-3.2.2. 支持的硬件
-
-FreeBSD 发行版所支持的硬件架构及设备会列在硬件兼容说明文件中， 此文件通常名为 HARDWARE.TXT， 位于发行版介质的根目录下。 这些内容也可以在 FreeBSD 网站的 发行版信息 页面上找到。
-3.3. 安装前的准备工作
 3.3.1. 备份您的数据
-
 在将 FreeBSD 安装至目标机器前， 应首先备份其上的重要数据并对备份进行测试。 FreeBSD 安装程序对硬盘做任何改动前都会进行询问， 而一旦操作开始就无法撤销。
 3.3.2. 决定将 FreeBSD 安装在何处
-
 如果整个硬盘上仅安装 FreeBSD 一个操作系统， 那么请直接跳过此节； 但如果需要让 FreeBSD 与其他操作系统并存， 那么首先应当了解 FreeBSD 的硬盘布局结构。
 3.3.2.1. FreeBSD/i386 与 FreeBSD/amd64 的硬盘布局
-
 硬盘可以分割成多个区域， 这些区域称作 partition（分区）。
-
 有两种硬盘分区方式。 传统的 Master Boot Record (MBR， 主引导记录) 的分区表中可以定义四个 primary partitions (主分区)。 (由于历史原因， FreeBSD 中将主分区称作 slice。) 为了突破四个分区的限制， 可以将其中一个主分区创建为 extended partition (扩展分区)， 并在其中建立 logical partitions (逻辑分区)。 正如您看到的那样， 这种方法十分笨拙。
-
 新式的 GUID Partition Table (GUID 分区表) (GPT) 提供了更为简便的磁盘分区方法。 与传统的 MBR 分区相比， GPT 功能更为强大。 常见的 GPT 实现可以在一块磁盘上支持多达 128 个分区， 从而无需再采用类似逻辑分区这样迭床架屋的结构。
 警告:
-
 一些旧式的操作系统， 如 Windows® XP 并不兼容 GPT 分区格式。 如果需要让 FreeBSD 与这样的操作系统共用一块硬盘， 就必须使用 MBR 分区了。
-
 FreeBSD 的标准引导加载器需要使用一个主分区或 GPT 分区。 (有关 FreeBSD 引导过程的详情， 请参阅 第 13 章 FreeBSD 引导过程。) 如果所有的主分区或 GPT 分区都已在使用中， 则必须为 FreeBSD 腾出一个来使用。
-
 最小安装的 FreeBSD 只需 1 GB 磁盘空间。 不过， 这是 非常 基本的安装， 而且也不会留下多少可用的空间。 比较实用的情况下， 如果不使用图形界面， 最小安装应分配至少 3 GB 的空间， 而使用图形界面， 则应分配至少 5 GB 的空间。 此外， 第三方应用程序可能还需要更多的空间。
-
 有很多 免费或商业的分区调整工具 可供使用。 例如， 以 Live CD 形式提供的 GParted Live 中的 GParted 分区编辑器。 此外， GParted 也可以在许多其它 Linux Live CD 发行版中找到。
 警告:
-
 磁盘分区程序有可能会破坏现有的数据。 在修改磁盘分区之前， 应先做一次完整的备份并校验其完整性。
-
 调整 Microsoft® Vista 分区大小时可能会遇到一些问题。 如果要这样做， 请提前准备好 Vista 安装光盘。
+3.3.3. 收集网络配置信息
+某些 FreeBSD 安装方式需要通过网络连接下载相关文件。 若要连接至以太网 (或电视电缆/DSL 调制解调器上的以太网接口)， 则需要向安装程序提供必要的网络配置信息。
+DHCP 可以用来提供自动配置网络的信息。 假如没有可用的 DHCP， 则必须从局域网管理员， 或网络服务提供商那里获得必要的配置信息：
+网络配置信息
+    IP 地址
+    子网掩码
+    默认网关的 IP 地址
+    本地网络域名
+    DNS 服务器的 IP 地址
+3.3.4. 检查 FreeBSD 发行勘误
+尽管 FreeBSD 项目会确保每个发行版尽可能地稳定， 但 bug 总是在所难免。 极少数情况下， 这些 bug 甚至会影响安装。 一旦这些问题被发现并修正后， 就会列在 FreeBSD 网站的 FreeBSD 发行勘误 中。 在安装之前， 应首先检查这些勘误， 以确保安装可以顺利进行。
+有关所有发行版的信息及勘误， 可以在 FreeBSD 网站 的 发行版信息 一节中找到。
+
+
+
+
+
+以下几节对这些信息进行了总结。 根据所选的安装方式， 可能需要使用 FreeBSD 支持的 CDROM 或网络适配器， 详见 第 3.3.5 节 “准备安装介质”。
+通常情况下对于老旧的计算机而言， 安装更大的内存和腾出更多的硬盘空间， 会比使用更快的处理器对性能的提升更加明显。
+
 例 3.1. 使用现有的分区
-
 假设一台安装了 Windows® 的计算机上有一块 40 GB 的硬盘， 分成了两个 20 GB 的分区。 Windows® 将它们分别叫做 C: 和 D:。 C: 分区包含了 10 GB 数据， 而 D: 分区包含了 5 GB 数据。
-
 将数据从 D: 移动到 C:， 就可将第二个分区腾出来供 FreeBSD 使用了。
-
 例 3.2. 缩小现有的分区
-
 假设一台安装了 Windows® 的计算机上有一块 40 GB 的硬盘， 一个大的分区使用了整块磁盘的全部空间。 Windows® 将这个 40 GB 分区叫做 C:。 目前占用了 15 GB 空间。 现希望将 Windows® 分区减少到 20 GB， 并将余下的 20 GB 分给 FreeBSD 使用。
-
 可以在以下两种方法中任选一种：
 
     备份 Windows® 数据。 接着， 重新安装 Windows®， 在安装过程中建立一个 20 GB 的分区。
@@ -146,28 +108,6 @@ FreeBSD 的标准引导加载器需要使用一个主分区或 GPT 分区。 (�
 
 
 包含不同操作系统的磁盘分区令您能够在任何时候使用其中的一种。 如果希望同时运行多种不同的操作系统， 可以使用在 第 23 章 虚拟化 中介绍的方法。
-3.3.3. 收集网络配置信息
-
-某些 FreeBSD 安装方式需要通过网络连接下载相关文件。 若要连接至以太网 (或电视电缆/DSL 调制解调器上的以太网接口)， 则需要向安装程序提供必要的网络配置信息。
-
-DHCP 可以用来提供自动配置网络的信息。 假如没有可用的 DHCP， 则必须从局域网管理员， 或网络服务提供商那里获得必要的配置信息：
-网络配置信息
-
-    IP 地址
-
-    子网掩码
-
-    默认网关的 IP 地址
-
-    本地网络域名
-
-    DNS 服务器的 IP 地址
-
-3.3.4. 检查 FreeBSD 发行勘误
-
-尽管 FreeBSD 项目会确保每个发行版尽可能地稳定， 但 bug 总是在所难免。 极少数情况下， 这些 bug 甚至会影响安装。 一旦这些问题被发现并修正后， 就会列在 FreeBSD 网站的 FreeBSD 发行勘误 中。 在安装之前， 应首先检查这些勘误， 以确保安装可以顺利进行。
-
-有关所有发行版的信息及勘误， 可以在 FreeBSD 网站 的 发行版信息 一节中找到。
 3.3.5. 准备安装介质
 
 FreeBSD 的安装介质包括 CD、 DVD 及 USB 记忆棒。 若要开始安装， 只需使用安装介质引导计算机即可； 注意不能通过在其他操作系统中执行安装程序这种方式进行安装。
