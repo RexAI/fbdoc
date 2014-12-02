@@ -4,8 +4,9 @@
 
      $FreeBSD$
 -->
-<appendix xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="mirrors">
-  <title>Obtaining &os;</title>
+<appendix xmlns="http://docbook.org/ns/docbook"
+  xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+  xml:id="mirrors"> <title>Obtaining &os;</title>
 
   <sect1 xml:id="mirrors-cdrom">
     <title><acronym>CD</acronym> and
@@ -721,9 +722,9 @@ Comment out for now until these can be verified.
 	  middle</quote> attack) or otherwise trying to send bad
 	content to the end user.</para>
 
-      <para xml:id="svn-mirrors-fingerprint">On the first connection to an <acronym>HTTPS</acronym>
-	mirror, the user will be asked to verify the server
-	<emphasis>fingerprint</emphasis>:</para>
+      <para xml:id="svn-mirrors-fingerprint">On the first connection
+	to an <acronym>HTTPS</acronym> mirror, the user will be asked
+	to verify the server <emphasis>fingerprint</emphasis>:</para>
 
       <screen>Error validating server certificate for 'https://svn0.us-west.freebsd.org:443':
  - The certificate is not issued by a trusted authority. Use the

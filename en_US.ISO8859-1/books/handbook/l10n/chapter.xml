@@ -4,8 +4,9 @@
 
      $FreeBSD$
 -->
-<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="l10n">
-  <info>
+<chapter xmlns="http://docbook.org/ns/docbook"
+  xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+  xml:id="l10n"> <info>
     <title>Localization -
       <acronym>i18n</acronym>/<acronym>L10n</acronym> Usage and
       Setup</title>
@@ -321,7 +322,8 @@ me:\
 	    new users or specified for an individual user.</para>
 
 	  <para>If all new users use the same language, set
-	    <literal>defaultclass = <replaceable>language</replaceable></literal> in
+	    <literal>defaultclass =
+	      <replaceable>language</replaceable></literal> in
 	    <filename>/etc/adduser.conf</filename>.</para>
 
 	  <para>To override this setting when creating a user, either

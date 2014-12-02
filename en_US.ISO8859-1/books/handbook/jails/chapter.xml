@@ -4,8 +4,9 @@
 
     $FreeBSD$
 -->
-<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="jails">
-  <info>
+<chapter xmlns="http://docbook.org/ns/docbook"
+  xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+  xml:id="jails"> <info>
     <title>Jails</title>
 
     <authorgroup>
@@ -240,7 +241,7 @@
     <para>When using &man.sh.1; on &os;&nbsp;9.x and newer, issue this
       command:</para>
 
-    <screen>&prompt.root; <userinput>for <replaceable>sets</replaceable> in BASE DOC GAMES PORTS; do (tar -xf /mnt/FREEBSD_INSTALL/USR/FREEBSD_DIST/$<replaceable>sets</replaceable>.TXZ -C $DESTDIR</userinput></screen>
+    <screen>&prompt.root; <userinput>for <replaceable>sets</replaceable> in BASE DOC GAMES PORTS; do (tar -xf /mnt/FREEBSD_INSTALL/USR/FREEBSD_DIST/$<replaceable>sets</replaceable>.TXZ -C $DESTDIR) ; done</userinput></screen>
 
     <para>When using &os;&nbsp;8.x, run this:</para>
 
@@ -520,9 +521,11 @@ jail_<replaceable>www</replaceable>_devfs_enable="YES"          # mount devfs in
 
       <para>Among the many third-party utilities for jail
 	administration, one of the most complete and useful is
-	<package>sysutils/jailutils</package>.  It is a set of small
-	applications that contribute to &man.jail.8; management.
-	Please refer to its web page for more information.</para>
+	<package>sysutils/ezjail</package>.  It is a set of scripts
+	that contribute to &man.jail.8; management.  Please refer to
+	<link xlink:href="&url.books.handbook;/jails-ezjail.html">the
+	  handbook section on <application>ezjail</application></link>
+	for more information.</para>
     </sect2>
 
     <sect2 xml:id="jails-updating">
@@ -1003,12 +1006,12 @@ jail_www_devfs_enable="YES"</programlisting>
       tedious and error-prone.  Dirk Engling's
       <application>ezjail</application> automates and greatly
       simplifies many jail tasks.  A <emphasis>basejail</emphasis> is
-      created as a template. Additional jails use &man.mount.nullfs.8;
-      to share many of the basejail directories without using
-      additional disk space.  Each additional jail takes only a few
-      megabytes of disk space before applications are installed.
-      Upgrading the copy of the userland in the basejail automatically
-      upgrades all of the other jails.</para>
+      created as a template.  Additional jails use
+      &man.mount.nullfs.8; to share many of the basejail directories
+      without using additional disk space.  Each additional jail takes
+      only a few megabytes of disk space before applications are
+      installed.  Upgrading the copy of the userland in the basejail
+      automatically upgrades all of the other jails.</para>
 
     <para>Additional benefits and features are described in detail on
       the <application>ezjail</application> web site, <link
@@ -1192,7 +1195,7 @@ Created clone interfaces: lo1.</screen>
 
 	    <programlisting>export jail_<replaceable>jailname</replaceable>_parameters="allow.raw_sockets=1"</programlisting>
 
-	    <para>Do not enable raw network sockets unless services in 
+	    <para>Do not enable raw network sockets unless services in
 	      the jail actually require them.</para>
 	  </tip>
 	</step>
@@ -1264,7 +1267,7 @@ Retype New Password:</screen>
 	  <para>Enter configuration settings in
 	    <filename>/etc/rc.conf</filename>.  This is much like
 	    configuring a full computer.  The host name and
-	    <acronym>IP</acronym> address are not set here. Those
+	    <acronym>IP</acronym> address are not set here.  Those
 	    values are already provided by the jail
 	    configuration.</para>
 	</step>

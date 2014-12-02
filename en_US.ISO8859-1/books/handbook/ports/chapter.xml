@@ -242,13 +242,16 @@
       </listitem>
 
       <listitem>
-	<indexterm><primary>Freecode</primary></indexterm>
+	<indexterm><primary>SourceForge</primary></indexterm>
 
-	<para>If you do not know the name of an application, try
-	  using a site like <link
-	    xlink:href="http://www.freecode.com/">Freecode.com</link>
-	  to find an application, then check back at the &os; site to
-	  see if the application has been ported yet.</para>
+	<para>If finding a particular application becomes challenging,
+	  try searching a site like <link
+	    xlink:href="http://www.sourceforge.net/">SourceForge.net</link>
+	  or <link
+	    xlink:href="http://www.github.com/">GitHub.com</link> then
+	  check back at the <link
+	    xlink:href="&url.base;/ports/index.html">&os; site</link>
+	  to see if the application has been ported.</para>
       </listitem>
 
       <listitem>
@@ -303,7 +306,9 @@ devel/subversion-static</screen>
 	<para>Searching by shell globs, regular expressions, exact
 	  match, by description, or any other field in the repository
 	  database is also supported by <command>pkg search</command>.
-	  See &man.pkg-search.8; for more details.</para>
+	  After installing <package>ports-mgmt/pkg</package> or
+	  <package>ports-mgmt/pkg-devel</package>, see
+	  &man.pkg-search.8; for more details.</para>
       </listitem>
 
       <listitem>
@@ -872,8 +877,9 @@ Deinstalling ca_root_nss-3.15.1_1... done</screen>
 
       <tip>
 	<para>To disable the periodic script from backing up the
-	  package database, set <literal>daily_backup_pkgdb_enable</literal> to <literal>NO</literal> in
-	  &man.periodic.conf.5;.</para>
+	  package database, set
+	  <literal>daily_backup_pkgdb_enable</literal> to
+	  <literal>NO</literal> in &man.periodic.conf.5;.</para>
       </tip>
 
       <para>To restore the contents of a previous package database
@@ -1712,9 +1718,10 @@ Building new INDEX files... done.</screen>
 	can build ports with multiple configurations, in multiple
 	jails, and from different port trees.  Custom configurations
 	for these combinations are called <emphasis>sets</emphasis>.
-	See the CUSTOMIZATION section of &man.poudriere.8; for
-	details after <package>ports-mgmt/poudriere</package>
-	or <package>ports-mgmt/poudriere-devel</package> is installed.</para>
+	See the CUSTOMIZATION section of &man.poudriere.8; for details
+	after <package>ports-mgmt/poudriere</package> or
+	<package>ports-mgmt/poudriere-devel</package> is
+	installed.</para>
 
       <para>The basic configuration shown here puts a single jail-,
 	port-, and set-specific <filename>make.conf</filename> in
@@ -1810,8 +1817,8 @@ ports-mgmt/pkg
       </listitem>
 
       <listitem>
-	<para>Use <command>pkg info</command> to determine which files,
-	  man pages, and binaries were installed with the
+	<para>Use <command>pkg info</command> to determine which
+	  files, man pages, and binaries were installed with the
 	  application.</para>
       </listitem>
     </itemizedlist>

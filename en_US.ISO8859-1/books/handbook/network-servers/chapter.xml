@@ -4,7 +4,9 @@
 
      $FreeBSD$
 -->
-<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="network-servers">
+<chapter xmlns="http://docbook.org/ns/docbook"
+  xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+  xml:id="network-servers">
   <!--
   <chapterinfo>
     <authorgroup>
@@ -928,9 +930,9 @@ Exports list on foobar:
 	with other SVR4 automounters, such as the ones in Solaris,
 	MacOS X, and Linux.</para>
 
-      <para>The &man.autofs.5; virtual filesystem is mounted on specified
-	mountpoints by &man.automount.8;, usually invoked during
-	boot.</para>
+      <para>The &man.autofs.5; virtual filesystem is mounted on
+	specified mountpoints by &man.automount.8;, usually invoked
+	during boot.</para>
 
       <para>Whenever a process attempts to access file within the
 	&man.autofs.5; mountpoint, the kernel will notify
@@ -5035,7 +5037,7 @@ AddModule mod_php5.c
 
     <para>On &os;, the <application>Samba</application> client
       libraries can be installed using the
-      <package>net/samba-libsmbclient</package> port or package.  The
+      <package>net/samba-smbclient</package> port or package.  The
       client provides the ability for a &os; system to access
       <acronym>SMB/CIFS</acronym> shares in a &microsoft.windows;
       network.</para>

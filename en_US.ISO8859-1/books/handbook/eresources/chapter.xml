@@ -234,11 +234,6 @@
 	    </row>
 
 	    <row>
-	      <entry>&a.cvsweb.name;</entry>
-	      <entry>CVSweb maintenance</entry>
-	    </row>
-
-	    <row>
 	      <entry>&a.database.name;</entry>
 	      <entry>Discussing database use and development under
 		&os;</entry>
@@ -285,6 +280,13 @@
 	      <entry>&a.emulation.name;</entry>
 	      <entry>Emulation of other systems such as
 		Linux/&ms-dos;/&windows;</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.enlightenment.name;</entry>
+	      <entry>Porting <application>Enlightenment</application>
+		and <application>Enlightenment</application>
+		applications</entry>
 	    </row>
 
 	    <row>
@@ -1074,8 +1076,8 @@
 
 	    <para>This is the mailing list for reporting bugs in &os;.
 	      Whenever possible, bugs should be submitted using the
-	      &man.send-pr.1; command or the
-	      <link xlink:href="https://bugs.freebsd.org/bugzilla/enter_bug.cgi">WEB
+	      &man.send-pr.1; command or the <link
+		xlink:href="https://bugs.freebsd.org/bugzilla/enter_bug.cgi">WEB
 		interface</link> to it.</para>
 	  </listitem>
 	</varlistentry>
@@ -1140,17 +1142,6 @@
 	      running <quote>CURRENT</quote> must subscribe to this
 	      list.  This is a technical mailing list for which
 	      strictly technical content is expected.</para>
-	  </listitem>
-	</varlistentry>
-
-	<varlistentry>
-	  <term>&a.cvsweb.name;</term>
-
-	  <listitem>
-	    <para><emphasis>&os; CVSweb Project</emphasis></para>
-
-	    <para>Technical discussions about use, development and
-	      maintenance of &os;-CVSweb.</para>
 	  </listitem>
 	</varlistentry>
 
@@ -1269,6 +1260,20 @@
 	    <para>This is a forum for technical discussions related
 	      to running programs written for other operating systems
 	      on &os;.</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.enlightenment.name;</term>
+
+	  <listitem>
+	    <para><emphasis>Enlightenment</emphasis></para>
+
+	    <para>Discussions concerning the
+	      <application>Enlightenment</application> Desktop
+	      Environment for &os; systems.  This is a technical
+	      mailing list for which strictly technical content is
+	      expected.</para>
 	  </listitem>
 	</varlistentry>
 
