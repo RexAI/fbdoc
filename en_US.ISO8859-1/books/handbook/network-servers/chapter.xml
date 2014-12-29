@@ -799,7 +799,7 @@ rpc_statd_enable="YES"</programlisting>
 
     <sect2 xml:id="network-amd">
       <info>
-      <title>Automating Mounts With &man.amd.8;</title>
+      <title>Automating Mounts with &man.amd.8;</title>
 
 	<authorgroup>
 	  <author>
@@ -961,7 +961,7 @@ Exports list on foobar:
 	<systemitem class="fqdomainname">foobar</systemitem>.</para>
 
       <example>
-	<title>Mounting an Export With &man.autofs.5;</title>
+	<title>Mounting an Export with &man.autofs.5;</title>
 
 	<para>In this example, <command>showmount -e</command> shows
 	  the exported file systems that can be mounted from the
@@ -992,9 +992,9 @@ Exports list on foobar:
 
       <para>Then &man.autofs.5; can be started by running:</para>
 
-      <screen>&prompt.root; <userinput>service automount start</userinput></screen>
-      <screen>&prompt.root; <userinput>service automountd start</userinput></screen>
-      <screen>&prompt.root; <userinput>service autounmountd start</userinput></screen>
+      <screen>&prompt.root; <userinput>service automount start</userinput>
+&prompt.root; <userinput>service automountd start</userinput>
+&prompt.root; <userinput>service autounmountd start</userinput></screen>
 
       <para>The &man.autofs.5; map format is the same as in other
 	operating systems, it might be desirable to consult
@@ -1377,30 +1377,28 @@ Exports list on foobar:
 	it only needs to be enabled by adding the following lines to
 	<filename>/etc/rc.conf</filename>:</para>
 
-      <procedure>
-	<step>
-	  <programlisting>nisdomainname="test-domain"</programlisting>
+      <programlisting>nisdomainname="test-domain"	<co xml:id="network-nis-co-domainname" />
+nis_server_enable="YES"		<co xml:id="network-nis-co-server" />
+nis_yppasswdd_enable="YES"	<co xml:id="network-nis-co-yppasswdd" /></programlisting>
 
+      <calloutlist>
+	<callout arearefs="network-nis-co-domainname">
 	  <para>This line sets the <acronym>NIS</acronym> domain name
 	    to <literal>test-domain</literal>.</para>
-	</step>
+	</callout>
 
-	<step>
-	  <programlisting>nis_server_enable="YES"</programlisting>
-
+	<callout arearefs="network-nis-co-server">
 	  <para>This automates the start up of the
 	    <acronym>NIS</acronym> server processes when the system
 	    boots.</para>
-	</step>
+	</callout>
 
-	<step>
-	  <programlisting>nis_yppasswdd_enable="YES"</programlisting>
-
+	<callout arearefs="network-nis-co-yppasswdd">
 	  <para>This enables the &man.rpc.yppasswdd.8; daemon so that
 	    users can change their <acronym>NIS</acronym> password
 	    from a client machine.</para>
-	</step>
-      </procedure>
+	</callout>
+      </calloutlist>
 
       <para>Care must be taken in a multi-server domain where the
 	server machines are also <acronym>NIS</acronym> clients.  It
