@@ -24,6 +24,37 @@
     mentioned here to the &a.doc; so that they may also be
     included.</para>
 
+  <sect1 xml:id="eresources-www">
+    <title>Websites</title>
+
+    <itemizedlist>
+      <listitem>
+	<para><link xlink:href="https://forums.FreeBSD.org/">The
+	    &os; Forums</link> provide a web based discussion forum
+	  for &os; questions and technical
+	  discussion.</para>
+      </listitem>
+
+      <listitem>
+	<para><link
+	    xlink:href="http://planet.freebsdish.org/">Planet
+	  &os;</link> offers an aggregation feed of dozens of blogs
+	  written by &os; developers.  Many developers use this to
+	  post quick notes about what they are working on, new
+	  patches, and other works in progress.</para>
+      </listitem>
+
+      <listitem>
+	<para>The <link
+	    xlink:href="http://www.youtube.com/bsdconferences">BSDConferences
+	    YouTube Channel</link> provides a collection of high
+	  quality videos from BSD conferences around the world.
+	  This is a great way to watch key developers give
+	  presentations about new work in &os;.</para>
+      </listitem>
+    </itemizedlist>
+  </sect1>
+
   <sect1 xml:id="eresources-mail">
     <title>Mailing Lists</title>
 
@@ -226,6 +257,12 @@
 	    <row>
 	      <entry>&a.bluetooth.name;</entry>
 	      <entry>Using &bluetooth; technology in &os;</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.cloud.name;</entry>
+	      <entry>&os; on cloud platforms (EC2, GCE, Azure,
+		etc.)</entry>
 	    </row>
 
 	    <row>
@@ -1081,8 +1118,8 @@
 
 	    <para>This is the mailing list for reporting bugs in &os;.
 	      Whenever possible, bugs should be submitted using the
-	      &man.send-pr.1; command or the <link
-		xlink:href="https://bugs.freebsd.org/bugzilla/enter_bug.cgi">WEB
+	      <link
+		xlink:href="https://bugs.freebsd.org/bugzilla/enter_bug.cgi">web
 		interface</link> to it.</para>
 	  </listitem>
 	</varlistentry>
@@ -1117,6 +1154,19 @@
 	    <para>This is a list for the discussion of Chromium
 	      support for &os;.  This is a technical list to
 	      discuss development and installation of Chromium.</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.cloud.name;</term>
+
+	  <listitem>
+	    <para><emphasis>Running &os; on various cloud
+		platforms</emphasis></para>
+
+	    <para>This list discusses running &os; on Amazon EC2,
+	      Google Compute Engine, Microsoft Azure, and other cloud
+	      computing platforms.</para>
 	  </listitem>
 	</varlistentry>
 
@@ -1896,14 +1946,15 @@
 
 	    <para>This is the mailing list for users of &os.stable;.
 	      <quote>STABLE</quote> is the branch where development
-	      continues after a RELEASE, including bug fixes and new features.
-	      The ABI is kept stable for binary compatibility.
-	      It includes warnings about new features coming out in
-	      -STABLE that will affect the users, and instructions on
-	      steps that must be taken to remain -STABLE.  Anyone
-	      running <quote>STABLE</quote> should subscribe to this
-	      list.  This is a technical mailing list for which
-	      strictly technical content is expected.</para>
+	      continues after a RELEASE, including bug fixes and new
+	      features.  The ABI is kept stable for binary
+	      compatibility.  It includes warnings about new features
+	      coming out in -STABLE that will affect the users, and
+	      instructions on steps that must be taken to remain
+	      -STABLE.  Anyone running <quote>STABLE</quote> should
+	      subscribe to this list.  This is a technical mailing
+	      list for which strictly technical content is
+	      expected.</para>
 	  </listitem>
 	</varlistentry>
 
@@ -2263,26 +2314,6 @@
 
 	<listitem>
 	  <para><link
-	      xlink:href="news:comp.unix.user-friendly">comp.unix.user-friendly</link></para>
-	</listitem>
-
-	<listitem>
-	  <para><link
-	      xlink:href="news:comp.security.unix">comp.security.unix</link></para>
-	</listitem>
-
-	<listitem>
-	  <para><link
-	      xlink:href="news:comp.sources.unix">comp.sources.unix</link></para>
-	</listitem>
-
-	<listitem>
-	  <para><link
-	      xlink:href="news:comp.unix.advocacy">comp.unix.advocacy</link></para>
-	</listitem>
-
-	<listitem>
-	  <para><link
 	      xlink:href="news:comp.unix.misc">comp.unix.misc</link></para>
 	</listitem>
 
@@ -2297,11 +2328,6 @@
       <title>X Window System</title>
 
       <itemizedlist>
-	<listitem>
-	  <para><link
-	      xlink:href="news:comp.windows.x.i386unix">comp.windows.x.i386unix</link></para>
-	</listitem>
-
 	<listitem>
 	  <para><link
 	      xlink:href="news:comp.windows.x">comp.windows.x</link></para>
@@ -2319,21 +2345,6 @@
 
 	<listitem>
 	  <para><link
-	      xlink:href="news:comp.windows.x.intrinsics">comp.windows.x.intrinsics</link></para>
-	</listitem>
-
-	<listitem>
-	  <para><link
-	      xlink:href="news:comp.windows.x.motif">comp.windows.x.motif</link></para>
-	</listitem>
-
-	<listitem>
-	  <para><link
-	      xlink:href="news:comp.windows.x.pex">comp.windows.x.pex</link></para>
-	</listitem>
-
-	<listitem>
-	  <para><link
 	      xlink:href="news:comp.emulators.ms-windows.wine">comp.emulators.ms-windows.wine</link></para>
 	</listitem>
       </itemizedlist>
@@ -2341,48 +2352,13 @@
   </sect1>
 
   <sect1 xml:id="eresources-web">
-    <title>World Wide Web Servers</title>
+    <title>Official Mirrors</title>
 
-    <sect2 xml:id="eresources-web-social">
-      <title>Forums, Blogs, and Social Networks</title>
+    &chap.eresources.www.index.inc;
 
-      <itemizedlist>
-	<listitem>
-	  <para><link xlink:href="https://forums.FreeBSD.org/">The
-	      &os; Forums</link> provide a web based discussion forum
-	    for &os; questions and technical
-	    discussion.</para>
-	</listitem>
+    &chap.mirrors.lastmod.inc;
 
-	<listitem>
-	  <para><link
-	      xlink:href="http://planet.freebsdish.org/">Planet
-	    &os;</link> offers an aggregation feed of dozens of blogs
-	    written by &os; developers.  Many developers use this to
-	    post quick notes about what they are working on, new
-	    patches, and other works in progress.</para>
-	</listitem>
-
-	<listitem>
-	  <para>The <link
-	      xlink:href="http://www.youtube.com/bsdconferences">BSDConferences
-	      YouTube Channel</link> provides a collection of high
-	    quality videos from BSD Conferences around the world.
-	    This is a great way to watch key developers give
-	    presentations about new work in &os;.</para>
-	</listitem>
-      </itemizedlist>
-    </sect2>
-
-    <sect2 xml:id="eresources-web-mirrors">
-      <title>Official Mirrors</title>
-
-      &chap.eresources.www.index.inc;
-
-      &chap.mirrors.lastmod.inc;
-
-      &chap.eresources.www.inc;
-    </sect2>
+    &chap.eresources.www.inc;
   </sect1>
 <!--
 Comment out for now as only one address

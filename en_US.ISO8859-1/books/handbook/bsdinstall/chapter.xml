@@ -151,25 +151,18 @@
 
     <para>The hardware requirements to install &os; vary by the &os;
       version and the hardware architecture.  Hardware architectures
-      and devices supported by a &os; release are listed in the
-      Hardware Notes file.  Usually named
-      <filename>HARDWARE.TXT</filename>, the file is located in the
-      root directory of the release media.  Copies of the supported
-      hardware list are also available on the Release Information page
-      of the &os; web site (<link
+      and devices supported by a &os; release are listed on the
+      Release Information page of the &os; web site (<link
 	xlink:href="&url.base;/releases/index.html">http://www.FreeBSD.org/releases/index.html</link>).</para>
 
-    <para>A &os; installation will require at least 64&nbsp;MB of
+    <para>A &os; installation will require a minimum 64&nbsp;MB of
       <acronym>RAM</acronym> and 1.5&nbsp;GB of free hard drive space
       for the most minimal installation.  However, that is a
-      <emphasis>very</emphasis> minimal install, leaving almost no
-      free space.  A more realistic minimum is 4&nbsp;GB without a
-      graphical environment, and 8&nbsp;GB or more if a graphical user
-      interface will be used.  Third-party application software
-      requires more space.  It is recommended to increase
-      <acronym>RAM</acronym> and hard drive space to meet the needs of
-      the applications that will be used and the amount of data that
-      will be  stored.</para>
+      <emphasis>minimal</emphasis> install, leaving almost no
+      free space.  RAM requirements depend on usage.  Specialized
+      FreeBSD systems can run in as little as 128MB RAM while desktop
+      systems should have at least 4&nbsp;GB
+      of <acronym>RAM</acronym>.</para>
 
     <para>The processor requirements for each architecture can be
       summarized as follows:</para>
@@ -178,31 +171,28 @@
       <varlistentry>
 	<term>&arch.amd64;</term>
 	<listitem>
-	  <para>There are two classes of processors capable of running
-	    &arch.amd64;.  The first are <acronym>AMD64</acronym>
-	    processors, including the &amd.athlon;64 and &amd.opteron;
-	    processors.</para>
+	  <para>This is the most common type of processor desktop and
+	    laptop computers will have.  Other vendors may call this
+	    architecture <acronym>x86-64</acronym>.</para>
 
-	  <para>The second class of processors includes those using
-	    the &intel;&nbsp;EM64T architecture.  Examples of these
-	    processors include all multi-core &intel;&nbsp;&xeon;
-	    processors except Sossaman, the single-core
-	    &intel;&nbsp;&xeon; processors Nocona, Irwindale, Potomac,
-	    and Cranford, the &intel;&nbsp;&core;&nbsp;2 (not Core
-	    Duo) and later processors, all &intel;&nbsp;&pentium; D
-	    processors, the &intel;&nbsp;&pentium; 4s and Celeron Ds
-	    using the Cedar Mill core, and some &intel;&nbsp;&pentium;
-	    4s and Celeron Ds using the Prescott core.</para>
+	  <para>There are two primary vendors of &arch.amd64;
+	    processors: &intel; (which produces
+	    <acronym>Intel64</acronym> class processors) and AMD
+	    (which produces <acronym>AMD64</acronym>).</para>
 
-	  <para>Both Uniprocessor (<acronym>UP</acronym>) and
-	    Symmetric Multi-processor (<acronym>SMP</acronym>)
-	    configurations are supported.</para>
+	  <para>Examples of &arch.amd64; compatible processsors
+	    include: &amd.athlon;64, &amd.opteron;, 
+	    multi-core &intel;&nbsp;&xeon;, and
+	    &intel;&nbsp;&core;&nbsp;2 and later processors.</para>
 	</listitem>
       </varlistentry>
 
       <varlistentry>
 	<term>&arch.i386;</term>
 	<listitem>
+	  <para>This architecture is the 32-bit x86
+	    architecture.</para>
+
 	  <para>Almost all i386-compatible processors with a floating
 	    point unit are supported.  All &intel; processors 486 or
 	    higher are supported.</para>
@@ -670,7 +660,7 @@ commit your changes?</programlisting>
 	  <para>This system is too old to support booting from the
 	    chosen media.  In this case, the <application>Plop Boot
 	      Manager</application> (<link
-	      xlink:href="http://www.plop.at/en/bootmanager.html">http://www.plop.at/en/bootmanager.html</link>)
+	      xlink:href="http://www.plop.at/en/bootmanagers.html" />)
 	    can be used to boot the system from the selected
 	    media.</para>
 	</listitem>
@@ -1463,7 +1453,7 @@ Ethernet address 0:3:ba:b:92:d4, Host ID: 830b92d4.</screen>
 
       <tip>
 	<para>Proper sector alignment provides the best performance,
-	  and making partition sizes even multiples of 4K-bytes helps
+	  and making partition sizes even multiples of 4K bytes helps
 	  to ensure alignment on drives with either 512-byte or
 	  4K-byte sectors.  Generally, using partition sizes that are
 	  even multiples of 1M or 1G is the easiest way to make sure

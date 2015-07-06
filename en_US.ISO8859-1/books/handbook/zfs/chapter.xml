@@ -1278,9 +1278,10 @@ errors: No known data errors</screen>
 	<link linkend="zfs-term-resilver">resilver</link> operation,
 	the pool can grow to use the capacity of the new device.  For
 	example, consider a mirror of a 1&nbsp;TB drive and a
-	2&nbsp;drive.  The usable space is 1&nbsp;TB.  Then the
-	1&nbsp;TB is replaced with another 2&nbsp;TB drive, and the
-	resilvering process duplicates existing data.  Because
+	2&nbsp;TB drive.  The usable space is 1&nbsp;TB.  When the
+	1&nbsp;TB drive is replaced with another 2&nbsp;TB drive, the
+	resilvering process copies the existing data onto the new
+	drive.  Because
 	both of the devices now have 2&nbsp;TB capacity, the mirror's
 	available space can be grown to 2&nbsp;TB.</para>
 
@@ -3167,20 +3168,6 @@ dedup = 1.05, compress = 1.11, copies = 1.00, dedup * compress / copies = 1.16</
 	    device has already been secure erased, disabling this
 	    setting will make the addition of the new device faster.
 	    This value can be adjusted at any time with
-	    &man.sysctl.8;.</para>
-	</listitem>
-
-	<listitem>
-	  <para
-	      xml:id="zfs-advanced-tuning-write_to_degraded"><emphasis><varname>vfs.zfs.write_to_degraded</varname></emphasis>
-	    - Control whether new data is written to a vdev that is
-	    in the <link linkend="zfs-term-degraded">DEGRADED</link>
-	    state.  Defaults to <literal>0</literal>, preventing
-	    writes to any top level vdev that is in a degraded state.
-	    The administrator may wish to allow writing to degraded
-	    vdevs to prevent the amount of free space across the vdevs
-	    from becoming unbalanced, which will reduce read and write
-	    performance.  This value can be adjusted at any time with
 	    &man.sysctl.8;.</para>
 	</listitem>
 
