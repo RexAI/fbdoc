@@ -1,6 +1,6 @@
 https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/bsdinstall.html
 https://www.freebsd.org/doc/zh_CN.UTF-8/books/handbook/bsdinstall.html
-注：目前为第3章，最终为第2章。
+Chapter 3 > Chapter 2
 
 第2章 安装FreeBSD 9.x及之后版本
 重构、改编及部分重写：Jim Mock
