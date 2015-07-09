@@ -2,7 +2,7 @@ https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/bsdinstall.html
 https://www.freebsd.org/doc/zh_CN.UTF-8/books/handbook/bsdinstall.html
 Chapter 3 > Chapter 2
 
-第2章 安装FreeBSD 9.x及之后版本
+第2章. 安装FreeBSD 9.x及之后版本
 重构、改编及部分重写：Jim Mock
 对bsdinstall的更新：Gavin Atkinson与Warren Block
 对root-on-ZFS的更新：Allan Jude
@@ -20,19 +20,20 @@ Chapter 3 > Chapter 2
 2.10. 使用Live CD
 
 2.1. 概述
-自9.0-RELEASE起，FreeBSD提供了一个基于文字界面、易于使用的安装程序，名为bsdinstall。本章将介绍如何使用此程序安装FreeBSD。有关FreeBSD 8.x的安装程序sysinstall的使用，参见第3章 安装FreeBSD 8.x。
-一般来说，本章的安装说明仅针对于i386™及AMD64架构，但也会尽可能地对其他平台下的安装予以描述。由于实际的安装操作可能会与所述内容有些许出入，因此建议您仅将其作为常规的安装参考。
+自9.0-RELEASE起，FreeBSD提供了一个易于使用且基于文字界面的安装程序，名为bsdinstall。本章将介绍如何使用此程序安装FreeBSD。有关FreeBSD 8.x的安装程序sysinstall的使用，请阅读第3章. 安装FreeBSD 8.x。
+一般来说，本章的安装说明仅针对于i386™及AMD64架构，但也会尽可能地涉及到其他平台。由于实际的安装过程可能略有不同，因此本章内容仅供参考。
 注意：
-对于想要使用图形界面安装FreeBSD的用户，可关注PC-BSD项目提供的安装程序pc-sysinstall。此程序既可用于安装带图形界面的桌面操作系统PC-BSD，也可用于安装仅包含命令行的FreeBSD。有关pc-sysinstall的更多内容，详见PC-BSD用户手册（http://wiki.pcbsd.org/index.php/PC-BSD%C2%AE_Users_Handbook/10.1）。
-阅读完本章后，您将了解：
+对于想要使用图形界面安装FreeBSD的用户，可关注PC-BSD项目所使用的安装程序pc-sysinstall。此程序既可用于安装带图形桌面的PC-BSD，也可用于安装仅包含命令行的FreeBSD。有关pc-sysinstall的更多内容，详见PC-BSD用户手册（http://wiki.pcbsd.org/index.php/PC-BSD%C2%AE_Users_Handbook/10.1）。
+阅读本章之后，您将了解：
 最低硬件需求及FreeBSD所支持的架构。
 如何创建FreeBSD安装介质。
 如何启动bsdinstall。
-bsdinstall运行时需要回答的问题、问题的具体含义及如何回答。
-安装失败时如何进行故障排除。
-确认安装前如何使用FreeBSD Live CD。
+bsdinstall运行时具体的交互过程。
+如何在安装失败时进行故障排除。
+如何在确认安装前进入Live CD模式。
 阅读本章之前，您应该：
-查看将要安装的FreeBSD版本所附的硬件支持列表，以确定系统硬件能够被支持。
+查看将要安装的FreeBSD版本所支持的硬件列表，以确认系统硬件与其兼容。
+-- to be continued --
 
 2.2. 最低硬件需求
 安装FreeBSD的硬件需求，随版本及硬件架构而有所不同。FreeBSD发行版所支持的硬件架构及设备会在Hardware Notes（硬件说明）中列出，其对应的文件位于发行版介质的根目录下，通常名为HARDWARE.TXT。此文件的副本也可直接从FreeBSD网站的Release Information（发行版信息）页面（http://www.FreeBSD.org/releases/index.html）获取。
