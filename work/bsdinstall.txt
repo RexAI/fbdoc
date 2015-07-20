@@ -33,31 +33,33 @@ bsdinstall运行时具体的交互过程。
 如何在确认安装前进入Live CD模式。
 阅读本章之前，您应该：
 查看将要安装的FreeBSD版本所支持的硬件列表，以确认系统硬件与其兼容。
--- to be continued --
 
 2.2. 最低硬件需求
-安装FreeBSD的硬件需求，随版本及硬件架构而有所不同。FreeBSD发行版所支持的硬件架构及设备会在Hardware Notes（硬件说明）中列出，其对应的文件位于发行版介质的根目录下，通常名为HARDWARE.TXT。此文件的副本也可直接从FreeBSD网站的Release Information（发行版信息）页面（http://www.FreeBSD.org/releases/index.html）获取。
-FreeBSD的安装需要至少64MB的内存及1.5GB的硬盘空间，但应注意这样安装后几乎无剩余空间可用。考虑到实际的使用情况，无图形用户界面的最小安装需要4GB的硬盘空间，带图形用户界面则至少需要8GB；此外，第三方软件还会需要更多的空间。为了满足这些软件的需求，同时能够存储更多的数据，推荐分配更多的内存及硬盘空间。
+安装FreeBSD的硬件需求，随版本及硬件架构而有所不同。在FreeBSD网站的Release Information（发行版信息）页面（http://www.FreeBSD.org/releases/index.html）上，列出了各发行版所支持的硬件架构及设备。
+FreeBSD的安装至少需要64MB内存及1.5GB硬盘空间，但应注意这样的配置仅能完成安装。在实际的使用过程中，应根据不同的需求提供更多的内存及硬盘空间：例如，作为专用服务器使用的FreeBSD最低仅需128MB内存，但作为桌面系统使用则应至少配备4GB内存；而两者都需要额外的硬盘空间来存储数据。
 以下为各架构的处理器需求：
 amd64
-此架构支持两类处理器。第一类是AMD64处理器，包括AMD Athlon™64与AMD Opteron™。
-第二类处理器是Intel® EM64T处理器，包括除Sossaman外的所有多核Intel® Xeon™，各种单核Intel® Xeon™（包括Nocona、Irwindale、Potomac与Cranford），Intel® Core™ 2（非Core Duo）之后的处理器，所有Intel® Pentium® D，Cedar Mill核心的Intel® Pentium® 4s与Celeron Ds，以及某些Prescott核心的Intel® Pentium® 4s与Celeron Ds。
-此架构同时支持Uniprocessor（UP，单核）与Symmetric Multi-processor（SMP，对称多核）配置。
+这是台式机和笔记本上最常见的架构类型，其他厂商可能将其称作x86-64架构。
+生产amd64处理器的厂商主要有两家：Intel®（生产Intel64类处理器）与AMD（生产AMD64类处理器）。
+兼容amd64架构的处理器至少包括：AMD Athlon™64、AMD Opteron™、多核Intel® Xeon™、Intel® Core™ 2及之后的处理器。
 i386
-此架构基本支持所有带浮点单元的i386兼容处理器，包括所有Intel® 486及更高级别的处理器。
-若CPU支持Physical Address Extensions（PAE，物理地址扩展），FreeBSD将会利用此特性：开启了PAE支持的内核能够侦测到4GB以上的内存并允许其被系统使用，系统能够自动调整相关设备驱动所需的参数，详见pae(4)。
+此架构即32位的x86架构。
+此架构基本支持所有带浮点单元的i386兼容处理器，例如所有Intel® 486及更高级别的处理器。
+若CPU支持Physical Address Extensions（PAE，物理地址扩展），在内核中启用PAE即可识别并使用大于4GB的内存。注意，PAE可能会在设备驱动及系统功能方面有所限制，详见pae(4)。
 ia64
 此架构当前支持的处理器包括Itanium®与Itanium® 2，支持的芯片组包括HP zx1、Intel® 460GX与Intel® E8870。此架构同时支持Uniprocessor（UP，单核）与Symmetric Multi-processor（SMP，对称多核）配置。
 pc98
-此架构基本支持全系列的NEC PC-9801/9821机型，其使用80486、Pentium®、Pentium® Pro、Pentium® II及各种由AMD、Cyrix、IBM、IDT生产的i386兼容处理器。此架构还支持与NEC PC-9801兼容的EPSON PC-386/486/586系列机型，而NEC FC-9801/9821与NEC SV-98系列机型也应该支持。
-此架构不支持高分辨率模式，其中NEC PC-98XA/XL/RL/XL^2与NEC PC-H98系列机型仅支持常规（PC-9801兼容）模式。此架构也不支持FreeBSD的SMP相关特性，以及PC-H98、SV-H98、FC-H98中使用的New Extend Standard Architecture（NESA）总线。
+此架构支持NEC PC-9801/9821系列机型，其基本使用80486、Pentium®、Pentium® Pro、Pentium® II及各种由AMD、Cyrix、IBM、IDT生产的i386兼容处理器。此架构还支持与NEC PC-9801兼容的EPSON PC-386/486/586系列机型。另外，NEC FC-9801/9821与NEC SV-98系列机型也应该支持。
+此架构不支持高分辨率模式。在NEC PC-98XA/XL/RL/XL^2与NEC PC-H98系列机型上，仅支持常规（PC-9801兼容）模式。此架构也不支持FreeBSD的SMP相关特性以及PC-H98、SV-H98、FC-H98系列机型中使用的New Extend Standard Architecture（NESA）总线。
 powerpc
-此架构支持所有内建USB的New World ROM Apple® Mac®系统，同时也为多CPU机器提供SMP支持。注意，32位内核仅能使用内存空间的前2GB。
+此架构支持所有内建USB的New World ROM Apple® Mac®系统，同时也为多CPU机器提供SMP支持。
+注意，32位内核仅能使用内存空间的前2GB。
 sparc64
 有关FreeBSD/sparc64的系统支持，详见FreeBSD/sparc64项目（http://www.freebsd.org/platforms/sparc.html）。
-此架构为所有多处理器系统提供SMP支持。注意，此架构需要独占一块磁盘，目前还不支持与其他操作系统共享同一块磁盘。
+此架构为所有多处理器系统提供SMP支持，但由于目前还不能与其他操作系统共享磁盘，因此需要独占一块磁盘。
 
 2.3. 安装前的准备工作
+-- to be continued --
 确定系统符合安装FreeBSD的最低硬件需求后，就可以下载安装文件并准备安装介质了。在准备安装之前，还需要核对以下事项：
 1. 备份重要数据
 在安装任何操作系统之前，都应先备份所有重要数据。不要把备份数据存储在将被安装系统的机器上，应该将其保存在可移动磁盘（例如USB存储）、网络上的其他系统或者某个在线备份服务中。开始安装前，应测试备份以确保其包含了所有需要的文件。一旦使用安装程序格式化了目标磁盘，其上保存的所有数据将被删除。
