@@ -62,8 +62,9 @@ that might make this chapter too large.
       particular, it is possible to crash traced programs.</para>
 
     <para>The official guide to DTrace is maintained by the Illumos
-      project at
-      <uri xlink:href="http://dtrace.org/guide">DTrace Guide</uri>.</para>
+      project at <uri
+	xlink:href="http://dtrace.org/guide">DTrace
+	Guide</uri>.</para>
 
     <para>After reading this chapter, you will know:</para>
 
@@ -169,7 +170,8 @@ that might make this chapter too large.
 
     <programlisting>options         KDTRACE_HOOKS
 options         DDB_CTF
-options		DEBUG=-g</programlisting>
+makeoptions	DEBUG=-g
+makeoptions	WITH_CTF=1</programlisting>
 
     <para>Users of the AMD64 architecture should also add this
       line:</para>

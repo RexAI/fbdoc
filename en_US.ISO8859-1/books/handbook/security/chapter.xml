@@ -2364,7 +2364,7 @@ sainfo  (address 10.246.38.0/24 any address 10.0.0.0/24 any)	# address $network/
 {								# $network must be the two internal networks you are joining.
         pfs_group       1;
         lifetime        time    36000 sec;
-        encryption_algorithm    blowfish,3des,des;
+        encryption_algorithm    blowfish,3des;
         authentication_algorithm        hmac_md5,hmac_sha1;
         compression_algorithm   deflate;
 }</programlisting>
@@ -3113,7 +3113,7 @@ drwxr-xr-x  2 robert  robert  512 Nov 10 11:54 public_html</programlisting>
       this purpose.</para>
 
     <para><application>pkg</application> polls a database for security
-      issues. The database is updated and maintained by the &os;
+      issues.  The database is updated and maintained by the &os;
       Security Team and ports developers.</para>
 
     <para>Please refer to <link

@@ -258,13 +258,7 @@
 #of Taiwan can manually change each variable
 me:\
 	:lang=zh_TW.Big5:\
-	:setenv=LC_ALL=zh_TW.Big5:\
-	:setenv=LC_COLLATE=zh_TW.Big5:\
-	:setenv=LC_CTYPE=zh_TW.Big5:\
-	:setenv=LC_MESSAGES=zh_TW.Big5:\
-	:setenv=LC_MONETARY=zh_TW.Big5:\
-	:setenv=LC_NUMERIC=zh_TW.Big5:\
-	:setenv=LC_TIME=zh_TW.Big5:\
+	:setenv=LC_ALL=zh_TW.Big5,LC_COLLATE=zh_TW.Big5,LC_CTYPE=zh_TW.Big5,LC_MESSAGES=zh_TW.Big5,LC_MONETARY=zh_TW.Big5,LC_NUMERIC=zh_TW.Big5,LC_TIME=zh_TW.Big5:\
 	:charset=big5:\
 	:xmodifiers="@im=gcin": #Set gcin as the XIM Input Server</programlisting>
 
@@ -362,8 +356,8 @@ me:\
 	    <filename>/usr/share/skel/dot.profile</filename> to set
 	    that shell for all users:</para>
 
-	  <programlisting><envar>LANG=de_DE.ISO8859-1; export LANG</envar>
-<envar>MM_CHARSET=ISO-8859-1; export MM_CHARSET</envar></programlisting>
+	  <programlisting><envar>LANG</envar>=de_DE.ISO8859-1; export <envar>LANG</envar>
+<envar>MM_CHARSET</envar>=ISO-8859-1; export <envar>MM_CHARSET</envar></programlisting>
 
 	  <para>However, the name of the configuration file and the
 	    syntax used differs for the <command>csh</command> shell.
@@ -372,8 +366,8 @@ me:\
 	    <filename>/etc/csh.login</filename>, or
 	    <filename>/usr/share/skel/dot.login</filename>:</para>
 
-	  <programlisting><envar>setenv LANG de_DE.ISO8859-1</envar>
-<envar>setenv MM_CHARSET ISO-8859-1</envar></programlisting>
+	  <programlisting>setenv <envar>LANG</envar> de_DE.ISO8859-1
+setenv <envar>MM_CHARSET</envar> ISO-8859-1</programlisting>
 
 	  <para>To complicate matters, the syntax needed to configure
 	    <application>Xorg</application> in
@@ -382,9 +376,9 @@ me:\
 	    shell and the second is for the <command>csh</command>
 	    shell:</para>
 
-	  <programlisting><envar>LANG=de_DE.ISO8859-1; export LANG</envar></programlisting>
+	  <programlisting><envar>LANG</envar>=de_DE.ISO8859-1; export <envar>LANG</envar></programlisting>
 
-	  <programlisting><envar>setenv LANG de_DE.ISO8859-1</envar></programlisting>
+	  <programlisting>setenv <envar>LANG</envar> de_DE.ISO8859-1</programlisting>
       </sect3>
     </sect2>
 
