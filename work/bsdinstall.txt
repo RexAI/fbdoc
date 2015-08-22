@@ -1,8 +1,7 @@
 https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/bsdinstall.html
 https://www.freebsd.org/doc/zh_CN.UTF-8/books/handbook/bsdinstall.html
-Chapter 3 > Chapter 2
 
-第2章. 安装FreeBSD 9.x及之后版本
+第2章. 安装FreeBSD
 重构、改编及部分重写：Jim Mock
 对bsdinstall的更新：Gavin Atkinson与Warren Block
 对root-on-ZFS的更新：Allan Jude
@@ -20,7 +19,7 @@ Chapter 3 > Chapter 2
 2.10. 使用Live CD
 
 2.1. 概述
-自9.0-RELEASE起，FreeBSD提供了一个易于使用且基于文字界面的安装程序，名为bsdinstall。本章将介绍如何使用此程序安装FreeBSD。有关FreeBSD 8.x的安装程序sysinstall的使用，请阅读第3章. 安装FreeBSD 8.x。
+自9.0-RELEASE起，FreeBSD提供了一个易于使用且基于文字界面的安装程序，名为bsdinstall。本章将介绍如何使用此程序安装FreeBSD。
 一般来说，本章的安装说明仅针对于i386™及AMD64架构，但也会尽可能地涉及到其他平台。由于实际的安装过程可能略有不同，因此本章内容仅供参考。
 注意：
 对于想要使用图形界面安装FreeBSD的用户，可关注PC-BSD项目所使用的安装程序pc-sysinstall。此程序既可用于安装带图形桌面的PC-BSD，也可用于安装仅包含命令行的FreeBSD。有关pc-sysinstall的更多内容，详见PC-BSD用户手册（http://wiki.pcbsd.org/index.php/PC-BSD%C2%AE_Users_Handbook/10.1）。
@@ -85,10 +84,16 @@ FreeBSD的引导加载器需要安装在一个空闲的MBR主分区或GPT分区�
 虽然FreeBSD项目力争确保每个发行版尽可能地稳定，但bug总是在所难免。极少数情况下，这些bug会影响安装进程。此类问题被发现并修复后，会记录在FreeBSD网站的FreeBSD发行勘误（例如http://www.freebsd.org/releases/10.1R/errata.html）中。安装前应首先检查这些勘误，以确保其不影响安装。
 有关所有发行版的信息及勘误，可以在FreeBSD网站的发行版信息（http://www.freebsd.org/releases/index.html）处找到。
 2.3.1. 准备安装介质
+由于FreeBSD安装程序不能直接从其他操作系统中运行，因此必须首先下载安装文件，然后根据文件类型与大小（CD、DVD或USB）制作相应的介质。一旦插入介质并用其引导系统后，即可开始安装。
+FreeBSD的安装文件可从www.freebsd.org/where.html#download获取。每个安装文件的名称均由发行版本、架构与文件类型组成。例如，若要在amd64系统上从DVD安装FreeBSD 10.0，应下载文件FreeBSD-10.0-RELEASE-amd64-dvd1.iso并将其刻录至DVD上，然后插入此DVD来引导系统。
+FreeBSD提供了多种类型的安装文件，但要注意某些架构下仅有其中的几种可供使用。可能的文件类型包括：
+-bootonly.iso：尺寸最小的文件类型，因为其中仅包含安装程序本身。使用这种文件安装时必须存在能够正常工作的Internet连接，因为安装程序需要下载必要文件以完成安装。若要制作安装介质，可以使用CD刻录程序将其刻录至CD。
+-disc1.iso：不仅包含了安装所需的全部文件，还包含其源代码与Ports集。若要制作安装介质，可以使用CD刻录程序将其刻录至CD。
+-dvd1.iso：不仅包含了安装所需的全部文件，还包含其源代码与Ports集。与其他类型最大的区别在于，这种文件里还提供了一整套流行的二进制包用于安装窗口管理器等程序，从而在未联网时构建完整的操作系统环境。若要制作安装介质，可以使用DVD刻录程序将其刻录至DVD。
+-memstick.img：不仅包含了安装所需的全部文件，还包含其源代码与Ports集。稍后将介绍如何将其刻录至USB存储设备以制作安装介质。
+下载镜像文件时，还可以下载同目录下名为CHECKSUM.SHA256的文件，此文件用于通过计算校验和来检查镜像文件的完整性。在FreeBSD中可以使用sha256(1)来计算校验和，而其他操作系统中也存在类似的程序。将计算得出的校验和与CHECKSUM.SHA256中此文件的记录值进行比对，以确保其完全相同。如果两者不同，则说名此文件存在问题，必须重新下载。
 -- to be continued --
-FreeBSD 的安装介质包括 CD、 DVD 及 USB 记忆棒。 若要开始安装， 只需使用安装介质引导计算机即可； 注意不能通过在其他操作系统中执行安装程序这种方式进行安装。
 标准的安装介质中包含了 FreeBSD 安装所需的全部文件， 除此之外， 还有一种 bootonly 安装介质。 这种介质并不在其中直接包含安装所需的全部文件， 而是在需要时通过网络进行下载。 因此， 与标准的安装介质相比， bootonly安装介质体积更小。
-FreeBSD 安装介质的副本可以从 FreeBSD 网站 获取。
 提示:
 如果您已经有 FreeBSD 的安装 CD、 DVD 或 USB 记忆棒， 则可以跳过此节。
 FreeBSD 的安装 CD 或 DVD 映像均为可引导的 ISO 文件。 只需要 CD 或 DVD 其中的一种即可完成安装操作。 任选一种在当前操作系统中刻录成可引导光盘即可。
