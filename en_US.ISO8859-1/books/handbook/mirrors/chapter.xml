@@ -151,7 +151,7 @@ This site doesn't have any products newer than 8.1 which is now EOL'd
       the ability for changes to be automatically sent by email.  It
       requires the user to obtain up to three deltas per day for the
       most active branches.  Update sizes are always kept as small as
-      possible and are typically less than 5K.  About one in very ten
+      possible and are typically less than 5K.  About one in every ten
       updates is 10-50K in size, and there will occasionally be an
       update larger than 100K+.</para>
 
@@ -559,8 +559,6 @@ Comment out for now until these can be verified.
 	    <literal>base</literal> maintains the latest version of
 	    -CURRENT under <literal>head</literal> and the respective
 	    latest versions of the -STABLE branches under
-	    <literal>stable/8</literal> (for
-	    8.<replaceable>x</replaceable>),
 	    <literal>stable/9</literal>
 	    (9.<replaceable>x</replaceable>) and
 	    <literal>stable/10</literal>
@@ -640,7 +638,7 @@ Comment out for now until these can be verified.
 	select an appropriate back end server.  To view the &os;
 	<application>Subversion</application> repositories through a
 	browser, use <link
-	  xlink:href="http://svnweb.FreeBSD.org/">http://svnweb.FreeBSD.org/</link>.</para>
+	  xlink:href="https://svnweb.FreeBSD.org/">https://svnweb.FreeBSD.org/</link>.</para>
 
       <note>
 	<para>The &os; <application>Subversion</application> mirrors

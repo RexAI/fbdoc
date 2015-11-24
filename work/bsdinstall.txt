@@ -22,7 +22,7 @@ https://www.freebsd.org/doc/zh_CN.UTF-8/books/handbook/bsdinstall.html
 自9.0-RELEASE起，FreeBSD提供了一个易于使用且基于文字界面的安装程序，名为bsdinstall。本章将介绍如何使用此程序安装FreeBSD。
 一般来说，本章的安装说明仅针对于i386™及AMD64架构，但也会尽可能地涉及到其他平台。由于实际的安装过程可能略有不同，因此本章内容仅供参考。
 注意：
-对于想要使用图形界面安装FreeBSD的用户，可关注PC-BSD项目所使用的安装程序pc-sysinstall。此程序既可用于安装带图形桌面的PC-BSD，也可用于安装仅包含命令行的FreeBSD。有关pc-sysinstall的更多内容，详见PC-BSD用户手册（http://wiki.pcbsd.org/index.php/PC-BSD%C2%AE_Users_Handbook/10.1）。
+对于想要使用图形界面安装FreeBSD的用户，可关注PC-BSD项目所使用的安装程序pc-sysinstall。此程序既可用于安装带图形桌面的PC-BSD，也可用于安装仅包含命令行的FreeBSD。有关pc-sysinstall的更多内容，详见PC-BSD用户手册（http://wiki.pcbsd.org/index.php/Colophon）。
 阅读本章之后，您将了解：
 最低硬件需求及FreeBSD所支持的架构。
 如何创建FreeBSD安装介质。
@@ -34,7 +34,7 @@ bsdinstall运行时具体的交互过程。
 查看将要安装的FreeBSD版本所支持的硬件列表，以确认系统硬件与其兼容。
 
 2.2. 最低硬件需求
-安装FreeBSD的硬件需求，随版本及硬件架构而有所不同。在FreeBSD网站的Release Information（发行版信息）页面（http://www.FreeBSD.org/releases/index.html）上，列出了各发行版所支持的硬件架构及设备。
+安装FreeBSD的硬件需求随硬件架构而有所不同。在FreeBSD网站的Release Information（发行版信息）页面（http://www.FreeBSD.org/releases/index.html）上，列出了各发行版所支持的硬件架构及设备。
 FreeBSD的安装至少需要64MB内存及1.5GB硬盘空间，但应注意这样的配置仅能完成安装。在实际的使用过程中，应根据不同的需求提供更多的内存及硬盘空间：例如，作为专用服务器使用的FreeBSD最低仅需128MB内存，但作为桌面系统使用则应至少配备4GB内存；而两者都需要额外的硬盘空间来存储数据。
 以下为各架构的处理器需求：
 amd64
@@ -85,7 +85,7 @@ FreeBSD的引导加载器需要安装在一个空闲的MBR主分区或GPT分区�
 有关所有发行版的信息及勘误，可以在FreeBSD网站的发行版信息（http://www.freebsd.org/releases/index.html）处找到。
 2.3.1. 准备安装介质
 由于FreeBSD安装程序并不能直接从其他操作系统中运行，因此必须首先下载相关文件，然后根据其类型与大小（CD、DVD或USB）制作相应的安装介质。一旦插入介质并用其引导系统后，即可开始安装。
-FreeBSD的安装文件可从www.freebsd.org/where.html#download获取，其中每个文件名的构成均包含发行版本、架构与文件类型三个部分。例如，若要在amd64系统上使用DVD安装FreeBSD 10.0，应下载文件FreeBSD-10.0-RELEASE-amd64-dvd1.iso并将其刻录至DVD，然后插入此DVD来引导系统。
+FreeBSD的安装文件可从www.freebsd.org/where.html#download获取，其中每个文件名的构成均包含发行版本、架构与文件类型三个部分。例如，若要在amd64系统上使用DVD安装FreeBSD 10.2，应下载文件FreeBSD-10.2-RELEASE-amd64-dvd1.iso并将其刻录至DVD，然后插入此DVD来引导系统。
 FreeBSD提供了多种类型的安装文件，但要注意某些架构下仅有其中的几种可供使用。可能的文件类型包括：
 -bootonly.iso：尺寸最小的类型，因为其中仅包含安装程序本身。使用这种文件安装时必须提供可用的Internet连接，因为安装程序需要通过其下载必要的文件。若要制作安装介质，可以使用CD刻录程序将其刻录至CD。
 -disc1.iso：不仅包含安装所需的全部文件，还包含FreeBSD的源代码与Ports集。若要制作安装介质，可以使用CD刻录程序将其刻录至CD。
@@ -100,7 +100,7 @@ FreeBSD提供了多种类型的安装文件，但要注意某些架构下仅有�
 警告：
 本例中镜像文件将被写入的目标设备为/dev/da0。实际操作时请仔细确认目标设备是否正确，因为此命令将销毁其上的所有数据。
 dd(1)命令行工具可以在BSD、Linux®与Mac OS®系统下使用。通过此命令写入镜像时，首先应插入USB存储设备并确定其对应的设备名称，然后指定已下载的安装镜像文件及此名称。在FreeBSD中执行下面的命令，可以将amd64架构的安装镜像写入首个USB设备。
-# dd if=FreeBSD-10.0-RELEASE-amd64-memstick.img of=/dev/da0 bs=1m conv=sync
+# dd if=FreeBSD-10.2-RELEASE-amd64-memstick.img of=/dev/da0 bs=1M conv=sync
 若命令执行失败，应首先确认未挂载相应的USB设备，然后确保设备名称对应于磁盘而非分区。在某些操作系统中，可能需要使用sudo(8)执行此命令。类似Linux®的系统可能缓存了写入操作，从而需要使用sync(8)强制完成写入。
 方法2.2. 在Windows®下写入镜像
 警告：
