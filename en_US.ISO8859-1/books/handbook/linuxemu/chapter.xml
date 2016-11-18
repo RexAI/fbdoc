@@ -51,17 +51,21 @@
       <secondary>Linux</secondary>
     </indexterm>
 
-    <para>&os; provides 32-bit binary compatibility with &linux;,
-      allowing users to install and run most 32-bit &linux; binaries
+    <para>&os; provides binary compatibility with &linux;,
+      allowing users to install and run most &linux; binaries
       on a &os; system without having to first modify the binary.  It
-      has even been reported that, in some situations, 32-bit &linux;
+      has even been reported that, in some situations, &linux;
       binaries perform better on &os; than they do on &linux;.</para>
 
     <para>However, some &linux;-specific operating system features
       are not supported under &os;.  For example, &linux; binaries
       will not work on &os; if they overly use &i386; specific calls,
-      such as enabling virtual 8086 mode.  In addition, 64-bit &linux;
-      binaries are not supported at this time.</para>
+      such as enabling virtual 8086 mode.</para>
+
+    <note>
+      <para>Support for 64-bit binary compatibility with &linux; was
+	added in &os;&nbsp;10.3.</para>
+    </note>
 
     <para>After reading this chapter, you will know:</para>
 
@@ -113,6 +117,10 @@
 
     <screen>&prompt.root; <userinput>kldload linux</userinput></screen>
 
+    <para>For 64-bit compatibility:</para>
+
+    <screen>&prompt.root; <userinput>kldload linux64</userinput></screen>
+
     <para>To verify that the module is loaded:</para>
 
     <screen>&prompt.user; <userinput>kldstat</userinput>
@@ -133,6 +141,9 @@
       add this line to <filename>/etc/rc.conf</filename>:</para>
 
     <programlisting>linux_enable="YES"</programlisting>
+
+    <para>On 64-bit machines, <filename>/etc/rc.d/abi</filename> will
+      automatically load the module for 64-bit emulation.</para>
 
     <indexterm>
       <primary>kernel options</primary>
@@ -259,9 +270,9 @@ Abort</screen>
       <title>Installing a &linux; <acronym>RPM</acronym> Based
 	Application</title>
 
-      <para>In order to install a &linux; <acronym>RPM</acronym>-based
+      <para>To install a &linux; <acronym>RPM</acronym>-based
 	application, first install the
-	<package>archivers/rpm</package> package or port.  Once
+	<package>archivers/rpm4</package> package or port.  Once
 	installed, <systemitem class="username">root</systemitem> can
 	use this command to install a
 	<filename>.rpm</filename>:</para>
@@ -638,9 +649,9 @@ FEATURE Maple maplelmg 2000.0831 permanent 1 XXXXXXXXXXXX \
 
     <para>The &linux; version of <application>&matlab;</application>
       can be purchased and licensed from <ulink
-	url="http://www.mathworks.com/products/matlab/">
-	MathWorks</ulink>.  Consider letting the company know that
-      you would like a native &os; version of this software.</para>
+	url="http://www.mathworks.com/products/matlab/">MathWorks</ulink>.
+      Consider letting the company know that you would like a native
+      &os; version of this software.</para>
 
     <sect2>
       <title>Installing &matlab;</title>
@@ -1203,10 +1214,10 @@ export PATH</programlisting>
     <para>&linux; mode dynamically <emphasis>reroots</emphasis>
       lookups.  This is, in effect, equivalent to the
       <option>union</option> option to file system mounts.  First, an
-      attempt is made to lookup the file in <filename
-	>/compat/linux/<replaceable>original-path</replaceable></filename>.
-      If that fails, the lookup is done in <filename
-	>/<replaceable>original-path</replaceable></filename>.
+      attempt is made to lookup the file in
+      <filename>/compat/linux/<replaceable>original-path</replaceable></filename>.
+      If that fails, the lookup is done in
+      <filename>/<replaceable>original-path</replaceable></filename>.
       This makes sure that binaries that require other binaries can
       run.  For example, the &linux; toolchain can all run under
       &linux; <acronym>ABI</acronym> support.  It also means that the
@@ -1214,7 +1225,7 @@ export PATH</programlisting>
       are no corresponding &linux; binaries present, and that a
       &man.uname.1; command can be placed in the
       <filename>/compat/linux</filename> directory tree to ensure that
-      the &linux; binaries can not tell they are not running on
+      the &linux; binaries cannot tell they are not running on
       &linux;.</para>
 
     <para>In effect, there is a &linux; kernel in the &os; kernel.

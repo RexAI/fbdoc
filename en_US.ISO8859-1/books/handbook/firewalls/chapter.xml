@@ -490,8 +490,8 @@ device pfsync</programlisting>
 	    </row>
 
 	    <row>
-	      <entry><command>pfctl -s [ rules | nat
-		  state ]</command></entry>
+	      <entry><command>pfctl -s [ rules | nat |
+		  states ]</command></entry>
 	      <entry>Report on the filter rules,
 		<acronym>NAT</acronym> rules, or state
 		table.</entry>
@@ -1876,7 +1876,7 @@ options    IPDIVERT			# enables NAT</programlisting>
 	      value of zero removes the logging limit.  Once the limit
 	      is reached, logging can be re-enabled by clearing the
 	      logging counter or the packet counter for that rule,
-	      using <command>ipfw reset log</command>.</para>
+	      using <command>ipfw resetlog</command>.</para>
 
 	    <note>
 	      <para>Logging is done after all other packet matching
@@ -2064,7 +2064,7 @@ pif="dc0"     # interface name of NIC attached to Internet</programlisting>
 &dollar;cmd 00250 allow icmp from any to any out via &dollar;pif keep-state
 
 # Allow outbound NTP
-&dollar;cmd 00260 allow tcp from any to any 37 out via &dollar;pif setup keep-state
+&dollar;cmd 00260 allow udp from any to any 123 out via &dollar;pif setup keep-state
 
 # Allow outbound SSH
 &dollar;cmd 00280 allow tcp from any to any 22 out via &dollar;pif setup keep-state

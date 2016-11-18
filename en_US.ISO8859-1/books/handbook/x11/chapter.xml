@@ -142,8 +142,8 @@
 	<term>window manager</term>
 
 	<listitem>
-	  <para>X does not dictate what windows should look like on
-	    screen, how to move them around with the mouse, which
+	  <para>X does not dictate what windows should look like
+	    on-screen, how to move them around with the mouse, which
 	    keystrokes should be used to move between windows, what
 	    the title bars on each window should look like, whether or
 	    not they have close buttons on them, and so on.  Instead,
@@ -416,7 +416,7 @@
 	    <para>Driver name: <literal>intel</literal></para>
 
 	    <para>For reference, see <link
-	        xlink:href="https://en.wikipedia.org/wiki/List_of_Intel_graphics_processing_units"/>.</para>
+		xlink:href="https://en.wikipedia.org/wiki/List_of_Intel_graphics_processing_units"/>.</para>
 	  </listitem>
 	</varlistentry>
 
@@ -430,7 +430,7 @@
 	    <para>Driver name: <literal>radeon</literal></para>
 
 	    <para>For reference, see <link
-	        xlink:href="https://en.wikipedia.org/wiki/List_of_AMD_graphics_processing_units"/>.</para>
+		xlink:href="https://en.wikipedia.org/wiki/List_of_AMD_graphics_processing_units"/>.</para>
 	  </listitem>
 	</varlistentry>
 
@@ -444,7 +444,7 @@
 	      card.</para>
 
 	    <para>For reference, see <link
-	      xlink:href="https://en.wikipedia.org/wiki/List_of_Nvidia_graphics_processing_units"/>.</para>
+		xlink:href="https://en.wikipedia.org/wiki/List_of_Nvidia_graphics_processing_units"/>.</para>
 	  </listitem>
 	</varlistentry>
 
@@ -515,7 +515,7 @@
 	    <para>To set the &intel; driver in a configuration
 	      file:</para>
 
-	    <example>
+	    <example xml:id="x-config-video-cards-file-intel">
 	      <title>Select &intel; Video Driver in a File</title>
 
 	      <para><filename>/usr/local/etc/X11/xorg.conf.d/driver-intel.conf</filename></para>
@@ -537,7 +537,7 @@ EndSection</programlisting>
 	    <para>To set the Radeon driver in a configuration
 	      file:</para>
 
-	    <example>
+	    <example xml:id="x-config-video-cards-file-radeon">
 	      <title>Select Radeon Video Driver in a File</title>
 
 	      <para><filename>/usr/local/etc/X11/xorg.conf.d/driver-radeon.conf</filename></para>
@@ -551,7 +551,7 @@ EndSection</programlisting>
 	    <para>To set the <acronym>VESA</acronym> driver in a
 	      configuration file:</para>
 
-	    <example>
+	    <example xml:id="x-config-video-cards-file-vesa">
 	      <title>Select <acronym>VESA</acronym> Video Driver in a
 		File</title>
 
@@ -560,6 +560,21 @@ EndSection</programlisting>
 	      <programlisting>Section "Device"
 	Identifier "Card0"
 	Driver     "vesa"
+EndSection</programlisting>
+	    </example>
+
+	    <para>To set the <literal>scfb</literal> driver for use
+	      with a <acronym>UEFI</acronym> or &arm; computer:</para>
+
+	    <example xml:id="x-config-video-cards-file-scfb">
+	      <title>Select <literal>scfb</literal> Video Driver in a
+		File</title>
+
+	      <para><filename>/usr/local/etc/X11/xorg.conf.d/driver-scfb.conf</filename></para>
+
+	      <programlisting>Section "Device"
+	Identifier "Card0"
+	Driver     "scfb"
 EndSection</programlisting>
 	    </example>
 	  </listitem>
@@ -623,8 +638,12 @@ HDMI-0 disconnected (normal left inverted right x axis y axis)</screen>
 	    <para>A common task is using the external video output on
 	      a notebook computer for a video projector.</para>
 
-	    <para>Names and types of video connectors vary, so
-	      &man.xrandr.1; is run without options to list the
+	    <para>The type and quantity of output connectors varies
+	      between devices, and the name given to each output
+	      varies from driver to driver.  What one driver calls
+	      <literal>HDMI-1</literal>, another might call
+	      <literal>HDMI1</literal>.  So the first step is to run
+	      &man.xrandr.1; to list all the available
 	      outputs:</para>
 
 	    <screen>&prompt.user; <userinput>xrandr</userinput>
@@ -964,22 +983,26 @@ EndSection</programlisting>
       <programlisting>Load  "freetype"</programlisting>
 
       <para>Now make a directory for the &truetype; fonts (for
-	example,
-	<filename>/usr/local/share/fonts/TrueType</filename>) and
-	copy all of the &truetype; fonts into this directory.  Keep in
-	mind that &truetype; fonts cannot be directly taken from an
-	&apple; &mac;; they must be in &unix;/&ms-dos;/&windows;
-	format for use by <application>&xorg;</application>.  Once the
-	files have been copied into this directory, use
-	<application>ttmkfdir</application> to create a
+	example, <filename>/usr/local/share/fonts/TrueType</filename>)
+	and copy all of the &truetype; fonts into this directory.
+	Keep in mind that &truetype; fonts cannot be directly taken
+	from an &apple; &mac;; they must be in
+	&unix;/&ms-dos;/&windows; format for use by
+	<application>&xorg;</application>.  Once the files have been
+	copied into this directory, use
+	<application>mkfontdir</application> to create a
 	<filename>fonts.dir</filename>, so that the X font renderer
 	knows that these new files have been installed.
-	<command>ttmkfdir</command> is available from the FreeBSD
-	Ports Collection as
-	<package>x11-fonts/ttmkfdir</package>.</para>
+	<command>mkfontdir</command> can be installed as a
+	package:</para>
+
+      <screen>&prompt.root; <userinput>pkg install mkfontdir</userinput></screen>
+
+      <para>Then create an index of X font files in a
+	directory:</para>
 
       <screen>&prompt.root; <userinput>cd /usr/local/share/fonts/TrueType</userinput>
-&prompt.root; <userinput>ttmkfdir -o fonts.dir</userinput></screen>
+&prompt.root; <userinput>mkfontdir</userinput></screen>
 
       <para>Now add the &truetype; directory to the font path.  This
 	is just the same as described in <xref
@@ -992,12 +1015,12 @@ EndSection</programlisting>
 	<filename>xorg.conf</filename>.</para>
 
       <para>Now <application>Gimp</application>,
-	<application>OpenOffice</application>, and all of the other X
-	applications should now recognize the installed &truetype;
-	fonts.  Extremely small fonts (as with text in a high
-	resolution display on a web page) and extremely large fonts
-	(within <application>&staroffice;</application>) will look
-	much better now.</para>
+	<application>Apache OpenOffice</application>, and all of the
+	other X applications should now recognize the installed
+	&truetype; fonts.  Extremely small fonts (as with text in a
+	high resolution display on a web page) and extremely large
+	fonts (within <application>&staroffice;</application>) will
+	look much better now.</para>
     </sect2>
 
     <sect2 xml:id="antialias">
@@ -1031,7 +1054,7 @@ EndSection</programlisting>
 	<application>GNOME</application>, and
 	<application>Firefox</application>.</para>
 
-      <para>In order to control which fonts are anti-aliased, or to
+      <para>To control which fonts are anti-aliased, or to
 	configure anti-aliasing properties, create (or edit, if it
 	already exists) the file
 	<filename>/usr/local/etc/fonts/local.conf</filename>.  Several
@@ -1055,15 +1078,15 @@ EndSection</programlisting>
       <para>As previously stated, all fonts in
 	<filename>/usr/local/share/fonts/</filename> as well as
 	<filename>~/.fonts/</filename> are already made available to
-	Xft-aware applications.  If you wish to add another directory
-	outside of these two directory trees, add a line similar to
-	the following to
+	Xft-aware applications.  To add another directory
+	outside of these two directory trees, add a line like
+	this to
 	<filename>/usr/local/etc/fonts/local.conf</filename>:</para>
 
       <programlisting>&lt;dir&gt;/path/to/my/fonts&lt;/dir&gt;</programlisting>
 
       <para>After adding new fonts, and especially new font
-	directories, you should run the following command to rebuild
+	directories, rebuild
 	the font caches:</para>
 
       <screen>&prompt.root; <userinput>fc-cache -f</userinput></screen>
@@ -1097,13 +1120,13 @@ EndSection</programlisting>
 	<secondary>spacing</secondary>
       </indexterm>
 
-      <para>Spacing for some monospaced fonts may also be
+      <para>Spacing for some monospaced fonts might also be
 	inappropriate with anti-aliasing.  This seems to be an issue
 	with <application>KDE</application>, in particular.  One
-	possible fix for this is to force the spacing for such fonts
-	to be 100. Add the following lines:</para>
+	possible fix is to force the spacing for such fonts
+	to be 100. Add these lines:</para>
 
-      <programlisting>       &lt;match target="pattern" name="family"&gt;
+      <programlisting>	&lt;match target="pattern" name="family"&gt;
 	   &lt;test qual="any" name="family"&gt;
 	       &lt;string&gt;fixed&lt;/string&gt;
 	   &lt;/test&gt;
@@ -1147,16 +1170,15 @@ EndSection</programlisting>
 	     &lt;/edit&gt;
 	 &lt;/match&gt;        </programlisting>
 
-      <para>Once you have finished editing
-	<filename>local.conf</filename> make sure you end the file
+      <para>After editing
+	<filename>local.conf</filename>, make certain to end the file
 	with the <literal>&lt;/fontconfig&gt;</literal> tag.  Not
-	doing this will cause your changes to be ignored.</para>
+	doing this will cause changes to be ignored.</para>
 
-      <para>Finally, users can add their own settings via their
-	personal <filename>.fonts.conf</filename> files.  To do this,
-	each user should simply create a
-	<filename>~/.fonts.conf</filename>.  This file must also be in
-	XML format.</para>
+      <para>Users can add personalized settings by creating their own
+	<filename>~/.config/fontconfig/fonts.conf</filename>.  This
+	file uses the same <acronym>XML</acronym> format described
+	above.</para>
 
       <indexterm><primary>LCD screen</primary></indexterm>
       <indexterm><primary>Fonts</primary>
@@ -1169,7 +1191,7 @@ EndSection</programlisting>
 	dramatic.  To enable this, add the line somewhere in
 	<filename>local.conf</filename>:</para>
 
-      <programlisting>&lt;match target="font"&gt;
+      <programlisting>	 &lt;match target="font"&gt;
 	     &lt;test qual="all" name="rgba"&gt;
 		 &lt;const&gt;unknown&lt;/const&gt;
 	     &lt;/test&gt;
@@ -1401,7 +1423,7 @@ DisplayManager.requestPort:     0</screen>
       <para>This desktop environment can be installed from a
 	package:</para>
 
-      <screen>&prompt.root; <userinput>pkg install gnome2</userinput></screen>
+      <screen>&prompt.root; <userinput>pkg install gnome3</userinput></screen>
 
       <para>To instead build <application>GNOME</application> from
 	ports, use the following command.
@@ -1409,17 +1431,28 @@ DisplayManager.requestPort:     0</screen>
 	will take some time to compile, even on a fast
 	computer.</para>
 
-      <screen>&prompt.root; <userinput>cd /usr/ports/x11/gnome2</userinput>
+      <screen>&prompt.root; <userinput>cd /usr/ports/x11/gnome3</userinput>
 &prompt.root; <userinput>make install clean</userinput></screen>
 
-      <para>For proper operation, <application>GNOME</application>
+      <para><application>GNOME</application>
 	requires <filename>/proc</filename> to be mounted.  Add this
 	line to <filename>/etc/fstab</filename> to mount this file
 	system automatically during system startup:</para>
 
       <programlisting>proc           /proc       procfs  rw  0   0</programlisting>
 
-      <para>Once <application>GNOME</application> is installed,
+      <para><application>GNOME</application> uses
+	<application>D-Bus</application> and
+	<application>HAL</application> for a message bus and hardware
+	abstraction.  These applications are automatically installed
+	as dependencies of <application>GNOME</application>.  Enable
+	them in <filename>/etc/rc.conf</filename> so they will be
+	started when the system boots:</para>
+
+      <programlisting>dbus_enable="YES"
+hald_enable="YES"</programlisting>
+
+      <para>After installation,
 	configure <application>&xorg;</application> to start
 	<application>GNOME</application>.  The easiest way to do this
 	is to enable the GNOME Display Manager,
@@ -1436,7 +1469,7 @@ DisplayManager.requestPort:     0</screen>
 
       <programlisting>gnome_enable="YES"</programlisting>
 
-      <para><application>GDM</application> will now start
+      <para><application>GDM</application> will start
 	automatically when the system boots.</para>
 
       <para>A second method for starting
@@ -1501,6 +1534,17 @@ DisplayManager.requestPort:     0</screen>
 
       <programlisting>proc           /proc       procfs  rw  0   0</programlisting>
 
+      <para><application>KDE</application> uses
+	<application>D-Bus</application> and
+	<application>HAL</application> for a message bus and hardware
+	abstraction.  These applications are automatically installed
+	as dependencies of <application>KDE</application>.  Enable
+	them in <filename>/etc/rc.conf</filename> so they will be
+	started when the system boots:</para>
+
+      <programlisting>dbus_enable="YES"
+hald_enable="YES"</programlisting>
+
       <para>The installation of <application>KDE</application>
 	includes the KDE Display Manager,
 	<application>KDM</application>.  To enable this display
@@ -1563,14 +1607,14 @@ DisplayManager.requestPort:     0</screen>
 	from the command line by typing <command>startx</command>,
 	first add its entry to <filename>~/.xinitrc</filename>:</para>
 
-      <screen>&prompt.user; <userinput>echo "exec /usr/local/bin/startxfce4" &gt; ~/.xinitrc</userinput></screen>
+      <screen>&prompt.user; <userinput>echo "exec /usr/local/bin/startxfce4 --with-ck-launch" &gt; ~/.xinitrc</userinput></screen>
 
       <para>An alternate method is to use
 	<application>XDM</application>.  To configure this method,
 	create an executable <filename>~/.xsession</filename>:</para>
 
       <screen>&prompt.user; <userinput>echo "#!/bin/sh" &gt; ~/.xsession</userinput>
-&prompt.user; <userinput>echo "exec /usr/local/bin/startxfce4" &gt;&gt; ~/.xsession</userinput>
+&prompt.user; <userinput>echo "exec /usr/local/bin/startxfce4 --with-ck-launch" &gt;&gt; ~/.xsession</userinput>
 &prompt.user; <userinput>chmod +x ~/.xsession</userinput></screen>
     </sect2>
   </sect1>
@@ -1578,8 +1622,8 @@ DisplayManager.requestPort:     0</screen>
   <sect1 xml:id="x-compiz-fusion">
     <title>Installing Compiz Fusion</title>
 
-    <para>One way to increase the pleasantness of using a desktop
-      computer is by having nice 3D effects.</para>
+    <para>One way to make using a desktop
+      computer more pleasant is with nice 3D effects.</para>
 
     <para>Installing the <application>Compiz&nbsp;Fusion</application>
       package is easy, but configuring it requires a few steps that

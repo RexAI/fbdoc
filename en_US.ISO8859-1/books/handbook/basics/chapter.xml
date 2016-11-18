@@ -18,7 +18,7 @@
     </authorgroup>
   </chapterinfo>
   -->
-  <title>UNIX Basics</title>
+  <title>&os; Basics</title>
 
   <sect1 xml:id="basics-synopsis">
     <title>Synopsis</title>
@@ -176,8 +176,8 @@ login:</screen>
 	launched in one virtual console do not stop running when
 	the user switches to a different virtual console.</para>
 
-      <para>Refer to &man.syscons.4;, &man.atkbd.4;,
-	&man.vidcontrol.1; and &man.kbdcontrol.1; for a more
+      <para>Refer to &man.kbdcontrol.1;, &man.vidcontrol.1;,
+	&man.atkbd.4;, &man.syscons.4;, and &man.vt.4; for a more
 	technical description of the &os; console and its keyboard
 	drivers.</para>
 
@@ -500,7 +500,7 @@ console none                            unknown  off  secure</programlisting>
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term>Account expiry time</term>
+	    <term>Account expiration time</term>
 
 	    <listitem>
 	      <para>By default, &os; does not expire accounts.  When

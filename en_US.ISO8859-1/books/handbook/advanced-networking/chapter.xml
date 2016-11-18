@@ -50,6 +50,11 @@
 	  Address Redundancy Protocol (<acronym>CARP</acronym>) in
 	  &os;.</para>
       </listitem>
+
+      <listitem>
+	<para>How to configure multiple <acronym>VLANs</acronym> on
+	  &os;.</para>
+      </listitem>
     </itemizedlist>
 
     <para>Before reading this chapter, you should:</para>
@@ -1015,7 +1020,7 @@ freebsdap       00:11:95:c3:0d:ac    1   54M -83:96   100 EPS  WPA</screen>
 
 	    <para>Most of the time, it is sufficient to let the system
 	      choose an access point using the builtin heuristics.
-	      This is the default behaviour when an interface is
+	      This is the default behavior when an interface is
 	      marked as up or it is listed in
 	      <filename>/etc/rc.conf</filename>:</para>
 
@@ -3226,7 +3231,7 @@ bridge0: flags=8843&lt;UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST&gt; metric 0 mtu 1
 	      address is seen on a different interface.  This gives
 	      the benefit of static address entries without the need
 	      to pre-populate the forwarding table.  Clients learned
-	      on a particular segment of the bridge can not roam to
+	      on a particular segment of the bridge cannot roam to
 	      another segment.</para>
 
 	    <para>An example of using sticky addresses is to combine
@@ -3246,7 +3251,7 @@ bridge0: flags=8843&lt;UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST&gt; metric 0 mtu 1
 	    <para>In this example, both clients see <systemitem
 		class="ipaddress">192.168.0.1</systemitem> as their
 	      default gateway.  Since the bridge cache is sticky, one
-	      host can not spoof the <acronym>MAC</acronym> address of
+	      host cannot spoof the <acronym>MAC</acronym> address of
 	      the other customer in order to intercept their
 	      traffic.</para>
 
@@ -4659,7 +4664,7 @@ rtsold_enable="YES"</programlisting>
 	the generic tunneling interface
 	<filename><replaceable>gif0</replaceable></filename>:</para>
 
-      <programlisting>gif_interfaces="gif<replaceable>0</replaceable>"</programlisting>
+      <programlisting>cloned_interfaces="gif<replaceable>0</replaceable>"</programlisting>
 
       <para>Next, configure that interface with the
 	<acronym>IPv4</acronym> addresses of the local and remote
@@ -4667,7 +4672,7 @@ rtsold_enable="YES"</programlisting>
 	and <replaceable>REMOTE_IPv4_ADDR</replaceable> with the
 	actual <acronym>IPv4</acronym> addresses:</para>
 
-      <programlisting>gifconfig_gif0="<replaceable>MY_IPv4_ADDR REMOTE_IPv4_ADDR</replaceable>"</programlisting>
+      <programlisting>create_args_gif0="tunnel <replaceable>MY_IPv4_ADDR REMOTE_IPv4_ADDR</replaceable>"</programlisting>
 
       <para>To apply the <acronym>IPv6</acronym> address that has been
 	assigned for use as the <acronym>IPv6</acronym> tunnel
@@ -4715,10 +4720,10 @@ rtsold_enable="YES"</programlisting>
 	example:</para>
 
       <programlisting>rl0:\
-	:addrs#1:addr="2001:471:1f11:246::":prefixlen#64:tc=ether:</programlisting>
+	:addrs#1:addr="2001:db8:1f11:246::":prefixlen#64:tc=ether:</programlisting>
 
       <para>Replace <filename>rl0</filename> with the interface
-	to be used and <systemitem>2001:471:1f11:246::</systemitem>
+	to be used and <systemitem>2001:db8:1f11:246::</systemitem>
 	with the prefix of the allocation.</para>
 
       <para>For a dedicated <systemitem
@@ -4753,7 +4758,7 @@ rtsold_enable="YES"</programlisting>
 
       <para>Reviewing the information in <acronym>RFC</acronym> 3493,
 	section 3.6 and 3.7 as well as <acronym>RFC</acronym> 4038
-	section 4.2 may be useful to some adminstrators.</para>
+	section 4.2 may be useful to some administrators.</para>
     </sect2>
   </sect1>
 <!--
@@ -5056,7 +5061,7 @@ route_hostD="192.168.173.4 hatm0 0 102 llc/snap ubr"</programlisting>
 
       <programlisting>hostname="<replaceable>hosta.example.org</replaceable>"
 ifconfig_<replaceable>em0</replaceable>="inet <replaceable>192.168.1.3</replaceable> netmask <replaceable>255.255.255.0</replaceable>"
-ifconfig_<replaceable>em0</replaceable>_alias0="vhid <replaceable>1</replaceable> pass <replaceable>testpass</replaceable> alias <replaceable>192.168.1.50</replaceable>/32"</programlisting>
+ifconfig_<replaceable>em0</replaceable>_alias0="inet vhid <replaceable>1</replaceable> pass <replaceable>testpass</replaceable> alias <replaceable>192.168.1.50</replaceable>/32"</programlisting>
 
       <para>The next set of entries are for
 	<systemitem>hostb.example.org</systemitem>.  Since it
@@ -5069,7 +5074,7 @@ ifconfig_<replaceable>em0</replaceable>_alias0="vhid <replaceable>1</replaceable
 
       <programlisting>hostname="<replaceable>hostb.example.org</replaceable>"
 ifconfig_<replaceable>em0</replaceable>="inet <replaceable>192.168.1.4</replaceable> netmask <replaceable>255.255.255.0</replaceable>"
-ifconfig_<replaceable>em0</replaceable>_alias0="vhid <replaceable>2</replaceable> pass <replaceable>testpass</replaceable> alias <replaceable>192.168.1.51</replaceable>/32"</programlisting>
+ifconfig_<replaceable>em0</replaceable>_alias0="inet vhid <replaceable>2</replaceable> pass <replaceable>testpass</replaceable> alias <replaceable>192.168.1.51</replaceable>/32"</programlisting>
 
       <para>The third machine,
 	<systemitem>hostc.example.org</systemitem>, is configured to
@@ -5085,8 +5090,8 @@ ifconfig_<replaceable>em0</replaceable>_alias0="vhid <replaceable>2</replaceable
 
       <programlisting>hostname="hostc.example.org"
 ifconfig_<replaceable>em0</replaceable>="inet <replaceable>192.168.1.5</replaceable> netmask <replaceable>255.255.255.0</replaceable>"
-ifconfig_<replaceable>em0</replaceable>_alias0="vhid <replaceable>1</replaceable> advskew <replaceable>100</replaceable> pass <replaceable>testpass</replaceable> alias <replaceable>192.168.1.50</replaceable>/32"
-ifconfig_<replaceable>em0</replaceable>_alias1="vhid <replaceable>2</replaceable> advskew <replaceable>100</replaceable> pass <replaceable>testpass</replaceable> alias <replaceable>192.168.1.51</replaceable>/32"</programlisting>
+ifconfig_<replaceable>em0</replaceable>_alias0="inet vhid <replaceable>1</replaceable> advskew <replaceable>100</replaceable> pass <replaceable>testpass</replaceable> alias <replaceable>192.168.1.50</replaceable>/32"
+ifconfig_<replaceable>em0</replaceable>_alias1="inet vhid <replaceable>2</replaceable> advskew <replaceable>100</replaceable> pass <replaceable>testpass</replaceable> alias <replaceable>192.168.1.51</replaceable>/32"</programlisting>
 
       <para>Having two <acronym>CARP</acronym>
 	<acronym>VHID</acronym>s configured means that
@@ -5200,5 +5205,60 @@ ifconfig_carp1="vhid <replaceable>2</replaceable> advskew <replaceable>100</repl
 	networking or reboot each system.  High availability is now
 	enabled.</para>
     </sect2>
+  </sect1>
+  <sect1 xml:id="network-vlan">
+    <info>
+      <title>VLANs</title>
+    </info>
+
+    <indexterm>
+      <primary><acronym>VLANs</acronym></primary>
+    </indexterm>
+    <indexterm>
+      <primary>Virtual LANs</primary>
+    </indexterm>
+
+    <para><acronym>VLANs</acronym> are a way of virtually dividing up
+      a network into many different subnetworks.  Each will have its
+      own broadcast domain and be isolated from the rest of the
+      <acronym>VLANs</acronym>.</para>
+
+    <para>On &os;, <acronym>VLANs</acronym> must be supported by the
+      network card driver.  To see which drivers support vlans, refer
+      to the &man.vlan.4; manual page.</para>
+
+    <para>When configuring a <acronym>VLAN</acronym>, a couple pieces
+      of information must be known.  First, which network interface?
+      Second, what is the <acronym>VLAN</acronym> tag?</para>
+
+    <para>To configure <acronym>VLANs</acronym> at run time, with a
+      <acronym>NIC</acronym> of <literal>em0</literal> and a
+      <acronym>VLAN</acronym> tag of <systemitem>5</systemitem>.  The
+      command would look like this:</para>
+
+    <screen>&prompt.root; <userinput>ifconfig <replaceable>em0.5</replaceable> create vlan <replaceable>5</replaceable> vlandev <replaceable>em0</replaceable> inet 192.168.20.20/24</userinput></screen>
+
+    <note>
+      <para>See how the interface name includes the
+	<acronym>NIC</acronym> driver name and the
+	<acronym>VLAN</acronym> tag, separated by a period?  This is a
+	best practice to make maintaining the <acronym>VLAN</acronym>
+	configuration easy when many <acronym>VLANs</acronym> are
+	present on a machine.</para>
+    </note>
+
+    <para>To configure <acronym>VLANs</acronym> at boot time,
+      <filename>/etc/rc.conf</filename> must be updated.  To duplicate
+      the configuration above, the following will need to be
+      added:</para>
+
+    <programlisting>vlans_<replaceable>em0</replaceable>="<replaceable>5</replaceable>"
+ifconfig_<replaceable>em0</replaceable>_<replaceable>5</replaceable>="inet 192.168.20.20/24"</programlisting>
+
+    <para>Additional <acronym>VLANs</acronym> may be added, by simply
+      adding the tag to the
+      <literal>vlans_<replaceable>em0</replaceable></literal>
+      field and adding an additional line configuring the network on
+      that <acronym>VLAN</acronym> tag's interface.</para>
   </sect1>
 </chapter>

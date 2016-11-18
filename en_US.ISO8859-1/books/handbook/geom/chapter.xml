@@ -84,7 +84,7 @@
 
       <listitem>
 	<para>Know how to configure and install a new kernel (<xref
-	    linkend="kernelconfig"/>.</para>
+	    linkend="kernelconfig"/>).</para>
       </listitem>
     </itemizedlist>
   </sect1>
@@ -1472,11 +1472,6 @@ ggate0
 	data, issue the following command:</para>
 
       <screen>&prompt.root; <userinput>tunefs -L <replaceable>home</replaceable> <replaceable>/dev/da3</replaceable></userinput></screen>
-
-      <warning>
-	<para>If the file system is full, this may cause data
-	  corruption.</para>
-      </warning>
 
       <para>A label should now exist in <filename>/dev/ufs</filename>
 	which may be added to <filename>/etc/fstab</filename>:</para>

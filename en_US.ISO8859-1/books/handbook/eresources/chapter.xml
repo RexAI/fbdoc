@@ -37,7 +37,7 @@
 
       <listitem>
 	<para><link
-	    xlink:href="http://planet.freebsdish.org/">Planet
+	    xlink:href="http://planet.freebsd.org/">Planet
 	  &os;</link> offers an aggregation feed of dozens of blogs
 	  written by &os; developers.  Many developers use this to
 	  post quick notes about what they are working on, new
@@ -501,6 +501,11 @@
 	    <row>
 	      <entry>&a.pkg-fallout.name;</entry>
 	      <entry>Fallout logs from package building</entry>
+	    </row>
+
+	    <row>
+	      <entry>&a.pkgbase.name;</entry>
+	      <entry>Packaging the &os; base system</entry>
 	    </row>
 
 	    <row>
@@ -1742,6 +1747,18 @@
 
 	    <para>All packages building failures logs from the package
 	      building clusters</para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry>
+	  <term>&a.pkgbase.name;</term>
+
+	  <listitem>
+	    <para><emphasis>Packaging the &os; base
+		system.</emphasis></para>
+
+	    <para>Discussions surrounding implementation and issues
+	      regarding packaging the &os; base system.</para>
 	  </listitem>
 	</varlistentry>
 

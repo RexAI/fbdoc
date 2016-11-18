@@ -31,17 +31,17 @@
       performance, reliability, and security.</para>
 
     <para>Jails build upon the &man.chroot.2; concept, which is used
-      to change the root directory of a set of processes, creating a
-      safe environment, separate from the rest of the system.
-      Processes created in the chrooted environment can not access
-      files or resources outside of it.  For that reason, compromising
-      a service running in a chrooted environment should not allow the
-      attacker to compromise the entire system.  However, a chroot has
-      several limitations.  It is suited to easy tasks which do not
-      require much flexibility or complex, advanced features.  Over
-      time many ways have been found to escape from a chrooted
-      environment, making it a less than ideal solution for securing
-      services.</para>
+      to change the root directory of a set of processes.  This
+      creates a safe environment, separate from the rest of the
+      system.  Processes created in the chrooted environment can not
+      access files or resources outside of it.  For that reason,
+      compromising a service running in a chrooted environment should
+      not allow the attacker to compromise the entire system.
+      However, a chroot has several limitations.  It is suited to easy
+      tasks which do not require much flexibility or complex, advanced
+      features.  Over time, many ways have been found to escape from a
+      chrooted environment, making it a less than ideal solution for
+      securing services.</para>
 
     <para>Jails improve on the concept of the traditional chroot
       environment in several ways.  In a traditional chroot
@@ -223,7 +223,7 @@
 
     <para>To install just the base system:</para>
 
-    <screen>&prompt.root; <userinput>tar -xf /mnt/usr/freebsd_dist/base.txz -C $DESTDIR</userinput></screen>
+    <screen>&prompt.root; <userinput>tar -xf /mnt/usr/freebsd-dist/base.txz -C $DESTDIR</userinput></screen>
 
     <para>To install everything except the kernel:</para>
 
@@ -501,7 +501,7 @@ jail_<replaceable>www</replaceable>_devfs_enable="YES"          # mount devfs in
 
       <para>Jails should be kept up to date from the host operating
 	system as attempting to patch userland from within the jail
-	may likely fail as the default behaviour in FreeBSD is to
+	may likely fail as the default behavior in FreeBSD is to
 	disallow the use of &man.chflags.1; in a jail which prevents
 	the replacement of some files.  It is possible to change this
 	behavior but it is recommended to use &man.freebsd-update.8;
@@ -721,9 +721,9 @@ jail_<replaceable>www</replaceable>_devfs_enable="YES"          # mount devfs in
 &prompt.root; <userinput>ln -s s/etc etc</userinput>
 &prompt.root; <userinput>ln -s s/home home</userinput>
 &prompt.root; <userinput>ln -s s/root root</userinput>
-&prompt.root; <userinput>ln -s s/usr-local usr/local</userinput>
-&prompt.root; <userinput>ln -s s/usr-X11R6 usr/X11R6</userinput>
-&prompt.root; <userinput>ln -s s/distfiles usr/ports/distfiles</userinput>
+&prompt.root; <userinput>ln -s ../s/usr-local usr/local</userinput>
+&prompt.root; <userinput>ln -s ../s/usr-X11R6 usr/X11R6</userinput>
+&prompt.root; <userinput>ln -s ../../s/distfiles usr/ports/distfiles</userinput>
 &prompt.root; <userinput>ln -s s/tmp tmp</userinput>
 &prompt.root; <userinput>ln -s s/var var</userinput></screen>
 	</step>
@@ -1121,6 +1121,22 @@ Created clone interfaces: lo1.</screen>
 	  jail.  <filename>/var/ports</filename> inside each jail is
 	  also used as a work directory when building ports.</para>
       </tip>
+
+      <tip>
+	<para>The <acronym>FTP</acronym> protocol is used by default
+	  to download packages for the installation of the basejail.
+	  Firewall or proxy configurations can prevent or interfere
+	  with <acronym>FTP</acronym> transfers.  The
+	  <acronym>HTTP</acronym> protocol works differently and
+	  avoids these problems.  It can be chosen by specifying a
+	  full <acronym>URL</acronym> for a particular download mirror
+	  in <filename>/usr/local/etc/ezjail.conf</filename>:</para>
+
+	<programlisting>ezjail_ftphost=http://<replaceable>ftp.FreeBSD.org</replaceable></programlisting>
+
+	<para>See <xref linkend="mirrors-ftp"/> for a list of
+	  sites.</para>
+      </tip>
     </sect2>
 
     <sect2 xml:id="jails-ezjail-create">
@@ -1465,7 +1481,8 @@ wwwserver-201407271153.13.tar.gz</screen>
 
 	<listitem>
 	  <para>The basejail has already been created and a ports tree
-	    installed.</para>
+	    installed as shown in
+	    <xref linkend="jails-ezjail-initialsetup"/>.</para>
 	</listitem>
       </itemizedlist>
 
